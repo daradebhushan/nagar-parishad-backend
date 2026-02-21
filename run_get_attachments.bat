@@ -1,0 +1,1 @@
+curl.exe -X GET http://localhost:8080/api/tasks/58/attachments -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJpZCI6OCwic3ViIjoiYWRtaW5AdGVzdC5jb20iLCJpYXQiOjE3NjcxNjMxOTAsImV4cCI6MTc2NzI0OTU5MH0.F3wfrBm1a3EH559U8dwFXEJQaluIvv655fbJgdzkboA"

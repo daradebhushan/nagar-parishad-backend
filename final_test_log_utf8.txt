@@ -1,0 +1,307 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.nagar.parishad:backend >---------------------
+[INFO] Building nagar-parishad-backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ backend ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ backend ---
+[INFO] skip non existing resourceDirectory D:\anti gravity\backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ backend ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 4 source files with javac [debug release 17] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ backend ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.nagar.parishad.backend.service.AuthServiceTest
+mvn.cmd : Java 
+HotSpot(TM) 64-Bit 
+Server VM warning: 
+Sharing is only 
+supported for boot 
+loader classes 
+because bootstrap 
+classpath has been 
+appended
+At line:1 char:1
++ & "d:\anti gravity\
+backend\apache-maven-
+3.9.6\bin\mvn.cmd" 
+test > fin ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : 
+NotSpecifi    ed: 
+(Java HotSpot(    
+TM...s been append   
+ ed:String) [], Rem  
+  oteException
+    + 
+FullyQualifiedEr    
+rorId : NativeComm   
+ andError
+ 
+[ERROR] Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.139 s <<< FAILURE! -- in com.nagar.parishad.backend.service.AuthServiceTest
+[ERROR] com.nagar.parishad.backend.service.AuthServiceTest.testRegisterUser_Success -- Time elapsed: 2.017 s <<< FAILURE!
+Argument(s) are different! Wanted:
+emailService.sendEmail(
+    <any string>,
+    <any string>,
+    <any string>
+);
+-> at com.nagar.parishad.backend.service.EmailService.sendEmail(EmailService.java:21)
+Actual invocations have different arguments at position [2]:
+emailService.sendEmail(
+    "new@test.com",
+    "Welcome to Nagar Parishad Staff Management",
+    null
+);
+-> at com.nagar.parishad.backend.service.AuthService.sendEmailToUserAndOwner(AuthService.java:106)
+
+	at com.nagar.parishad.backend.service.EmailService.sendEmail(EmailService.java:21)
+	at com.nagar.parishad.backend.service.AuthServiceTest.testRegisterUser_Success(AuthServiceTest.java:119)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[INFO] Running com.nagar.parishad.backend.service.ComplaintServiceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.261 s -- in com.nagar.parishad.backend.service.ComplaintServiceTest
+[INFO] Running com.nagar.parishad.backend.service.TaskServiceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.151 s -- in com.nagar.parishad.backend.service.TaskServiceTest
+[INFO] Running com.nagar.parishad.backend.service.WhatsappServiceTest
+SERVICE: DEBUG: 
+Incoming Message 
+from whatsapp:+919999
+999999 to whatsapp:+9
+18888888888: 2
+SERVICE: Tenant 
+Found. Admin: 
+admin@test.com
+SERVICE: Sending 
+Message to 
++919999999999: ???? 
+?????? ??? ????? ??? 
+?????? ?????
+????? ?????? 
+??????????? ????? 
+????? ?????:
+1. ????? ?
+
+SERVICE: Init Twilio 
+with SID: tests...
+SERVICE: TWILIO SEND 
+ERROR: 
+Authentication Error 
+- invalid username
+SERVICE: DEBUG: 
+Incoming Message 
+from whatsapp:+919999
+999999 to whatsapp:+9
+18888888888: Nashik 
+Road
+SERVICE: Tenant 
+Found. Admin: 
+admin@test.com
+SERVICE: Sending 
+Message to 
++919999999999: 
+Select your 
+preferred language / 
+???? ???? ?????:
+1. English
+2. Marathi (?????)
+3. Hindi (?????)
+SERVICE: Init Twilio 
+with SID: tests...
+SERVICE: TWILIO SEND 
+ERROR: 
+Authentication Error 
+- invalid username
+SERVICE: DEBUG: 
+Incoming Message 
+from whatsapp:+919999
+999999 to whatsapp:+9
+18888888888: 1
+SERVICE: Tenant 
+Found. Admin: 
+admin@test.com
+SERVICE: Sending 
+Message to 
++919999999999: 
+Welcome to Niphad 
+Nagar Panchayat
+Please select the 
+department for your 
+complaint:
+1. Sanitation
+
+SERVICE: Init Twilio 
+with SID: tests...
+SERVICE: TWILIO SEND 
+ERROR: 
+Authentication Error 
+- invalid username
+SERVICE: DEBUG: 
+Incoming Message 
+from whatsapp:+919999
+999999 to whatsapp:+9
+18888888888: Hi
+SERVICE: Tenant 
+Found. Admin: 
+admin@test.com
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: ???? 
+?????? ??? ????? ??? 
+?????? ?????
+????? ?????? 
+??????????? ????? 
+????? ?????:
+
+SERVICE: Init Twilio 
+with SID: tests...
+SERVICE: TWILIO SEND 
+ERROR: 
+Authentication Error 
+- invalid username
+[ERROR] Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 2.571 s <<< FAILURE! -- in com.nagar.parishad.backend.service.WhatsappServiceTest
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceTest.testLanguageSelection_Marathi -- Time elapsed: 1.624 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceTest.testLanguageSelection_Marathi(WhatsappServiceTest.java:120)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceTest.testFullFlowSubmission -- Time elapsed: 0.218 s <<< FAILURE!
+Wanted but not invoked:
+complaintService.submitComplaint(
+    <any com.nagar.parishad.backend.dto.ComplaintSubmissionDTO>
+);
+-> at com.nagar.parishad.backend.service.ComplaintService.submitComplaint(ComplaintService.java:66)
+Actually, there were zero interactions with this mock.
+
+	at com.nagar.parishad.backend.service.ComplaintService.submitComplaint(ComplaintService.java:66)
+	at com.nagar.parishad.backend.service.WhatsappServiceTest.testFullFlowSubmission(WhatsappServiceTest.java:162)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceTest.testDepartmentSelection -- Time elapsed: 0.256 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceTest.testDepartmentSelection(WhatsappServiceTest.java:140)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceTest.testNewUserStartsAtLanguageSelection -- Time elapsed: 0.256 s <<< FAILURE!
+Argument(s) are different! Wanted:
+sessionRepository.save(
+    <custom argument matcher>
+);
+-> at com.nagar.parishad.backend.service.WhatsappServiceTest.testNewUserStartsAtLanguageSelection(WhatsappServiceTest.java:101)
+Actual invocations have different arguments:
+sessionRepository.findByMobileNumberAndAdminId(
+    "whatsapp:+919999999999",
+    1L
+);
+-> at com.nagar.parishad.backend.service.WhatsappService.processMessage(WhatsappService.java:143)
+sessionRepository.save(
+    ChatbotSession(id=null, admin=User(id=1, name=null, mobile=null, email=admin@test.com, password=null, resetPasswordToken=null, resetPasswordTokenExpiry=null, role=null, admin=null, department=null, designation=null, active=true, emailNotifications=true, profilePhoto=null, createdAt=null), mobileNumber=whatsapp:+919999999999, state=DYNAMIC_FLOW, language=mr, tempData={"waitingForInput":true,"currentNodeId":"start"}, lastUpdated=2026-01-26T23:28:27.087191800)
+);
+-> at com.nagar.parishad.backend.service.WhatsappService.lambda$processMessage$0(WhatsappService.java:149)
+sessionRepository.save(
+    ChatbotSession(id=null, admin=User(id=1, name=null, mobile=null, email=admin@test.com, password=null, resetPasswordToken=null, resetPasswordTokenExpiry=null, role=null, admin=null, department=null, designation=null, active=true, emailNotifications=true, profilePhoto=null, createdAt=null), mobileNumber=whatsapp:+919999999999, state=DYNAMIC_FLOW, language=mr, tempData={"waitingForInput":true,"currentNodeId":"start"}, lastUpdated=2026-01-26T23:28:27.087191800)
+);
+-> at com.nagar.parishad.backend.service.WhatsappService.processMessage(WhatsappService.java:161)
+
+	at com.nagar.parishad.backend.service.WhatsappServiceTest.testNewUserStartsAtLanguageSelection(WhatsappServiceTest.java:101)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   AuthServiceTest.testRegisterUser_Success:119 
+Argument(s) are different! Wanted:
+emailService.sendEmail(
+    <any string>,
+    <any string>,
+    <any string>
+);
+-> at com.nagar.parishad.backend.service.EmailService.sendEmail(EmailService.java:21)
+Actual invocations have different arguments at position [2]:
+emailService.sendEmail(
+    "new@test.com",
+    "Welcome to Nagar Parishad Staff Management",
+    null
+);
+-> at com.nagar.parishad.backend.service.AuthService.sendEmailToUserAndOwner(AuthService.java:106)
+
+[ERROR]   WhatsappServiceTest.testDepartmentSelection:140
+[ERROR]   WhatsappServiceTest.testFullFlowSubmission:162 
+Wanted but not invoked:
+complaintService.submitComplaint(
+    <any com.nagar.parishad.backend.dto.ComplaintSubmissionDTO>
+);
+-> at com.nagar.parishad.backend.service.ComplaintService.submitComplaint(ComplaintService.java:66)
+Actually, there were zero interactions with this mock.
+
+[ERROR]   WhatsappServiceTest.testLanguageSelection_Marathi:120
+[ERROR]   WhatsappServiceTest.testNewUserStartsAtLanguageSelection:101 
+Argument(s) are different! Wanted:
+sessionRepository.save(
+    <custom argument matcher>
+);
+-> at com.nagar.parishad.backend.service.WhatsappServiceTest.testNewUserStartsAtLanguageSelection(WhatsappServiceTest.java:101)
+Actual invocations have different arguments:
+sessionRepository.findByMobileNumberAndAdminId(
+    "whatsapp:+919999999999",
+    1L
+);
+-> at com.nagar.parishad.backend.service.WhatsappService.processMessage(WhatsappService.java:143)
+sessionRepository.save(
+    ChatbotSession(id=null, admin=User(id=1, name=null, mobile=null, email=admin@test.com, password=null, resetPasswordToken=null, resetPasswordTokenExpiry=null, role=null, admin=null, department=null, designation=null, active=true, emailNotifications=true, profilePhoto=null, createdAt=null), mobileNumber=whatsapp:+919999999999, state=DYNAMIC_FLOW, language=mr, tempData={"waitingForInput":true,"currentNodeId":"start"}, lastUpdated=2026-01-26T23:28:27.087191800)
+);
+-> at com.nagar.parishad.backend.service.WhatsappService.lambda$processMessage$0(WhatsappService.java:149)
+sessionRepository.save(
+    ChatbotSession(id=null, admin=User(id=1, name=null, mobile=null, email=admin@test.com, password=null, resetPasswordToken=null, resetPasswordTokenExpiry=null, role=null, admin=null, department=null, designation=null, active=true, emailNotifications=true, profilePhoto=null, createdAt=null), mobileNumber=whatsapp:+919999999999, state=DYNAMIC_FLOW, language=mr, tempData={"waitingForInput":true,"currentNodeId":"start"}, lastUpdated=2026-01-26T23:28:27.087191800)
+);
+-> at com.nagar.parishad.backend.service.WhatsappService.processMessage(WhatsappService.java:161)
+
+[INFO] 
+[ERROR] Tests run: 12, Failures: 5, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.858 s
+[INFO] Finished at: 2026-01-26T23:28:27+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.1.2:test (default-test) on project backend: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\anti gravity\backend\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

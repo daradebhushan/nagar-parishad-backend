@@ -1,0 +1,14 @@
+{
+    "title": "CRUD Verification Task",
+    "description": "Testing Comment CRUD",
+    "priority": "LOW",
+    "status": "TO_DO",
+    "type": "Internal",
+    "department": {
+        "id": 1
+    },
+    "assignedStaff": {
+        "id": 10
+    },
+    "dueDate": "2026-01-01T00:00:00"
+}

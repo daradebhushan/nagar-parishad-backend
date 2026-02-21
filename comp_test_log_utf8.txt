@@ -1,0 +1,79 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.nagar.parishad:backend >---------------------
+[INFO] Building nagar-parishad-backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ backend ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ backend ---
+[INFO] skip non existing resourceDirectory D:\anti gravity\backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ backend ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 5 source files with javac [debug release 17] to target\test-classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[120,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[163,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[206,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[238,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+      (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[INFO] 4 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.861 s
+[INFO] Finished at: 2026-01-26T23:49:14+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:testCompile (default-testCompile) on project backend: Compilation failure: Compilation failure: 
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[120,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[163,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[206,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR] /D:/anti gravity/backend/src/test/java/com/nagar/parishad/backend/service/WhatsappServiceComprehensiveTest.java:[238,73] no suitable method found for thenReturn(com.nagar.parishad.backend.entity.ChatbotSession)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>,java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>...) is not applicable
+[ERROR]       (argument mismatch; com.nagar.parishad.backend.entity.ChatbotSession cannot be converted to java.util.Optional<com.nagar.parishad.backend.entity.ChatbotSession>)
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

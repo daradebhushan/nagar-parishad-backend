@@ -1,0 +1,6270 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.nagar.parishad:backend >---------------------
+[INFO] Building nagar-parishad-backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ backend ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ backend ---
+[INFO] skip non existing resourceDirectory D:\anti gravity\backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ backend ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ backend ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest
+mvn.cmd : Java 
+HotSpot(TM) 64-Bit 
+Server VM warning: 
+Sharing is only 
+supported for boot 
+loader classes 
+because bootstrap 
+classpath has been 
+appended
+At line:1 char:1
++ & "d:\anti gravity\
+backend\apache-maven-
+3.9.6\bin\mvn.cmd" 
+-Dtest=Wha ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : 
+NotSpecified: (J    
+ava HotSpot(TM...s 
+be    en 
+appended:String) [   
+ ], RemoteException
+    + 
+FullyQualifiedError  
+  Id : 
+NativeCommandErr    
+or
+ 
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=1, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: Please 
+send your full name:
+DEBUG: Simulation Result for '1' is: [Bot: Please send your full name:
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=General Issue, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Invalid selection. 
+Please try again.
+DEBUG: Simulation Result for 'General Issue' is: [Bot: Invalid selection. Please try again.
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=My garbage is not picked, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Invalid selection. 
+Please try again.
+DEBUG: Simulation Result for 'My garbage is not picked' is: [Bot: Invalid selection. Please try again.
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=1, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Welcome to Niphad 
+Nagar Panchayat
+DEBUG: Simulation Result for '1' is: [Bot: Welcome to Niphad Nagar Panchayat
+Please select the department for your complaint:
+1. Sanitation
+2. Water
+
+]
+Please select the 
+department for your 
+complaint:
+1. Sanitation
+2. Water
+
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=2, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: ???? 
+?????? ??? ????? ??? 
+?????? ?????
+????? ?????? 
+??????????? ????? 
+????? ?????:
+1. Sanitation
+2. Water
+
+DEBUG: Simulation Result for '2' is: [Bot: ???? ?????? ??? ????? ??? ?????? ?????
+????? ?????? ??????????? ????? ????? ?????:
+1. Sanitation
+2. Water
+
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=3, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Welcome to Niphad 
+Nagar Panchayat
+DEBUG: Simulation Result for '3' is: [Bot: Welcome to Niphad Nagar Panchayat
+Please select the department for your complaint:
+1. Sanitation
+2. Water
+
+]
+Please select the 
+department for your 
+complaint:
+1. Sanitation
+2. Water
+
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=english, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Welcome to Niphad 
+Nagar Panchayat
+Please select the 
+department for your 
+complaint:
+1. Sanitation
+2. Water
+
+DEBUG: Simulation Result for 'english' is: [Bot: Welcome to Niphad Nagar Panchayat
+Please select the department for your complaint:
+1. Sanitation
+2. Water
+
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=marathi, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: ???? 
+?????? ??? ????? ??? 
+?????? ?????
+????? ?????? 
+??????????? ????? 
+????? ?????:
+1. Sanitation
+2. Water
+
+DEBUG: Simulation Result for 'marathi' is: [Bot: ???? ?????? ??? ????? ??? ?????? ?????
+????? ?????? ??????????? ????? ????? ?????:
+1. Sanitation
+2. Water
+
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=invalid, Media=null, AdminId=1
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleLa
+nguageSelection(Whats
+appService.java:243)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:211)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testLanguage
+Selection(WhatsappSer
+viceComprehensiveTest
+.java:123)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+DEBUG: Simulation 
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:222)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testLanguage
+Selection(WhatsappSer
+viceComprehensiveTest
+.java:123)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=1, Media=null, AdminId=1
+DEBUG: Simulation Result for '1' is: [Bot: Select Sub-Issue:
+1. General Issue
+
+]
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: Select 
+Sub-Issue:
+1. General Issue
+
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=2, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: Select 
+Sub-Issue:
+1. General Issue
+
+DEBUG: Simulation Result for '2' is: [Bot: Select Sub-Issue:
+1. General Issue
+
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=99, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Invalid selection. 
+Please try again.
+DEBUG: Simulation Result for '99' is: [Bot: Invalid selection. Please try again.
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=Sanitation, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Invalid selection. 
+Please try again.
+DEBUG: Simulation Result for 'Sanitation' is: [Bot: Invalid selection. Please try again.
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+919999999999, Msg=Garbage, Media=null, AdminId=1
+SERVICE: Sending 
+Message to whatsapp:+
+919999999999: 
+Invalid selection. 
+Please try again.
+DEBUG: Simulation Result for 'Garbage' is: [Bot: Invalid selection. Please try again.
+]
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+917777777777, Msg=en, Media=null, AdminId=1
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleLa
+nguageSelection(Whats
+appService.java:243)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:211)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testEndToEnd
+Flow(WhatsappServiceC
+omprehensiveTest.java
+:242)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+DEBUG: Simulation 
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:222)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testEndToEnd
+Flow(WhatsappServiceC
+omprehensiveTest.java
+:242)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleLa
+nguageSelection(Whats
+appService.java:243)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:211)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testEndToEnd
+Flow(WhatsappServiceC
+omprehensiveTest.java
+:242)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+917777777777, Msg=mr, Media=null, AdminId=1
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+DEBUG: Simulation 
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:222)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testEndToEnd
+Flow(WhatsappServiceC
+omprehensiveTest.java
+:242)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleLa
+nguageSelection(Whats
+appService.java:243)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:211)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testEndToEnd
+Flow(WhatsappServiceC
+omprehensiveTest.java
+:242)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+DEBUG: Simulator.simulate called. Mobile=whatsapp:+917777777777, Msg=en, Media=null, AdminId=1
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+DEBUG: Simulation 
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+java.lang.NullPointer
+Exception: Cannot 
+invoke "com.nagar.par
+ishad.backend.reposit
+ory.ChatbotConfigRepo
+sitory.findByAdminIdA
+ndConfKey(java.lang.L
+ong, String)" 
+because "this.configR
+epository" is null
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.getConfi
+g(WhatsappService.jav
+a:625)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.handleSt
+ate(WhatsappService.j
+ava:222)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappService.simulate
+(WhatsappService.java
+:748)
+	at com.nagar.parisha
+d.backend.service.Wha
+tsappServiceComprehen
+siveTest.testEndToEnd
+Flow(WhatsappServiceC
+omprehensiveTest.java
+:242)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke0(Native Method)
+	at java.base/jdk.int
+ernal.reflect.NativeM
+ethodAccessorImpl.inv
+oke(NativeMethodAcces
+sorImpl.java:77)
+	at java.base/jdk.int
+ernal.reflect.Delegat
+ingMethodAccessorImpl
+.invoke(DelegatingMet
+hodAccessorImpl.java:
+43)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:568)
+	at org.junit.platfor
+m.commons.util.Reflec
+tionUtils.invokeMetho
+d(ReflectionUtils.jav
+a:728)
+	at org.junit.jupiter
+.engine.execution.Met
+hodInvocation.proceed
+(MethodInvocation.jav
+a:60)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$ValidatingInvocati
+on.proceed(Invocation
+InterceptorChain.java
+:131)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+pt(TimeoutExtension.j
+ava:156)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestableMethod(Time
+outExtension.java:147
+)
+	at org.junit.jupiter
+.engine.extension.Tim
+eoutExtension.interce
+ptTestTemplateMethod(
+TimeoutExtension.java
+:94)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker$ReflectiveInter
+ceptorCall.lambda$ofV
+oidMethod$0(Intercept
+ingExecutableInvoker.
+java:103)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.lambda$invoke$0
+(InterceptingExecutab
+leInvoker.java:93)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in$InterceptedInvocat
+ion.proceed(Invocatio
+nInterceptorChain.jav
+a:106)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.proceed(Invocation
+InterceptorChain.java
+:64)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.chainAndInvoke(Inv
+ocationInterceptorCha
+in.java:45)
+	at org.junit.jupiter
+.engine.execution.Inv
+ocationInterceptorCha
+in.invoke(InvocationI
+nterceptorChain.java:
+37)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:92)
+	at org.junit.jupiter
+.engine.execution.Int
+erceptingExecutableIn
+voker.invoke(Intercep
+tingExecutableInvoker
+.java:86)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.lambda$invokeTestMe
+thod$7(TestMethodTest
+Descriptor.java:218)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.invokeTestMethod(Te
+stMethodTestDescripto
+r.java:214)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:13
+9)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stMethodTestDescripto
+r.execute(TestMethodT
+estDescriptor.java:69
+)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:226)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+$DefaultDynamicTestEx
+ecutor.execute(NodeTe
+stTask.java:204)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:142)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.lambda$execute$2(
+TestTemplateTestDescr
+iptor.java:110)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$2$1.accept(Ref
+erencePipeline.java:1
+79)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.accep
+t(ForEachOps.java:183
+)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$Head.forEach(R
+eferencePipeline.java
+:762)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.Spliterators$Array
+Spliterator.forEachRe
+maining(Spliterators.
+java:992)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$3$1.accept(Ref
+erencePipeline.java:1
+97)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline$7$1.accept(Ref
+erencePipeline.java:2
+76)
+	at java.base/java.ut
+il.ArrayList$ArrayLis
+tSpliterator.forEachR
+emaining(ArrayList.ja
+va:1625)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.copyInto(Abstra
+ctPipeline.java:509)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.wrapAndCopyInto
+(AbstractPipeline.jav
+a:499)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp.evaluateSeq
+uential(ForEachOps.ja
+va:150)
+	at java.base/java.ut
+il.stream.ForEachOps$
+ForEachOp$OfRef.evalu
+ateSequential(ForEach
+Ops.java:173)
+	at java.base/java.ut
+il.stream.AbstractPip
+eline.evaluate(Abstra
+ctPipeline.java:234)
+	at java.base/java.ut
+il.stream.ReferencePi
+peline.forEach(Refere
+ncePipeline.java:596)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:110)
+	at org.junit.jupiter
+.engine.descriptor.Te
+stTemplateTestDescrip
+tor.execute(TestTempl
+ateTestDescriptor.jav
+a:44)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:151)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at java.base/java.ut
+il.ArrayList.forEach(
+ArrayList.java:1511)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.invokeAll(Sa
+meThreadHierarchicalT
+estExecutorService.ja
+va:41)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$6(NodeTestTask.
+java:155)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$8(NodeTestTask.
+java:141)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Node.around(
+Node.java:137)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.lambda$executeRecurs
+ively$9(NodeTestTask.
+java:139)
+	at org.junit.platfor
+m.engine.support.hier
+archical.ThrowableCol
+lector.execute(Throwa
+bleCollector.java:73)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.executeRecursively(N
+odeTestTask.java:138)
+	at org.junit.platfor
+m.engine.support.hier
+archical.NodeTestTask
+.execute(NodeTestTask
+.java:95)
+	at org.junit.platfor
+m.engine.support.hier
+archical.SameThreadHi
+erarchicalTestExecuto
+rService.submit(SameT
+hreadHierarchicalTest
+ExecutorService.java:
+35)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestExecutor.execute(
+HierarchicalTestExecu
+tor.java:57)
+	at org.junit.platfor
+m.engine.support.hier
+archical.Hierarchical
+TestEngine.execute(Hi
+erarchicalTestEngine.
+java:54)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:198)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:169)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:93)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.lambda$execute$0(En
+gineExecutionOrchestr
+ator.java:58)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.withInterceptedStre
+ams(EngineExecutionOr
+chestrator.java:141)
+	at org.junit.platfor
+m.launcher.core.Engin
+eExecutionOrchestrato
+r.execute(EngineExecu
+tionOrchestrator.java
+:57)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:10
+3)
+	at org.junit.platfor
+m.launcher.core.Defau
+ltLauncher.execute(De
+faultLauncher.java:85
+)
+	at org.junit.platfor
+m.launcher.core.Deleg
+atingLauncher.execute
+(DelegatingLauncher.j
+ava:47)
+	at org.apache.maven.
+surefire.junitplatfor
+m.LazyLauncher.execut
+e(LazyLauncher.java:5
+6)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.execute(JUnitPlatf
+ormProvider.java:184)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invokeAllTests(JUn
+itPlatformProvider.ja
+va:148)
+	at org.apache.maven.
+surefire.junitplatfor
+m.JUnitPlatformProvid
+er.invoke(JUnitPlatfo
+rmProvider.java:122)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.runSuitesInPr
+ocess(ForkedBooter.ja
+va:385)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.execute(Forke
+dBooter.java:162)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.run(ForkedBoo
+ter.java:507)
+	at org.apache.maven.
+surefire.booter.Forke
+dBooter.main(ForkedBo
+oter.java:495)
+[ERROR] Tests run: 17, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 2.870 s <<< FAILURE! -- in com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testSubIssueSelection(String, boolean)[2] -- Time elapsed: 0.023 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testSubIssueSelection(WhatsappServiceComprehensiveTest.java:212)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testSubIssueSelection(String, boolean)[3] -- Time elapsed: 0.016 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testSubIssueSelection(WhatsappServiceComprehensiveTest.java:212)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testDepartmentSelection(String, Long, boolean)[4] -- Time elapsed: 0.011 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testDepartmentSelection(WhatsappServiceComprehensiveTest.java:172)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testEndToEndFlow(String, String, String, String, String, String, String)[1] -- Time elapsed: 0.027 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testEndToEndFlow(WhatsappServiceComprehensiveTest.java:243)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testEndToEndFlow(String, String, String, String, String, String, String)[2] -- Time elapsed: 0.032 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testEndToEndFlow(WhatsappServiceComprehensiveTest.java:243)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testEndToEndFlow(String, String, String, String, String, String, String)[3] -- Time elapsed: 0.015 s <<< FAILURE!
+java.lang.AssertionError
+	at com.nagar.parishad.backend.service.WhatsappServiceComprehensiveTest.testEndToEndFlow(WhatsappServiceComprehensiveTest.java:243)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   WhatsappServiceComprehensiveTest.testDepartmentSelection:172
+[ERROR]   WhatsappServiceComprehensiveTest.testEndToEndFlow:243
+[ERROR]   WhatsappServiceComprehensiveTest.testEndToEndFlow:243
+[ERROR]   WhatsappServiceComprehensiveTest.testEndToEndFlow:243
+[ERROR]   WhatsappServiceComprehensiveTest.testSubIssueSelection:212
+[ERROR]   WhatsappServiceComprehensiveTest.testSubIssueSelection:212
+[INFO] 
+[ERROR] Tests run: 17, Failures: 6, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.833 s
+[INFO] Finished at: 2026-01-26T23:50:38+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.1.2:test (default-test) on project backend: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\anti gravity\backend\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
