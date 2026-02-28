@@ -48,6 +48,7 @@ public class Department {
     @JoinColumn(name = "admin_id", nullable = false)
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
             "assignedStaff", "admin" })
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private User admin;
 
     private boolean active = true;

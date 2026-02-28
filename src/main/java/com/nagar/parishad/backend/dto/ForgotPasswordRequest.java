@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ForgotPasswordRequest {
     @NotBlank
-    @Email
+    @jakarta.validation.constraints.Pattern(regexp = "^.+@.+$", message = "must contain @ symbol")
     private String email;
 
     public String getEmail() {

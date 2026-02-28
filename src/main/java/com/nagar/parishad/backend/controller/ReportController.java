@@ -25,7 +25,7 @@ public class ReportController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public ResponseEntity<ApiResponse<String>> emailAdminReport(@AuthenticationPrincipal User admin) {
         try {
-            byte[] pdfBytes = pdfReportService.generateAdminReport();
+            byte[] pdfBytes = pdfReportService.generateAdminReport(admin);
 
             String subject = "Nagar Parishad - Admin Executive Report";
             String body = "<h3>Admin Executive Report</h3><p>Please find attached the latest executive report containing task summaries and staff performance metrics.</p>";

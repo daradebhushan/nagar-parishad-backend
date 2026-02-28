@@ -19,6 +19,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ApiResponse.error("Access Denied: " + ex.getMessage()), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(org.springframework.security.authentication.BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<Object>> handleBadCredentialsException(
+            org.springframework.security.authentication.BadCredentialsException ex) {
+        return new ResponseEntity<>(ApiResponse.error("Wrong credentials"), HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGlobalException(Exception ex) {
         ex.printStackTrace(); // Log the full stack trace for debugging
@@ -27,6 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException ex) {
+        ex.printStackTrace();
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
@@ -36,6 +43,7 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors()
                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return new ResponseEntity<>(ApiResponse.success("Validation Failed", errors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ApiResponse.error("Validation Failed: " + errors.toString()),
+                HttpStatus.BAD_REQUEST);
     }
 }

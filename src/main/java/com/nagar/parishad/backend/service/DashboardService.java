@@ -147,8 +147,7 @@ public class DashboardService {
                                         employeeStats.add(new com.nagar.parishad.backend.dto.EmployeeTaskStatDto(
                                                         emp.getId(),
                                                         emp.getName(),
-                                                        emp.getDesignation() != null ? emp.getDesignation().getName()
-                                                                        : "",
+                                                        emp.getDesignation() != null ? emp.getDesignation() : "",
                                                         empTotal,
                                                         empCompleted));
                                 }

@@ -1,0 +1,104 @@
+--- E2E STAFF WORKFLOW AND NOTIFICATIONS SUITE ---
+
+Found existing Chief Officer: daradebhushan15+admin@gmail.com
+
+success message            
+------- -------            
+   True User updated suc...
+SUCCESS: Chief Officer logged in.
+SUCCESS: Created Department Head (head_639075343644432395@demo.com)
+SUCCESS: Created Staff (staff_639075343645341360@demo.com)
+SUCCESS: CO Created Task (43) assigned to Staff (93)
+SUCCESS: Staff successfully retrieved the task assigned to them.
+TASK JSON DEBUG:
+{
+    "id":  43,
+    "title":  "Fix the Streetlight",
+    "description":  "Streetlight is broken on Main St.",
+    "priority":  "HIGH",
+    "status":  "TO_DO",
+    "type":  null,
+    "createdDate":  "2026-02-24T12:52:44.637853",
+    "dueDate":  null,
+    "admin":  {
+                  "id":  6,
+                  "name":  "Bhushan Admin",
+                  "mobile":  "7304091845",
+                  "email":  "daradebhushan15+admin@gmail.com",
+                  "resetPasswordToken":  null,
+                  "resetPasswordTokenExpiry":  null,
+                  "role":  "ADMIN",
+                  "designation":  null,
+                  "active":  true,
+                  "emailNotifications":  false,
+                  "profilePhoto":  "profile_06780fd8-dec0-44d8-9a96-34408891c72c_1000201877.jpg",
+                  "createdAt":  "2026-01-20T02:03:11.173306",
+                  "enabled":  true,
+                  "username":  "daradebhushan15+admin@gmail.com",
+                  "authorities":  [
+                                      {
+                                          "authority":  "ROLE_ADMIN"
+                                      }
+                                  ],
+                  "accountNonLocked":  true,
+                  "accountNonExpired":  true,
+                  "credentialsNonExpired":  true
+              },
+    "department":  {
+                       "id":  2,
+                       "name":  "Water Supply",
+                       "nameMr":  "???????????? ??????????????????",
+                       "nameHi":  null,
+                       "chatbotEnabled":  true,
+                       "subQuestions":  "[\"???????????? ????????? ???????????? ??????????????????\", \"???????????????????????? ??????????????? ??????????????????\", \"???????????? ???????????? ??????????????????\", \"??\u0085?????????????????? ?????? ??????????????????\", \"???????????? ???????????? ????????? ??\u0085???????????????????????????\"]",
+                       "active":  true,
+                       "createdAt":  "2026-01-19T04:18:53"
+                   },
+    "relatedComplaint":  null,
+    "assignedStaff":  {
+                          "id":  93,
+                          "name":  "Test Staff User",
+                          "mobile":  "9876543211",
+                          "email":  "staff_639075343645341360@demo.com",
+                          "resetPasswordToken":  null,
+                          "resetPasswordTokenExpiry":  null,
+                          "role":  "STAFF",
+                          "designation":  null,
+                          "active":  true,
+                          "emailNotifications":  true,
+                          "profilePhoto":  null,
+                          "createdAt":  "2026-02-24T12:52:44.61004",
+                          "enabled":  true,
+                          "username":  "staff_639075343645341360@demo.com",
+                          "authorities":  [
+                                              {
+                                                  "authority":  "ROLE_STAFF"
+                                              }
+                                          ],
+                          "accountNonLocked":  true,
+                          "accountNonExpired":  true,
+                          "credentialsNonExpired":  true
+                      },
+    "relatedComplaintId":  null
+}
+SUCCESS: Staff successfully updated Task Status to IN_PROGRESS
+SUCCESS: Staff added a comment to the task
+
+Notifications received by Chief Officer:
+> New comment on task: Fix the Streetlight
+> Task status updated from TO_DO to IN_PROGRESS
+> New comment on task: Fix the Streetlight
+
+Notifications received by Department Head:
+> New comment on task in your department: Fix the Streetlight
+> Task status updated from TO_DO to IN_PROGRESS
+> User Test Staff User (STAFF) was CREATED
+
+SUCCESS: Department Head added a comment.
+
+Notification received by Staff Member:
+> New comment on task: Fix the Streetlight
+
+--- STAFF WORKFLOW AND NOTIFICATION TEST COMPLETE ---
+
+

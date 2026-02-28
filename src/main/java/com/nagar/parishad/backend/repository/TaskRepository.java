@@ -16,6 +16,8 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
     Page<Task> findByAdminId(Long adminId, Pageable pageable);
 
+    List<Task> findByAdminIdOrderByCreatedDateDesc(Long adminId);
+
     Page<Task> findByDepartmentId(Long departmentId, Pageable pageable);
 
     Page<Task> findByAssignedStaffId(Long staffId, Pageable pageable);

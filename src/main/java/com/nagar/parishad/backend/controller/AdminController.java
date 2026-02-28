@@ -61,17 +61,38 @@ public class AdminController {
             Pageable pageable) {
 
         Page<User> users;
-        if (departmentId != null) {
-            users = userRepository.findByDepartment_Id(departmentId, pageable);
-        } else {
-            if (admin.getRole() == com.nagar.parishad.backend.enums.Role.OWNER ||
-                    admin.getRole() == com.nagar.parishad.backend.enums.Role.ADMIN) {
-                // For dashboard visibility, we want to see ALL users currently.
-                users = userRepository.findAll(pageable);
+
+        // Use -1 to denote "No Department" specifically
+        boolean noDepartmentFilter = departmentId != null && departmentId == -1L;
+        Long actualDeptId = noDepartmentFilter ? null : departmentId;
+
+        if (admin.getRole() == com.nagar.parishad.backend.enums.Role.OWNER) {
+            // OWNER: See all
+            if (noDepartmentFilter) {
+                users = userRepository.findByDepartmentIsNull(pageable);
+            } else if (actualDeptId != null) {
+                users = userRepository.findByDepartment_Id(actualDeptId, pageable);
             } else {
-                // Restrict others (e.g. Dept Head) to see only their users
-                users = userRepository.findByAdminId(admin.getId(), pageable);
+                users = userRepository.findAll(pageable);
             }
+        } else if (admin.getRole() == com.nagar.parishad.backend.enums.Role.ADMIN) {
+            // ADMIN: See only their own users
+            if (noDepartmentFilter) {
+                users = userRepository.findByAdmin_IdAndDepartmentIsNull(admin.getId(), pageable);
+            } else if (actualDeptId != null) {
+                users = userRepository.findByAdmin_IdAndDepartment_Id(admin.getId(), actualDeptId, pageable);
+            } else {
+                users = userRepository.findByAdmin_Id(admin.getId(), pageable);
+            }
+        } else {
+            // DEPT_HEAD or others: strictly restricted to their own department AND admin's
+            // tenant
+            Long enforcedDeptId = (admin.getDepartment() != null) ? admin.getDepartment().getId() : null;
+            if (enforcedDeptId == null) {
+                // Failsafe if Dept Head has no department
+                return ResponseEntity.ok(ApiResponse.success("No users in department", Page.empty(pageable)));
+            }
+            users = userRepository.findByAdmin_IdAndDepartment_Id(admin.getAdmin().getId(), enforcedDeptId, pageable);
         }
         return ResponseEntity.ok(ApiResponse.success("Users fetched successfully", users));
     }
@@ -87,6 +108,19 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id, @AuthenticationPrincipal User admin) {
         User userToDelete = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (userToDelete.getId().equals(admin.getId())) {
+            throw new RuntimeException("Error: You cannot delete your own account.");
+        }
+
+        if (userToDelete.getRole() == com.nagar.parishad.backend.enums.Role.OWNER) {
+            throw new RuntimeException("Error: You cannot delete the System Owner.");
+        }
+
+        if (admin.getRole() == com.nagar.parishad.backend.enums.Role.ADMIN && userToDelete.getAdmin() != null
+                && !userToDelete.getAdmin().getId().equals(admin.getId())) {
+            throw new RuntimeException("Error: You cannot delete a user belonging to another Administrator.");
+        }
 
         // Notify before delete (so we have user data)
         notificationService.sendUserManagementNotification(userToDelete, "DELETED", admin);

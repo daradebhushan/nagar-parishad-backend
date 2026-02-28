@@ -38,8 +38,12 @@ public class ComplaintController {
         User user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (user.getRole() == Role.STAFF) {
-            return ResponseEntity.ok(complaintService.getComplaintsForStaff(user.getId()));
+        if (user.getRole() == Role.STAFF || user.getRole() == Role.DEPARTMENT_HEAD) {
+            if (user.getDepartment() != null) {
+                return ResponseEntity.ok(complaintService.getComplaintsByDepartment(user.getDepartment().getId()));
+            } else {
+                return ResponseEntity.ok(java.util.Collections.emptyList());
+            }
         }
 
         return ResponseEntity.ok(complaintService.getAllComplaints());
@@ -113,18 +117,10 @@ public class ComplaintController {
         User user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (user.getRole() == Role.STAFF) {
+        if (user.getRole() == Role.STAFF || user.getRole() == Role.DEPARTMENT_HEAD) {
             ComplaintDTO complaint = complaintService.getComplaintById(complaintId);
-            if (complaint.getRelatedTaskId() == null) {
-                throw new AccessDeniedException("Access Denied: Complaint not assigned to you.");
-            }
-
-            // Verify Task Assignment
-            // We need to fetch Task to check assignee. ComplaintDTO only has ID/Title.
-            // But we injected TaskService.
-            com.nagar.parishad.backend.entity.Task task = taskService.getTaskById(complaint.getRelatedTaskId());
-            if (task.getAssignedStaff() == null || !task.getAssignedStaff().getId().equals(user.getId())) {
-                throw new AccessDeniedException("Access Denied: Task not assigned to you.");
+            if (user.getDepartment() == null || !user.getDepartment().getId().equals(complaint.getDepartmentId())) {
+                throw new AccessDeniedException("Access Denied: Complaint not assigned to your department.");
             }
         }
     }

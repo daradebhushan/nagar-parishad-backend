@@ -17,11 +17,17 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     boolean existsByEmail(String email);
 
-    Page<User> findByAdminId(Long adminId, Pageable pageable);
+    Page<User> findByAdmin_Id(Long adminId, Pageable pageable);
 
     java.util.List<User> findByDepartmentIdAndRole(Long departmentId, com.nagar.parishad.backend.enums.Role role);
 
     java.util.List<User> findByRole(com.nagar.parishad.backend.enums.Role role);
+
+    java.util.List<User> findByAdminIdAndRole(Long adminId, com.nagar.parishad.backend.enums.Role role);
+
+    Page<User> findByDepartmentIsNull(Pageable pageable);
+
+    Page<User> findByAdmin_IdAndDepartmentIsNull(Long adminId, Pageable pageable);
 
     Page<User> findByDepartment_Id(Long departmentId, Pageable pageable);
 
@@ -36,4 +42,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     long countByAdminId(Long adminId);
 
     long countByAdminIdAndDepartment_Id(Long adminId, Long departmentId);
+
+    Page<User> findByAdmin_IdAndDepartment_Id(Long adminId, Long departmentId, Pageable pageable);
 }

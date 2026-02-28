@@ -47,10 +47,17 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
+    @Column(name = "organization_name")
+    private String organizationName = "Maharashtra Nagar Panchayat";
+
+    @Column(name = "organization_logo", columnDefinition = "TEXT")
+    private String organizationLogo;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "admin_id")
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
             "assignedStaff", "admin" })
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private User admin; // For Staff and Department Head
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -58,9 +65,7 @@ public class User implements UserDetails {
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "admin" })
     private Department department; // For Staff and Department Head
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "designation_id")
-    private Designation designation;
+    private String designation;
 
     private boolean active = true;
 
@@ -182,11 +187,11 @@ public class User implements UserDetails {
         this.mobile = mobile;
     }
 
-    public Designation getDesignation() {
+    public String getDesignation() {
         return designation;
     }
 
-    public void setDesignation(Designation designation) {
+    public void setDesignation(String designation) {
         this.designation = designation;
     }
 
@@ -220,5 +225,21 @@ public class User implements UserDetails {
 
     public void setProfilePhoto(String profilePhoto) {
         this.profilePhoto = profilePhoto;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getOrganizationLogo() {
+        return organizationLogo;
+    }
+
+    public void setOrganizationLogo(String organizationLogo) {
+        this.organizationLogo = organizationLogo;
     }
 }

@@ -43,13 +43,18 @@ public class WhatsappController {
     @GetMapping("/setup-config")
     public String setupConfig() {
         try {
-            Long adminId = 2L;
-            com.nagar.parishad.backend.entity.User admin = userRepository.findById(adminId).orElse(null);
+            // Find any valid admin/owner to bind the sandbox to. Fallback securely.
+            com.nagar.parishad.backend.entity.User admin = userRepository.findAll().stream()
+                    .findFirst()
+                    .orElse(null);
+
             if (admin == null)
                 return "Admin not found";
 
-            com.nagar.parishad.backend.entity.TenantTwilioConfig config = tenantTwilioConfigRepository
-                    .findByAdminId(adminId)
+            com.nagar.parishad.backend.entity.TenantTwilioConfig config = tenantTwilioConfigRepository.findAll()
+                    .stream()
+                    .filter(c -> c.getAdmin().getId().equals(admin.getId()))
+                    .findFirst()
                     .orElse(new com.nagar.parishad.backend.entity.TenantTwilioConfig());
 
             config.setAdmin(admin);
@@ -98,6 +103,13 @@ public class WhatsappController {
         String from = params.get("From");
         String to = params.get("To");
         String body = params.getOrDefault("Body", "");
+
+        if (params.containsKey("ButtonPayload")) {
+            body = params.get("ButtonPayload");
+        } else if (params.containsKey("ListId")) {
+            body = params.get("ListId");
+        }
+
         String numMediaStr = params.getOrDefault("NumMedia", "0");
 
         int numMedia = 0;

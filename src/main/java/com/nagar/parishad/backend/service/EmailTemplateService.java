@@ -366,8 +366,8 @@ public class EmailTemplateService {
                                 oldUser.getDepartment() != null ? oldUser.getDepartment().getName() : "N/A",
                                 newUser.getDepartment() != null ? newUser.getDepartment().getName() : "N/A");
                 addChangeRow(sb, "Designation",
-                                oldUser.getDesignation() != null ? oldUser.getDesignation().getName() : "N/A",
-                                newUser.getDesignation() != null ? newUser.getDesignation().getName() : "N/A");
+                                oldUser.getDesignation() != null ? oldUser.getDesignation() : "N/A",
+                                newUser.getDesignation() != null ? newUser.getDesignation() : "N/A");
                 addChangeRow(sb, "Status", oldUser.isActive() ? "Active" : "Inactive",
                                 newUser.isActive() ? "Active" : "Inactive");
 

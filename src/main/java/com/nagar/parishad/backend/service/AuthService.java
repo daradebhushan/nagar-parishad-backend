@@ -199,29 +199,18 @@ public class AuthService {
                     .orElseThrow(() -> new RuntimeException("Error: Department not found."));
             user.setDepartment(department);
 
-            // HIERARCHY LOGIC:
-            // If creating STAFF, assign the DEPARTMENT_HEAD of this department as 'admin'
-            // (supervisor).
-            // If creating DEPT_HEAD, assign the CHIEF_OFFICER (Role.ADMIN) as 'admin'.
-            // If creating ADMIN, no supervisor (or Owner).
-
-            if (signUpRequest.getRole() == Role.STAFF) {
-                // Find Dept Head for this department
-                // Assuming One Dept Head per Department active
-                User deptHead = userRepository.findByDepartmentIdAndRole(department.getId(), Role.DEPARTMENT_HEAD)
-                        .stream().findFirst().orElse(adminUser); // Fallback to creating Admin if no Head found
-                user.setAdmin(deptHead);
-            } else if (signUpRequest.getRole() == Role.DEPARTMENT_HEAD) {
-                // Head reports to Chief Officer (Who is creating them, likely 'adminUser')
+            // The `admin` field represents the Tenant (Chief Officer). It should always
+            // remain pointing to the Chief Officer who created or manages them.
+            if (adminUser != null && adminUser.getRole() == Role.ADMIN) {
                 user.setAdmin(adminUser);
+            } else if (adminUser != null && adminUser.getAdmin() != null) {
+                // If created by someone else (like Dept Head), their admin is the CO
+                user.setAdmin(adminUser.getAdmin());
             }
         }
 
-        if (signUpRequest.getDesignationId() != null) {
-            com.nagar.parishad.backend.entity.Designation designation = designationRepository
-                    .findById(signUpRequest.getDesignationId())
-                    .orElseThrow(() -> new RuntimeException("Error: Designation not found"));
-            user.setDesignation(designation);
+        if (signUpRequest.getDesignation() != null) {
+            user.setDesignation(signUpRequest.getDesignation());
         }
 
         User savedUser = userRepository.save(user);
@@ -303,6 +292,14 @@ public class AuthService {
             }
             user.setEmail(request.getEmail());
         }
+
+        if (request.getOrganizationName() != null) {
+            user.setOrganizationName(request.getOrganizationName());
+        }
+        if (request.getOrganizationLogo() != null) {
+            user.setOrganizationLogo(request.getOrganizationLogo());
+        }
+
         if (request.getPassword() != null && !request.getPassword().isEmpty()) {
             user.setPassword(encoder.encode(request.getPassword()));
         }
@@ -312,27 +309,34 @@ public class AuthService {
         if (request.getRole() != null)
             user.setRole(request.getRole());
 
-        if (request.getDepartmentId() != null) {
+        if (Boolean.TRUE.equals(request.getClearDepartment())) {
+            user.setDepartment(null);
+            // If they are removed from a department, they shouldn't report to a Dept Head
+            // anymore
+            if (user.getRole() == Role.STAFF && modifier != null && modifier.getRole() == Role.ADMIN) {
+                user.setAdmin(modifier); // Back to Chief Officer
+            } else if (user.getRole() == Role.STAFF && user.getAdmin() != null
+                    && user.getAdmin().getRole() == Role.DEPARTMENT_HEAD) {
+                // If modified by someone else, revert to the top admin
+                user.setAdmin(user.getAdmin().getAdmin());
+            }
+        } else if (request.getDepartmentId() != null) {
             Department department = departmentRepository.findById(request.getDepartmentId())
                     .orElseThrow(() -> new RuntimeException("Error: Department not found"));
             user.setDepartment(department);
 
-            // Re-evaluate hierarchy if department changed (Simplified logic)
-            // Ideally we need to check if Role changed too.
-            // For now, if role is STAFF, assign Head of this new Dept as admin.
-            if (user.getRole() == Role.STAFF) {
-                User deptHead = userRepository.findByDepartmentIdAndRole(department.getId(), Role.DEPARTMENT_HEAD)
-                        .stream().findFirst().orElse(null);
-                if (deptHead != null)
-                    user.setAdmin(deptHead);
+            // The `admin` field should remain the Tenant (Chief Officer)
+            if (modifier != null && modifier.getRole() == Role.ADMIN) {
+                user.setAdmin(modifier);
+            } else if (modifier != null && modifier.getAdmin() != null) {
+                user.setAdmin(modifier.getAdmin());
             }
         }
 
-        if (request.getDesignationId() != null) {
-            com.nagar.parishad.backend.entity.Designation designation = designationRepository
-                    .findById(request.getDesignationId())
-                    .orElseThrow(() -> new RuntimeException("Error: Designation not found"));
-            user.setDesignation(designation);
+        if (Boolean.TRUE.equals(request.getClearDesignation())) {
+            user.setDesignation(null);
+        } else if (request.getDesignation() != null) {
+            user.setDesignation(request.getDesignation());
         }
 
         if (request.getAdminId() != null) {

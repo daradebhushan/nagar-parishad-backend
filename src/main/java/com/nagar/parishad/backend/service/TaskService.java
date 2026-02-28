@@ -289,19 +289,25 @@ public class TaskService {
     public void deleteTask(Long taskId) {
         Task task = taskRepository.findById(taskId).orElse(null);
         if (task != null) {
-            // Notify Assigned Staff before deletion (since ID might reference null after?
-            // No, ID persists until transaction commit)
-            // However, relatedTaskId in notification might be orphan if task deleted.
-            // Usually we keep task or soft delete. If hard delete, email might fail to
-            // fetch details.
-            // We will try sending notification before delete.
+            // Detach Complaint before deleting to avoid Foreign Key Constraint violations
+            if (task.getRelatedComplaint() != null) {
+                Complaint complaint = task.getRelatedComplaint();
+                complaint.setRelatedTask(null);
+                // Revert complaint status to ACCEPTED since task is deleted
+                if (complaint.getStatus() == ComplaintStatus.CONVERTED_TO_TASK) {
+                    complaint.setStatus(ComplaintStatus.ACCEPTED);
+                }
+                complaintRepository.save(complaint);
+            }
+
+            // Notify Assigned Staff before deletion
             if (task.getAssignedStaff() != null) {
                 notificationService.createNotification(
                         task.getAssignedStaff(),
                         task.getAdmin(),
                         "Task deleted: " + task.getTitle(),
-                        com.nagar.parishad.backend.enums.NotificationType.STATUS_CHANGED, // Generic
-                        null); // ID null because it will be gone
+                        com.nagar.parishad.backend.enums.NotificationType.STATUS_CHANGED,
+                        null);
             }
 
             // Notify Admin/Chief Officer
@@ -310,14 +316,12 @@ public class TaskService {
                     && (task.getAssignedStaff() == null || !admin.getId().equals(task.getAssignedStaff().getId()))) {
                 notificationService.createNotification(
                         admin,
-                        task.getAdmin(), // Sender (Task Creator or System)
+                        task.getAdmin(),
                         "Task deleted: " + task.getTitle(),
                         com.nagar.parishad.backend.enums.NotificationType.STATUS_CHANGED,
                         null);
             }
-        }
-
-        if (!taskRepository.existsById(taskId)) {
+        } else {
             throw new RuntimeException("Task not found");
         }
 

@@ -25,23 +25,23 @@ public class PdfReportService {
     @Autowired
     private UserRepository userRepository;
 
-    public byte[] generateAdminReport() {
+    public byte[] generateAdminReport(User admin) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);
             document.open();
 
             // 1. Header
-            addHeader(document);
+            addHeader(document, admin);
 
             // 2. Executive Summary
-            addExecutiveSummary(document);
+            addExecutiveSummary(document, admin);
 
             // 3. User Performance Table
-            addUserPerformanceTable(document);
+            addUserPerformanceTable(document, admin);
 
             // 4. Detailed Task List
-            addAllTasksTable(document);
+            addAllTasksTable(document, admin);
 
             // 5. Footer
             addFooter(document);
@@ -60,7 +60,7 @@ public class PdfReportService {
 
     // ... existing user performance table ...
 
-    private void addAllTasksTable(Document document) throws DocumentException {
+    private void addAllTasksTable(Document document, User admin) throws DocumentException {
         Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Color.BLACK);
         Paragraph sectionTitle = new Paragraph("Detailed Task List", headerFont);
         sectionTitle.setSpacingBefore(20);
@@ -78,8 +78,7 @@ public class PdfReportService {
         addTableHeader(table, "Assigned Staff");
         addTableHeader(table, "Due Date");
 
-        List<Task> allTasks = taskRepository.findAll(org.springframework.data.domain.Sort
-                .by(org.springframework.data.domain.Sort.Direction.DESC, "createdDate"));
+        List<Task> allTasks = taskRepository.findByAdminIdOrderByCreatedDateDesc(admin.getId());
 
         boolean alternate = false;
         for (Task task : allTasks) {
@@ -114,9 +113,9 @@ public class PdfReportService {
         document.add(table);
     }
 
-    private void addHeader(Document document) throws DocumentException {
+    private void addHeader(Document document, User admin) throws DocumentException {
         Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 24, Color.ORANGE);
-        Paragraph title = new Paragraph("Nagar Parishad", titleFont);
+        Paragraph title = new Paragraph("Nagar Parishad - " + admin.getName(), titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         document.add(title);
 
@@ -132,14 +131,14 @@ public class PdfReportService {
         document.add(date);
     }
 
-    private void addExecutiveSummary(Document document) throws DocumentException {
+    private void addExecutiveSummary(Document document, User admin) throws DocumentException {
         Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Color.BLACK);
         document.add(new Paragraph("Executive Summary", headerFont));
 
-        long totalTasks = taskRepository.count();
-        long completedTasks = taskRepository.countByStatus(TaskStatus.COMPLETED);
-        long pendingTasks = taskRepository.countByStatus(TaskStatus.TO_DO);
-        long inProgressTasks = taskRepository.countByStatus(TaskStatus.IN_PROGRESS);
+        long totalTasks = taskRepository.countByAdminId(admin.getId());
+        long completedTasks = taskRepository.countByAdminIdAndStatus(admin.getId(), TaskStatus.COMPLETED);
+        long pendingTasks = taskRepository.countByAdminIdAndStatus(admin.getId(), TaskStatus.TO_DO);
+        long inProgressTasks = taskRepository.countByAdminIdAndStatus(admin.getId(), TaskStatus.IN_PROGRESS);
 
         PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(100);
@@ -166,7 +165,7 @@ public class PdfReportService {
         table.addCell(cell);
     }
 
-    private void addUserPerformanceTable(Document document) throws DocumentException {
+    private void addUserPerformanceTable(Document document, User admin) throws DocumentException {
         Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Color.BLACK);
         document.add(new Paragraph("Staff Performance", headerFont));
 
@@ -181,7 +180,8 @@ public class PdfReportService {
         addTableHeader(table, "Completed");
         addTableHeader(table, "Pending");
 
-        List<User> staffMembers = userRepository.findByRole(com.nagar.parishad.backend.enums.Role.STAFF);
+        List<User> staffMembers = userRepository.findByAdminIdAndRole(admin.getId(),
+                com.nagar.parishad.backend.enums.Role.STAFF);
 
         boolean alternate = false;
         for (User staff : staffMembers) {

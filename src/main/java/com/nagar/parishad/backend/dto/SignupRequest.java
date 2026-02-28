@@ -16,7 +16,7 @@ public class SignupRequest {
 
     @NotBlank
     @Size(max = 50)
-    @Email
+    @jakarta.validation.constraints.Pattern(regexp = "^.+@.+$", message = "must contain @ symbol")
     private String email;
 
     @NotBlank
@@ -28,7 +28,7 @@ public class SignupRequest {
 
     private Long departmentId; // For Staff and Dept Head
 
-    private Long designationId;
+    private String designation;
 
     // Manual Getters and Setters
     public String getName() {
@@ -79,11 +79,11 @@ public class SignupRequest {
         this.departmentId = departmentId;
     }
 
-    public Long getDesignationId() {
-        return designationId;
+    public String getDesignation() {
+        return designation;
     }
 
-    public void setDesignationId(Long designationId) {
-        this.designationId = designationId;
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 }

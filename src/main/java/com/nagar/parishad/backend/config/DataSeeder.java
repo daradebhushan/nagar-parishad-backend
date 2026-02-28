@@ -88,25 +88,20 @@ public class DataSeeder implements CommandLineRunner {
                                                 "Damaged Chamber/Manhole", "चेंबर / ढापा / मॅनहोल तुटलेले"
                                 });
 
-                // Seed Twilio Config for this admin
-                String sandboxNum = "whatsapp:+14155238886";
-                TenantTwilioConfig config = tenantTwilioConfigRepository.findByPhoneNumber(sandboxNum).orElse(null);
-
-                if (config == null) {
-                        config = tenantTwilioConfigRepository.findByAdminId(admin.getId()).orElse(null);
-                }
-
-                if (config == null) {
-                        config = new TenantTwilioConfig();
-                        config.setAdmin(admin);
-                        config.setAccountSid("AC349613979568d34da4845c4a4d28f13d");
-                        config.setAuthToken("ea718eeea53c3c746007655e9f22d3f0");
-                        config.setPhoneNumber("whatsapp:+14155238886");
-                        config.setActive(true);
-                        tenantTwilioConfigRepository.save(config);
-                } else {
-                        if (!config.getAdmin().getId().equals(admin.getId())) {
+                // Seed Twilio Config for this admin ONLY IF they don't have one and sandbox is
+                // free
+                TenantTwilioConfig existingAdminConfig = tenantTwilioConfigRepository.findByAdminId(admin.getId())
+                                .orElse(null);
+                if (existingAdminConfig == null) {
+                        // check if sandbox is free
+                        String sandboxNum = "whatsapp:+14155238886";
+                        boolean isSandboxUsed = tenantTwilioConfigRepository.findByPhoneNumber(sandboxNum).isPresent();
+                        if (!isSandboxUsed) {
+                                TenantTwilioConfig config = new TenantTwilioConfig();
                                 config.setAdmin(admin);
+                                config.setAccountSid("AC349613979568d34da4845c4a4d28f13d");
+                                config.setAuthToken("ea718eeea53c3c746007655e9f22d3f0");
+                                config.setPhoneNumber(sandboxNum);
                                 config.setActive(true);
                                 tenantTwilioConfigRepository.save(config);
                         }

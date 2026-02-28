@@ -1,0 +1,28 @@
+--- E2E PRODUCTION VS LOCAL REGRESSION MATRIX ---
+
+Phase 1: Authenticating to both environments...
+[LOCAL] FAILED: Authentication - Unable to connect to the remote server
+[PROD]  SUCCESS: Authenticated System Owner.
+
+Phase 2: Fetching Active Departments (Public API)...
+[LOCAL] FAILED: Departments - Unable to connect to the remote server
+[PROD]  SUCCESS: Departments fetched. Count: 32
+
+Phase 3: Fetching Complaints (Admin API)...
+[LOCAL] FAILED: Complaints - Unable to connect to the remote server
+[PROD]  SUCCESS: Complaints fetched. Total: 
+
+Phase 4: Fetching Global Dashboard Stats...
+[LOCAL] FAILED: Stats - Unable to connect to the remote server
+[PROD]  FAILED: Stats - The remote server returned an error: (500) Internal Server Error.
+
+Phase 5: Fetching User Index (Admin API)...
+[LOCAL] FAILED: Users - Unable to connect to the remote server
+[PROD]  FAILED: Users - The remote server returned an error: (400) Bad Request.
+[PROD]  JSON RESPONSE: {"success":false,"message":"Type definition error: [simple type, class com.nagar.parishad.backend.entity.User]","data":null}
+
+Phase 6: Single-Post Write Test (User Creation)...
+[LOCAL] FAILED: Write User - Unable to connect to the remote server
+[PROD]  SUCCESS: Write User (ID: 22)
+
+--- DRIFT MATRIX COMPLETE ---

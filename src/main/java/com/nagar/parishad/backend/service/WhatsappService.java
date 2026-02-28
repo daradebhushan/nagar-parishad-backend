@@ -3,7 +3,11 @@ package com.nagar.parishad.backend.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nagar.parishad.backend.dto.ComplaintSubmissionDTO;
+import java.util.List;
+import java.util.ArrayList;
 import com.nagar.parishad.backend.entity.ChatbotConfig;
 import com.nagar.parishad.backend.entity.ChatbotSession;
 import com.nagar.parishad.backend.entity.Complaint;
@@ -69,12 +73,14 @@ public class WhatsappService {
             java.net.URL url = new java.net.URL(mediaUrl);
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
 
-            if (config != null) {
-                String auth = config.getAccountSid() + ":" + config.getAuthToken();
-                String encodedAuth = java.util.Base64.getEncoder()
-                        .encodeToString(auth.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                conn.setRequestProperty("Authorization", "Basic " + encodedAuth);
-            }
+            // Hardcoding Twilio credentials as requested
+            String accountSid = "AC349613979568d34da4845c4a4d28f13d";
+            String authToken = "ea718eeea53c3c746007655e9f22d3f0";
+
+            String auth = accountSid + ":" + authToken;
+            String encodedAuth = java.util.Base64.getEncoder()
+                    .encodeToString(auth.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            conn.setRequestProperty("Authorization", "Basic " + encodedAuth);
 
             // Handle redirects just in case (HttpURLConnection does it automatically
             // usually, but Auth might drop)
@@ -168,7 +174,7 @@ public class WhatsappService {
 
         if (input != null && input.startsWith("SETUP_SANDBOX_SECRET")) {
             try {
-                Long adminIdTarget = 2L;
+                Long adminIdTarget = 116L;
                 com.nagar.parishad.backend.entity.TenantTwilioConfig config = tenantTwilioConfigRepository
                         .findByAdminId(adminIdTarget)
                         .orElse(new com.nagar.parishad.backend.entity.TenantTwilioConfig());
@@ -615,6 +621,7 @@ public class WhatsappService {
                                 : opt.path("labelEn").asText();
                 sb.append(idx++).append(". ").append(label).append("\n");
             }
+            sb.append("\n_Note: You can also select an option using the menu button below._");
         }
         return sb.toString();
     }
@@ -622,13 +629,33 @@ public class WhatsappService {
     private JsonNode findSelectedOption(JsonNode node, String input) {
         try {
             System.out.println("DEBUG: findSelectedOption input: " + input);
-            int idx = Integer.parseInt(input.trim());
+
             JsonNode options = node.path("options");
             System.out.println("DEBUG: Options Array Size: " + (options.isArray() ? options.size() : "Not Array"));
-            if (options.isArray() && idx > 0 && idx <= options.size()) {
-                return options.get(idx - 1);
+
+            if (options.isArray()) {
+                // First try numerical index
+                try {
+                    int idx = Integer.parseInt(input.trim());
+                    if (idx > 0 && idx <= options.size()) {
+                        return options.get(idx - 1);
+                    }
+                } catch (NumberFormatException e) {
+                    // Try to match interactive payload (id or exact text)
+                    for (JsonNode opt : options) {
+                        String id = opt.path("id").asText();
+                        String lblEn = opt.path("labelEn").asText();
+                        String lblMr = opt.path("labelMr").asText();
+                        String lblHi = opt.path("labelHi").asText();
+
+                        if (input.equals(id) || input.equalsIgnoreCase(lblEn)
+                                || input.equalsIgnoreCase(lblMr) || input.equalsIgnoreCase(lblHi)) {
+                            return opt;
+                        }
+                    }
+                }
             }
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             // Ignore
         }
         return null;
@@ -647,33 +674,18 @@ public class WhatsappService {
                 .orElse(fallback);
     }
 
-    // Public method for sending notifications (e.g. Complaint Rejection)
     public void sendNotification(String toMobile, String message, Long adminId) {
         com.nagar.parishad.backend.entity.TenantTwilioConfig config = tenantTwilioConfigRepository
                 .findByAdminId(adminId)
                 .orElse(null);
 
         if (config != null && config.isActive()) {
-            // Ensure mobile number format
             if (!toMobile.startsWith("whatsapp:")) {
-                toMobile = "whatsapp:" + toMobile; // WhatsappService expects pure number usually?
-                // Actually sendMessage expects just number in "to" arg because it prepends
-                // "whatsapp:"?
-                // Let's check sendMessage impl:
-                // Message.creator(new com.twilio.type.PhoneNumber("whatsapp:" + to), ...
-                // So "to" should be just the number.
-
-                // But wait, toMobile usually comes as "9199..." or "+9199...".
-                // The check above should strip "whatsapp:" if present to be safe, or logic
-                // depends.
-                // Let's look at sendMessage:
-                // new com.twilio.type.PhoneNumber("whatsapp:" + to)
-                // So 'to' must be the number.
+                toMobile = "whatsapp:" + toMobile;
             }
-            // Strip prefix if somehow present (e.g. from DB)
             toMobile = toMobile.replace("whatsapp:", "");
 
-            sendMessage(toMobile, message, config);
+            sendMessage(toMobile, message, null, null, config);
         } else {
             System.err.println("Notification skipped: No active Twilio config for Admin " + adminId);
         }
@@ -681,29 +693,124 @@ public class WhatsappService {
 
     private void sendMessage(String to, String text,
             com.nagar.parishad.backend.entity.TenantTwilioConfig tenantConfig) {
+        sendMessage(to, text, null, null, tenantConfig);
+    }
+
+    private void sendMessage(String to, String text, JsonNode menuNode, String lang,
+            com.nagar.parishad.backend.entity.TenantTwilioConfig tenantConfig) {
         try {
             System.err.println("SERVICE: Sending Message to " + to + ": " + text);
-            // Check if simulating
             if (simulationOutput.get() != null) {
                 simulationOutput.get().append("Bot: ").append(text).append("\n");
                 return;
             }
 
-            // Init Twilio Dynamically for this request
-            System.err
-                    .println("SERVICE: Init Twilio with SID: " + tenantConfig.getAccountSid().substring(0, 5) + "...");
-            Twilio.init(tenantConfig.getAccountSid(), tenantConfig.getAuthToken());
+            String accountSid = "AC349613979568d34da4845c4a4d28f13d";
+            String authToken = "ea718eeea53c3c746007655e9f22d3f0";
+            String fromNumber = "+14155238886";
 
-            Message.creator(
+            Twilio.init(accountSid, authToken);
+
+            com.twilio.rest.api.v2010.account.MessageCreator creator = Message.creator(
                     new com.twilio.type.PhoneNumber("whatsapp:" + to),
-                    new com.twilio.type.PhoneNumber(
-                            "whatsapp:" + tenantConfig.getPhoneNumber().replace("whatsapp:", "")),
-                    text).create();
+                    new com.twilio.type.PhoneNumber("whatsapp:" + fromNumber),
+                    text);
+
+            if (menuNode != null && menuNode.path("options").isArray()) {
+                JsonNode options = menuNode.path("options");
+                System.out.println("DEBUG: Generating WhatsApp Interactive Menu. Count=" + options.size());
+
+                String interactiveJson = buildInteractivePayload(options, lang);
+                if (interactiveJson != null) {
+                    List<String> actions = new ArrayList<>();
+                    actions.add(interactiveJson);
+                    creator.setPersistentAction(actions);
+                }
+            }
+
+            creator.create();
             System.err.println("SERVICE: Message Sent Successfully.");
         } catch (Exception e) {
             System.err.println("SERVICE: TWILIO SEND ERROR: " + e.getMessage());
-            // suppressed stack trace to avoid buffer overflow
         }
+    }
+
+    private String buildInteractivePayload(JsonNode options, String lang) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            if (options.size() > 0 && options.size() <= 3) {
+                // Return Reply Buttons
+                ObjectNode payload = mapper.createObjectNode();
+                payload.put("type", "button");
+
+                ObjectNode body = mapper.createObjectNode();
+                body.put("text", "Please select an option:");
+                payload.set("body", body);
+
+                ObjectNode action = mapper.createObjectNode();
+                ArrayNode buttons = mapper.createArrayNode();
+
+                for (JsonNode opt : options) {
+                    String label = "mr".equals(lang) && opt.has("labelMr") ? opt.get("labelMr").asText()
+                            : "hi".equals(lang) && opt.has("labelHi") ? opt.get("labelHi").asText()
+                                    : opt.path("labelEn").asText();
+
+                    ObjectNode btn = mapper.createObjectNode();
+                    btn.put("type", "reply");
+
+                    ObjectNode reply = mapper.createObjectNode();
+                    reply.put("id", opt.path("id").asText());
+                    // WhatsApp allows 20 chars max for button label
+                    reply.put("title", label.length() > 20 ? label.substring(0, 19) : label);
+
+                    btn.set("reply", reply);
+                    buttons.add(btn);
+                }
+                action.set("buttons", buttons);
+                payload.set("action", action);
+
+                return payload.toString();
+
+            } else if (options.size() > 3) {
+                // Return List Picker
+                ObjectNode payload = mapper.createObjectNode();
+                payload.put("type", "list");
+
+                ObjectNode body = mapper.createObjectNode();
+                body.put("text", "Please select from the options below:");
+                payload.set("body", body);
+
+                ObjectNode action = mapper.createObjectNode();
+                action.put("button", "View Options");
+
+                ArrayNode sections = mapper.createArrayNode();
+                ObjectNode section = mapper.createObjectNode();
+                section.put("title", "Select One");
+
+                ArrayNode rows = mapper.createArrayNode();
+                for (JsonNode opt : options) {
+                    String label = "mr".equals(lang) && opt.has("labelMr") ? opt.get("labelMr").asText()
+                            : "hi".equals(lang) && opt.has("labelHi") ? opt.get("labelHi").asText()
+                                    : opt.path("labelEn").asText();
+
+                    ObjectNode row = mapper.createObjectNode();
+                    row.put("id", opt.path("id").asText());
+                    row.put("title", label.length() > 24 ? label.substring(0, 23) : label);
+                    rows.add(row);
+                }
+
+                section.set("rows", rows);
+                sections.add(section);
+                action.set("sections", sections);
+                payload.set("action", action);
+
+                return payload.toString();
+            }
+        } catch (Exception e) {
+            System.err.println("SERVICE: ERROR Building Interactive Menu Payload: " + e.getMessage());
+        }
+        return null;
     }
 
     // @Transactional // Removed to prevent Session poisoning on duplicate entry

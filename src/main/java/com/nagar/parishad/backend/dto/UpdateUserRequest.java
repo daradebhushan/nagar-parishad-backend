@@ -11,9 +11,11 @@ public class UpdateUserRequest {
     private String password;
     private Role role;
     private Long departmentId;
-    private Long designationId;
+    private String designation;
     private Long adminId; // Allow updating supervisor
     private Boolean active;
+    private String organizationName;
+    private String organizationLogo;
 
     public String getName() {
         return name;
@@ -63,12 +65,12 @@ public class UpdateUserRequest {
         this.departmentId = departmentId;
     }
 
-    public Long getDesignationId() {
-        return designationId;
+    public String getDesignation() {
+        return designation;
     }
 
-    public void setDesignationId(Long designationId) {
-        this.designationId = designationId;
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     public Boolean getActive() {
@@ -95,5 +97,40 @@ public class UpdateUserRequest {
 
     public void setEmailNotifications(Boolean emailNotifications) {
         this.emailNotifications = emailNotifications;
+    }
+
+    private Boolean clearDepartment;
+    private Boolean clearDesignation;
+
+    public Boolean getClearDepartment() {
+        return clearDepartment;
+    }
+
+    public void setClearDepartment(Boolean clearDepartment) {
+        this.clearDepartment = clearDepartment;
+    }
+
+    public Boolean getClearDesignation() {
+        return clearDesignation;
+    }
+
+    public void setClearDesignation(Boolean clearDesignation) {
+        this.clearDesignation = clearDesignation;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getOrganizationLogo() {
+        return organizationLogo;
+    }
+
+    public void setOrganizationLogo(String organizationLogo) {
+        this.organizationLogo = organizationLogo;
     }
 }
