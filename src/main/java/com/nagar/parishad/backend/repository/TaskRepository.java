@@ -51,4 +51,12 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     long countByAdminIdAndPriority(Long adminId, TaskPriority priority);
 
     long countByAdminIdAndStatusAndType(Long adminId, TaskStatus status, String type);
+
+    long countByRelatedComplaintIsNotNull();
+
+    long countByAdminIdAndRelatedComplaintIsNotNull(Long adminId);
+
+    long countByDepartmentIdAndRelatedComplaintIsNotNull(Long departmentId);
+
+    long countByAssignedStaffIdAndRelatedComplaintIsNotNull(Long staffId);
 }

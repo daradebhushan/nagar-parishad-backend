@@ -43,25 +43,31 @@ public class Task {
     @Column(name = "due_date")
     private LocalDateTime dueDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", nullable = false)
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
             "assignedStaff", "admin" })
+    @lombok.ToString.Exclude
+    @lombok.EqualsAndHashCode.Exclude
     private User admin;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "admin" })
+    @lombok.ToString.Exclude
+    @lombok.EqualsAndHashCode.Exclude
     private Department department;
 
     @OneToOne(mappedBy = "relatedTask")
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties("relatedTask")
     private Complaint relatedComplaint;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_staff_id")
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
             "assignedStaff", "admin" })
+    @lombok.ToString.Exclude
+    @lombok.EqualsAndHashCode.Exclude
     private User assignedStaff;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)

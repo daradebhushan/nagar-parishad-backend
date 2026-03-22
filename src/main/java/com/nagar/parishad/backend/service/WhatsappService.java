@@ -115,6 +115,9 @@ public class WhatsappService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private DepartmentService departmentService;
+
     @Value("${whatsapp.api.url}")
     private String whatsappApiUrl;
 
@@ -966,6 +969,19 @@ public class WhatsappService {
             java.util.List<java.util.Map<String, String>> startOptions = new java.util.ArrayList<>();
             java.util.List<com.nagar.parishad.backend.entity.Department> depts = departmentRepository
                     .findByAdminId(adminId);
+
+            if (depts == null || depts.isEmpty()) {
+                com.nagar.parishad.backend.entity.User tenantAdmin = userRepository.findById(adminId).orElse(null);
+                if (tenantAdmin != null) {
+                    try {
+                        departmentService.createDefaultDepartments(tenantAdmin);
+                        depts = departmentRepository.findByAdminId(adminId);
+                        System.out.println("DEBUG: Auto-seeded default departments for Admin ID: " + adminId);
+                    } catch (Exception e) {
+                        System.err.println("Chatbot auto-seed failed: " + e.getMessage());
+                    }
+                }
+            }
 
             // Filter active depts first to avoid trailing comma issues logic
             java.util.List<com.nagar.parishad.backend.entity.Department> activeDepts = new java.util.ArrayList<>();

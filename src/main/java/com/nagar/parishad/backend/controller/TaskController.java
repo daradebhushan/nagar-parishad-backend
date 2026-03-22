@@ -3,6 +3,7 @@ package com.nagar.parishad.backend.controller;
 import com.nagar.parishad.backend.dto.ApiResponse;
 import com.nagar.parishad.backend.dto.CommentRequest;
 import com.nagar.parishad.backend.dto.TaskRequest;
+import com.nagar.parishad.backend.dto.TaskDTO;
 import com.nagar.parishad.backend.entity.Task;
 import com.nagar.parishad.backend.entity.TaskAttachment;
 import com.nagar.parishad.backend.entity.TaskComment;
@@ -51,10 +52,10 @@ public class TaskController {
     // Let's assumie ADMIN and DEPT_HEAD can create tasks.
     @PostMapping("/tasks/create")
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD')")
-    public ResponseEntity<ApiResponse<Task>> createTask(@Valid @RequestBody TaskRequest request,
+    public ResponseEntity<ApiResponse<TaskDTO>> createTask(@Valid @RequestBody TaskRequest request,
             @AuthenticationPrincipal User user) {
         Task task = taskService.createTask(request, user);
-        return ResponseEntity.ok(ApiResponse.success("Task created successfully", task));
+        return ResponseEntity.ok(ApiResponse.success("Task created successfully", convertToDTO(task)));
     }
 
     @PostMapping("/tasks/{taskId}/notify")
@@ -68,7 +69,7 @@ public class TaskController {
     // STAFF: /staff/tasks
     // This endpoint `/api/tasks` can be smart.
     @GetMapping("/tasks")
-    public ResponseEntity<ApiResponse<Page<Task>>> filterTasks(
+    public ResponseEntity<ApiResponse<Page<TaskDTO>>> filterTasks(
             @AuthenticationPrincipal User user,
             @RequestParam(required = false) TaskStatus status,
             @RequestParam(required = false) TaskPriority priority,
@@ -81,33 +82,33 @@ public class TaskController {
         System.out.println(
                 "FilterTasks: Status=" + status + ", Priority=" + priority + ", Search=" + search + ", Type=" + type);
         Page<Task> tasks = taskService.getTasks(user, status, priority, departmentId, staffId, search, type, pageable);
-        return ResponseEntity.ok(ApiResponse.success("Tasks fetched successfully", tasks));
+        return ResponseEntity.ok(ApiResponse.success("Tasks fetched successfully", tasks.map(this::convertToDTO)));
     }
 
     @GetMapping("/tasks/{taskId}")
-    public ResponseEntity<ApiResponse<Task>> getTask(@PathVariable Long taskId) {
+    public ResponseEntity<ApiResponse<TaskDTO>> getTask(@PathVariable Long taskId) {
         Task task = taskService.getTaskById(taskId);
-        return ResponseEntity.ok(ApiResponse.success("Task fetched successfully", task));
+        return ResponseEntity.ok(ApiResponse.success("Task fetched successfully", convertToDTO(task)));
     }
 
     @PutMapping("/tasks/{taskId}")
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD')") // Restricted to Admin/Dept Head
 
-    public ResponseEntity<ApiResponse<Task>> updateTask(@PathVariable Long taskId,
+    public ResponseEntity<ApiResponse<TaskDTO>> updateTask(@PathVariable Long taskId,
             @Valid @RequestBody TaskRequest request) {
         Task task = taskService.updateTask(taskId, request);
-        return ResponseEntity.ok(ApiResponse.success("Task updated successfully", task));
+        return ResponseEntity.ok(ApiResponse.success("Task updated successfully", convertToDTO(task)));
     }
 
     @PatchMapping("/tasks/{taskId}/status")
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD', 'STAFF')")
-    public ResponseEntity<ApiResponse<Task>> updateTaskStatus(@PathVariable Long taskId,
+    public ResponseEntity<ApiResponse<TaskDTO>> updateTaskStatus(@PathVariable Long taskId,
             @Valid @RequestBody com.nagar.parishad.backend.dto.TaskStatusUpdateRequest request,
             @AuthenticationPrincipal User user) {
         TaskStatus status = TaskStatus.valueOf(request.getStatus());
         System.out.println("DEBUG: Controller - Received Status Update Request for Task " + taskId + " to " + status);
         Task task = taskService.updateTaskStatus(taskId, status, user);
-        return ResponseEntity.ok(ApiResponse.success("Task status updated successfully", task));
+        return ResponseEntity.ok(ApiResponse.success("Task status updated successfully", convertToDTO(task)));
     }
 
     @DeleteMapping("/tasks/{taskId}")
@@ -208,5 +209,34 @@ public class TaskController {
             @AuthenticationPrincipal User user) {
         fileStorageService.deleteAttachment(id, user);
         return ResponseEntity.ok(ApiResponse.success("Attachment deleted successfully", null));
+    }
+
+    private TaskDTO convertToDTO(Task entity) {
+        TaskDTO dto = new TaskDTO();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setDescription(entity.getDescription());
+        dto.setPriority(entity.getPriority());
+        dto.setStatus(entity.getStatus());
+        dto.setType(entity.getType());
+        dto.setCreatedDate(entity.getCreatedDate());
+        dto.setDueDate(entity.getDueDate());
+
+        if (entity.getDepartment() != null) {
+            dto.setDepartmentId(entity.getDepartment().getId());
+            dto.setDepartmentName(entity.getDepartment().getName());
+        }
+
+        if (entity.getAssignedStaff() != null) {
+            dto.setAssignedStaffId(entity.getAssignedStaff().getId());
+            dto.setAssignedStaffName(entity.getAssignedStaff().getName());
+        }
+
+        if (entity.getRelatedComplaint() != null) {
+            dto.setRelatedComplaintId(entity.getRelatedComplaint().getId());
+            dto.setRelatedComplaintNo(entity.getRelatedComplaint().getComplaintNo());
+        }
+
+        return dto;
     }
 }

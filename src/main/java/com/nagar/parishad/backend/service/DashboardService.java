@@ -34,6 +34,7 @@ public class DashboardService {
                 long criticalTasks = 0;
                 long directToDoTasks = 0;
                 long myAssignedTasks = 0;
+                long complaintTasks = 0;
 
                 if (user.getRole() == Role.OWNER) {
                         // OWNER (Global) Logic
@@ -45,6 +46,7 @@ public class DashboardService {
                         onHoldTasks = taskRepository.countByStatus(TaskStatus.ON_HOLD);
                         completedTasks = taskRepository.countByStatus(TaskStatus.COMPLETED);
                         criticalTasks = taskRepository.countByPriority(TaskPriority.CRITICAL);
+                        complaintTasks = taskRepository.countByRelatedComplaintIsNotNull();
                         directToDoTasks = taskRepository.countByStatusAndType(TaskStatus.TO_DO, "Internal");
 
                         // Populate Department Stats (Global)
@@ -67,6 +69,7 @@ public class DashboardService {
                         stats.setOnHoldTasks(onHoldTasks);
                         stats.setCompletedTasks(completedTasks);
                         stats.setCriticalTasks(criticalTasks);
+                        stats.setComplaintTasks(complaintTasks);
                         stats.setDirectToDoTasks(directToDoTasks);
                         stats.setMyAssignedTasks(myAssignedTasks);
                         return stats;
@@ -82,6 +85,7 @@ public class DashboardService {
                         onHoldTasks = taskRepository.countByAdminIdAndStatus(adminId, TaskStatus.ON_HOLD);
                         completedTasks = taskRepository.countByAdminIdAndStatus(adminId, TaskStatus.COMPLETED);
                         criticalTasks = taskRepository.countByAdminIdAndPriority(adminId, TaskPriority.CRITICAL);
+                        complaintTasks = taskRepository.countByAdminIdAndRelatedComplaintIsNotNull(adminId);
                         directToDoTasks = taskRepository.countByAdminIdAndStatusAndType(adminId, TaskStatus.TO_DO,
                                         "Internal");
 
@@ -105,6 +109,7 @@ public class DashboardService {
                         stats.setOnHoldTasks(onHoldTasks);
                         stats.setCompletedTasks(completedTasks);
                         stats.setCriticalTasks(criticalTasks);
+                        stats.setComplaintTasks(complaintTasks);
                         stats.setDirectToDoTasks(directToDoTasks);
                         stats.setMyAssignedTasks(myAssignedTasks);
                         return stats;
@@ -126,6 +131,7 @@ public class DashboardService {
                                 criticalTasks = taskRepository.count((root, query, cb) -> cb.and(
                                                 cb.equal(root.get("department").get("id"), deptId),
                                                 cb.equal(root.get("priority"), TaskPriority.CRITICAL)));
+                                complaintTasks = taskRepository.countByDepartmentIdAndRelatedComplaintIsNotNull(deptId);
 
                                 totalUsers = userRepository
                                                 .count((root, query, cb) -> cb.equal(root.get("department").get("id"),
@@ -161,6 +167,7 @@ public class DashboardService {
                                 stats.setOnHoldTasks(onHoldTasks);
                                 stats.setCompletedTasks(completedTasks);
                                 stats.setCriticalTasks(criticalTasks);
+                                stats.setComplaintTasks(complaintTasks);
                                 stats.setDirectToDoTasks(directToDoTasks);
                                 stats.setTasksFromCo(tasksFromCo);
                                 stats.setEmployeeStats(employeeStats);
@@ -175,6 +182,8 @@ public class DashboardService {
                         onHoldTasks = taskRepository.countByAssignedStaffIdAndStatus(user.getId(), TaskStatus.ON_HOLD);
                         completedTasks = taskRepository.countByAssignedStaffIdAndStatus(user.getId(),
                                         TaskStatus.COMPLETED);
+                        complaintTasks = taskRepository
+                                        .countByAssignedStaffIdAndRelatedComplaintIsNotNull(user.getId());
                         directToDoTasks = taskRepository.countByAssignedStaffIdAndStatusAndType(user.getId(),
                                         TaskStatus.TO_DO, "Internal");
                 }
@@ -188,6 +197,7 @@ public class DashboardService {
                 stats.setOnHoldTasks(onHoldTasks);
                 stats.setCompletedTasks(completedTasks);
                 stats.setCriticalTasks(criticalTasks);
+                stats.setComplaintTasks(complaintTasks);
                 stats.setDirectToDoTasks(directToDoTasks);
                 stats.setMyAssignedTasks(myAssignedTasks);
                 return stats;

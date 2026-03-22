@@ -53,16 +53,20 @@ public class User implements UserDetails {
     @Column(name = "organization_logo", columnDefinition = "TEXT")
     private String organizationLogo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
             "assignedStaff", "admin" })
     @com.fasterxml.jackson.annotation.JsonIgnore
+    @lombok.ToString.Exclude
+    @lombok.EqualsAndHashCode.Exclude
     private User admin; // For Staff and Department Head
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "admin" })
+    @lombok.ToString.Exclude
+    @lombok.EqualsAndHashCode.Exclude
     private Department department; // For Staff and Department Head
 
     private String designation;

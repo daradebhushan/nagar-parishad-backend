@@ -19,10 +19,12 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", nullable = false, unique = true)
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
             "assignedStaff", "admin", "password" })
+    @lombok.ToString.Exclude
+    @lombok.EqualsAndHashCode.Exclude
     private User admin; // The Tenant (Chief Officer)
 
     @Column(nullable = false)

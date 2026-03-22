@@ -12,6 +12,7 @@ public class StatsDto {
     private long onHoldTasks;
     private long completedTasks;
     private long criticalTasks;
+    private long complaintTasks;
     private long directToDoTasks;
     private long myAssignedTasks;
     private long tasksFromCo;
@@ -89,6 +90,14 @@ public class StatsDto {
 
     public void setCriticalTasks(long criticalTasks) {
         this.criticalTasks = criticalTasks;
+    }
+
+    public long getComplaintTasks() {
+        return complaintTasks;
+    }
+
+    public void setComplaintTasks(long complaintTasks) {
+        this.complaintTasks = complaintTasks;
     }
 
     public long getDirectToDoTasks() {
