@@ -16,11 +16,18 @@ public class TaskDTO {
     private LocalDateTime createdDate;
     private LocalDateTime dueDate;
 
-    private Long departmentId;
-    private String departmentName;
+    @Data
+    public static class IdNameDTO {
+        private Long id;
+        private String name;
+        public IdNameDTO(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
 
-    private Long assignedStaffId;
-    private String assignedStaffName;
+    private IdNameDTO department;
+    private IdNameDTO assignedStaff;
 
     private Long relatedComplaintId;
     private String relatedComplaintNo;

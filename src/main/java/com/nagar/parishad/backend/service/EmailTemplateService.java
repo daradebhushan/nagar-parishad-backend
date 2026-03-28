@@ -1,9 +1,13 @@
 package com.nagar.parishad.backend.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailTemplateService {
+
+        @Value("${app.frontend.url:https://townseva.in}")
+        private String frontendUrl;
 
         private String getHeader() {
                 return "<div style='background-color: #f8fafc; padding: 20px; font-family: Arial, sans-serif;'>" +
@@ -78,7 +82,7 @@ public class EmailTemplateService {
                                 "</div>" +
                                 "<p>Please login and change your password immediately for security purposes.</p>" +
                                 "<div style='text-align: center; margin-top: 30px;'>" +
-                                "<a href='https://loknagar.in/login' style='background-color: #ea580c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;'>Login to Dashboard</a>"
+                                "<a href='" + frontendUrl + "/login' style='background-color: #ea580c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;'>Login to Dashboard</a>"
                                 +
                                 "</div>" +
                                 getFooter();
@@ -100,7 +104,7 @@ public class EmailTemplateService {
                                 "<p style='margin: 0; font-style: italic; color: #475569;'>\"" + message + "\"</p>" +
                                 "</div>" +
                                 "<div style='text-align: center; margin-top: 30px;'>" +
-                                "<a href='https://loknagar.in/tasks' style='background-color: " + color
+                                "<a href='" + frontendUrl + "/tasks' style='background-color: " + color
                                 + "; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;'>View Details</a>"
                                 +
                                 "</div>" +
@@ -116,7 +120,7 @@ public class EmailTemplateService {
                 if (type.contains("STATUS"))
                         color = "#8b5cf6"; // Purple
 
-                String link = "https://loknagar.in/magic-login?token=" + magicToken + "&target=" + targetPath;
+                String link = frontendUrl + "/magic-login?token=" + magicToken + "&target=" + targetPath;
 
                 return getHeader() +
                                 "<h2 style='color: " + color + "; margin-top: 0;'>New Notification</h2>" +
@@ -217,7 +221,7 @@ public class EmailTemplateService {
                 sb.append("</div>");
 
                 sb.append("<div style='text-align: center; margin-top: 30px;'>");
-                String link = "https://loknagar.in/magic-login?token=" + magicToken + "&target=/tasks/" + task.getId();
+                String link = frontendUrl + "/magic-login?token=" + magicToken + "&target=/tasks/" + task.getId();
                 sb.append("<a href='").append(link)
                                 .append("' style='background-color: ")
                                 .append(color)
@@ -331,7 +335,7 @@ public class EmailTemplateService {
                 sb.append("</div>");
 
                 sb.append("<div style='text-align: center; margin-top: 30px;'>");
-                sb.append("<a href='https://loknagar.in/tasks/").append(task.getId())
+                sb.append("<a href='").append(frontendUrl).append("/tasks/").append(task.getId())
                                 .append("' style='background-color: ").append(color)
                                 .append("; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;'>View Task</a>");
                 sb.append("</div>");
@@ -413,7 +417,7 @@ public class EmailTemplateService {
                 sb.append("</tbody></table></div>");
 
                 sb.append("<div style='text-align: center; margin-top: 30px;'>");
-                sb.append("<a href='https://loknagar.in/tasks/").append(newTask.getId())
+                sb.append("<a href='").append(frontendUrl).append("/tasks/").append(newTask.getId())
                                 .append("' style='background-color: ").append(color)
                                 .append("; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;'>View Task</a>");
                 sb.append("</div>");
@@ -515,7 +519,7 @@ public class EmailTemplateService {
                 sb.append("</div>");
 
                 sb.append("<div style='text-align: center; margin-top: 30px;'>");
-                String link = "https://loknagar.in/magic-login?token=" + magicToken + "&target=/tasks/" + task.getId();
+                String link = frontendUrl + "/magic-login?token=" + magicToken + "&target=/tasks/" + task.getId();
                 sb.append("<a href='").append(link)
                                 .append("' style='background-color: ").append(color)
                                 .append("; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;'>View Task Details</a>");

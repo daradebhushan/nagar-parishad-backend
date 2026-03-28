@@ -261,6 +261,9 @@ public class NotificationService {
 
     public void sendUserManagementNotification(User targetUser, String action, User actor) {
         String message = "User " + targetUser.getName() + " (" + targetUser.getRole() + ") was " + action;
+        if (targetUser.getDepartment() != null && targetUser.getDepartment().getName() != null) {
+            message += " in Department: " + targetUser.getDepartment().getName();
+        }
         String subject = "User Management: " + action;
         String body = "<p>" + message + "</p>";
 

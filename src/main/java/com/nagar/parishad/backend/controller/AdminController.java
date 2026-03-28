@@ -54,10 +54,10 @@ public class AdminController {
     }
 
     @GetMapping("/admin/users")
-    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER', 'DEPARTMENT_HEAD')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER', 'DEPARTMENT_HEAD', 'STAFF')")
     public ResponseEntity<ApiResponse<Page<User>>> getUsers(
             @AuthenticationPrincipal User admin,
-            @RequestParam(required = false) Long departmentId,
+            @RequestParam(value = "departmentId", required = false) Long departmentId,
             Pageable pageable) {
 
         Page<User> users;
@@ -98,15 +98,15 @@ public class AdminController {
     }
 
     @GetMapping("/admin/users/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER', 'DEPARTMENT_HEAD')")
-    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long id) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER', 'DEPARTMENT_HEAD', 'STAFF')")
+    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable("id") Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         return ResponseEntity.ok(ApiResponse.success("User fetched successfully", user));
     }
 
     @DeleteMapping("/admin/users/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id, @AuthenticationPrincipal User admin) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable("id") Long id, @AuthenticationPrincipal User admin) {
         User userToDelete = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
         if (userToDelete.getId().equals(admin.getId())) {
@@ -135,7 +135,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     // Allowing Owner too, and ideally the user themselves if checking ID match (but
     // requirement says Admin edits all)
-    public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable("id") Long id,
             @RequestBody com.nagar.parishad.backend.dto.UpdateUserRequest updateRequest,
             @AuthenticationPrincipal User admin) {
         User updatedUser = authService.updateUser(id, updateRequest, admin);
@@ -144,7 +144,7 @@ public class AdminController {
 
     @GetMapping("/admin/users/{id}/report")
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
-    public ResponseEntity<ApiResponse<java.util.Map<String, Object>>> getEmployeeReport(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<java.util.Map<String, Object>>> getEmployeeReport(@PathVariable("id") Long id) {
         long total = taskRepository.countByAssignedStaffId(id);
         long completed = taskRepository.countByAssignedStaffIdAndStatus(id,
                 com.nagar.parishad.backend.enums.TaskStatus.COMPLETED);

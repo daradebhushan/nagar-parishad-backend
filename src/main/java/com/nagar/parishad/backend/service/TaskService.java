@@ -113,7 +113,7 @@ public class TaskService {
     }
 
     public Page<Task> getTasks(User user, TaskStatus status, TaskPriority priority, Long departmentId, Long staffId,
-            String search, String type,
+            String search, String type, String assignedByRole,
             Pageable pageable) {
         Specification<Task> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -164,6 +164,15 @@ public class TaskService {
                     predicates.add(cb.notEqual(root.get("type"), "Complaint"));
                 } else {
                     predicates.add(cb.equal(root.get("type"), type));
+                }
+            }
+
+            if (assignedByRole != null && !assignedByRole.isEmpty()) {
+                try {
+                    Role roleEnum = Role.valueOf(assignedByRole.toUpperCase());
+                    predicates.add(cb.equal(root.get("admin").get("role"), roleEnum));
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid Role passed in assignedByRole: " + assignedByRole);
                 }
             }
 

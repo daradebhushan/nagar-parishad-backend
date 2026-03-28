@@ -77,11 +77,12 @@ public class TaskController {
             @RequestParam(required = false) Long staffId,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String type,
+            @RequestParam(required = false) String assignedByRole,
             Pageable pageable) {
 
         System.out.println(
-                "FilterTasks: Status=" + status + ", Priority=" + priority + ", Search=" + search + ", Type=" + type);
-        Page<Task> tasks = taskService.getTasks(user, status, priority, departmentId, staffId, search, type, pageable);
+                "FilterTasks: Status=" + status + ", Priority=" + priority + ", Search=" + search + ", Type=" + type + ", AssignedByRole=" + assignedByRole);
+        Page<Task> tasks = taskService.getTasks(user, status, priority, departmentId, staffId, search, type, assignedByRole, pageable);
         return ResponseEntity.ok(ApiResponse.success("Tasks fetched successfully", tasks.map(this::convertToDTO)));
     }
 
@@ -223,13 +224,11 @@ public class TaskController {
         dto.setDueDate(entity.getDueDate());
 
         if (entity.getDepartment() != null) {
-            dto.setDepartmentId(entity.getDepartment().getId());
-            dto.setDepartmentName(entity.getDepartment().getName());
+            dto.setDepartment(new TaskDTO.IdNameDTO(entity.getDepartment().getId(), entity.getDepartment().getName()));
         }
 
         if (entity.getAssignedStaff() != null) {
-            dto.setAssignedStaffId(entity.getAssignedStaff().getId());
-            dto.setAssignedStaffName(entity.getAssignedStaff().getName());
+            dto.setAssignedStaff(new TaskDTO.IdNameDTO(entity.getAssignedStaff().getId(), entity.getAssignedStaff().getName()));
         }
 
         if (entity.getRelatedComplaint() != null) {
