@@ -44,15 +44,21 @@ public class DepartmentController {
     }
 
     @GetMapping("/admin/departments")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_DEPARTMENT_HEAD')")
-    public ResponseEntity<ApiResponse<Page<Department>>> getDepartments(@AuthenticationPrincipal User admin,
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_DEPARTMENT_HEAD', 'ROLE_STAFF')")
+    public ResponseEntity<ApiResponse<Page<Department>>> getDepartments(@AuthenticationPrincipal User currentUser,
             Pageable pageable) {
-        Page<Department> departments = departmentService.getDepartmentsByAdmin(admin.getId(), pageable);
+        Long tenantAdminId = currentUser.getId();
+        if (currentUser.getRole() == com.nagar.parishad.backend.enums.Role.DEPARTMENT_HEAD || currentUser.getRole() == com.nagar.parishad.backend.enums.Role.STAFF) {
+            if (currentUser.getAdmin() != null) {
+                tenantAdminId = currentUser.getAdmin().getId();
+            }
+        }
+        Page<Department> departments = departmentService.getDepartmentsByAdmin(tenantAdminId, pageable);
         return ResponseEntity.ok(ApiResponse.success("Departments fetched successfully", departments));
     }
 
     @GetMapping("/admin/departments/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER', 'DEPARTMENT_HEAD', 'STAFF')")
     public ResponseEntity<ApiResponse<Department>> getDepartmentById(@PathVariable Long id) {
         Department department = departmentService.getDepartmentById(id);
         return ResponseEntity.ok(ApiResponse.success("Department fetched successfully", department));
@@ -63,7 +69,7 @@ public class DepartmentController {
     @PreAuthorize("hasRole('DEPARTMENT_HEAD')")
     public ResponseEntity<ApiResponse<Page<Task>>> getDeptTasks(@AuthenticationPrincipal User user, Pageable pageable) {
         // Filter tasks by department of the logged in Dept Head
-        Page<Task> tasks = taskService.getTasks(user, null, null, user.getDepartment().getId(), null, null, null,
+        Page<Task> tasks = taskService.getTasks(user, null, null, user.getDepartment().getId(), null, null, null, null,
                 pageable);
         return ResponseEntity.ok(ApiResponse.success("Tasks fetched successfully", tasks));
     }
