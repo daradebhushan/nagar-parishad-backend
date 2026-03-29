@@ -196,32 +196,31 @@ public class NotificationService {
         }
     }
 
-    public void sendTaskAssignmentNotification(com.nagar.parishad.backend.entity.Task task) {
-        // 1. Notify Assigned Staff
-        if (task.getAssignedStaff() != null) {
-            createNotification(task.getAssignedStaff(), task.getAdmin(),
+    public void sendTaskAssignmentNotification(com.nagar.parishad.backend.entity.Task task, User actor) {
+        // 1. Notify Assigned Staff (if not actor)
+        if (task.getAssignedStaff() != null && !isSameUser(task.getAssignedStaff(), actor)) {
+            createNotification(task.getAssignedStaff(), actor,
                     "New task assigned: " + task.getTitle(),
                     NotificationType.TASK_ASSIGNED, task.getId());
         }
 
-        // 2. Notify ALL Department Heads (if exists and not the Assigner/Staff)
+        // 2. Notify ALL Department Heads (if not actor)
         if (task.getDepartment() != null) {
             List<User> deptHeads = getDepartmentHeads(task.getDepartment().getId());
             for (User deptHead : deptHeads) {
-                if (deptHead != null && !isSameUser(deptHead, task.getAdmin())
-                        && !isSameUser(deptHead, task.getAssignedStaff())) {
+                if (deptHead != null && !isSameUser(deptHead, actor)) {
                     String assigneeName = (task.getAssignedStaff() != null) ? task.getAssignedStaff().getName()
                             : "Unassigned";
-                    createNotification(deptHead, task.getAdmin(),
+                    createNotification(deptHead, actor,
                             "New task assigned to " + assigneeName + " in your department: " + task.getTitle(),
                             NotificationType.TASK_ASSIGNED, task.getId());
                 }
             }
         }
 
-        // 3. Notify The Admin/Chief Officer (Tenant Isolation)
-        if (task.getAdmin() != null && !isSameUser(task.getAdmin(), task.getAssignedStaff())) {
-            createNotification(task.getAdmin(), task.getAdmin(),
+        // 3. Notify The Admin/Chief Officer (if not actor)
+        if (task.getAdmin() != null && !isSameUser(task.getAdmin(), actor)) {
+            createNotification(task.getAdmin(), actor,
                     "New task created: " + task.getTitle(),
                     NotificationType.TASK_ASSIGNED, task.getId());
         }
@@ -256,6 +255,38 @@ public class NotificationService {
             createNotification(task.getAdmin(), commenter,
                     "New comment on task: " + task.getTitle(),
                     NotificationType.COMMENT_ADDED, task.getId(), comment.getId());
+        }
+    }
+
+    public void sendTaskUpdatedNotification(com.nagar.parishad.backend.entity.Task task, User actor) {
+        if (task.getAssignedStaff() != null && !isSameUser(task.getAssignedStaff(), actor)) {
+            createNotification(task.getAssignedStaff(), actor, "Task updated: " + task.getTitle(), NotificationType.STATUS_CHANGED, task.getId());
+        }
+        if (task.getDepartment() != null) {
+            for (User deptHead : getDepartmentHeads(task.getDepartment().getId())) {
+                if (deptHead != null && !isSameUser(deptHead, actor)) {
+                    createNotification(deptHead, actor, "Task updated in your department: " + task.getTitle(), NotificationType.STATUS_CHANGED, task.getId());
+                }
+            }
+        }
+        if (task.getAdmin() != null && !isSameUser(task.getAdmin(), actor)) {
+            createNotification(task.getAdmin(), actor, "Task updated: " + task.getTitle(), NotificationType.STATUS_CHANGED, task.getId());
+        }
+    }
+
+    public void sendTaskDeletedNotification(com.nagar.parishad.backend.entity.Task task, User actor) {
+        if (task.getAssignedStaff() != null && !isSameUser(task.getAssignedStaff(), actor)) {
+            createNotification(task.getAssignedStaff(), actor, "Task deleted: " + task.getTitle(), NotificationType.STATUS_CHANGED, null);
+        }
+        if (task.getDepartment() != null) {
+            for (User deptHead : getDepartmentHeads(task.getDepartment().getId())) {
+                if (deptHead != null && !isSameUser(deptHead, actor)) {
+                    createNotification(deptHead, actor, "Task deleted from your department: " + task.getTitle(), NotificationType.STATUS_CHANGED, null);
+                }
+            }
+        }
+        if (task.getAdmin() != null && !isSameUser(task.getAdmin(), actor)) {
+            createNotification(task.getAdmin(), actor, "Task deleted: " + task.getTitle(), NotificationType.STATUS_CHANGED, null);
         }
     }
 

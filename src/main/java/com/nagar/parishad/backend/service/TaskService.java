@@ -105,10 +105,10 @@ public class TaskService {
         return savedTask;
     }
 
-    public void sendTaskCreatedNotification(Long taskId) {
+    public void sendTaskCreatedNotification(Long taskId, User actor) {
         Task task = taskRepository.findById(taskId).orElse(null);
         if (task != null) {
-            notificationService.sendTaskAssignmentNotification(task);
+            notificationService.sendTaskAssignmentNotification(task, actor);
         }
     }
 
@@ -182,7 +182,7 @@ public class TaskService {
         return taskRepository.findAll(spec, pageable);
     }
 
-    public Task updateTask(Long taskId, TaskRequest request) {
+    public Task updateTask(Long taskId, TaskRequest request, User actor) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
 
@@ -216,42 +216,31 @@ public class TaskService {
 
         Task updatedTask = taskRepository.save(task);
 
+        // Fire integrated notifications (In-App)
+        notificationService.sendTaskUpdatedNotification(updatedTask, actor);
+
         // Send Detailed Email Notification
         try {
             String subject = "Task Details Updated: " + updatedTask.getTitle();
             String body = emailTemplateService.getTaskUpdateEmail(oldTask, updatedTask);
 
-            // Notify Assigned Staff
-            if (updatedTask.getAssignedStaff() != null) {
+            // Email Assigned Staff if not actor
+            if (updatedTask.getAssignedStaff() != null && !updatedTask.getAssignedStaff().getId().equals(actor.getId())) {
                 emailService.sendEmail(updatedTask.getAssignedStaff().getEmail(), subject, body);
-
-                // Also create internal notification
-                notificationService.createNotification(
-                        updatedTask.getAssignedStaff(),
-                        updatedTask.getAdmin(),
-                        "Task updated: " + updatedTask.getTitle(),
-                        com.nagar.parishad.backend.enums.NotificationType.STATUS_CHANGED,
-                        updatedTask.getId());
             }
 
-            // Send Copy to System Owner
+            // Send Copy to System Owner if not actor
             try {
                 User owner = userRepository.findByRole(Role.OWNER).stream().findFirst().orElse(null);
-                if (owner != null) {
-                    if (updatedTask.getAssignedStaff() == null
-                            || !owner.getId().equals(updatedTask.getAssignedStaff().getId())) {
-                        emailService.sendEmail(owner.getEmail(), "COPY: " + subject, body);
-                    }
+                if (owner != null && !owner.getId().equals(actor.getId())) {
+                    emailService.sendEmail(owner.getEmail(), "COPY: " + subject, body);
                 }
 
-                // Send Copy to Admin (Chief Officer) if distinct from Owner
+                // Send Copy to Admin (Chief Officer) if distinct from Owner and not actor
                 User admin = userRepository.findByRole(Role.ADMIN).stream().findFirst().orElse(null);
-                if (admin != null) {
+                if (admin != null && !admin.getId().equals(actor.getId())) {
                     boolean isOwner = owner != null && admin.getId().equals(owner.getId());
-                    boolean isStaff = updatedTask.getAssignedStaff() != null
-                            && admin.getId().equals(updatedTask.getAssignedStaff().getId());
-
-                    if (!isOwner && !isStaff) {
+                    if (!isOwner) {
                         emailService.sendEmail(admin.getEmail(), "COPY: " + subject, body);
                     }
                 }
@@ -259,9 +248,6 @@ public class TaskService {
                 System.err.println("Failed to send task update copy to owner/admin: " + ex.getMessage());
             }
 
-            // Notify Admin if they didn't do it? (Assume context unclear, safe to notify
-            // admin too if staff updated, but usually Auth checks role)
-            // For now just Staff.
         } catch (Exception e) {
             System.err.println("Failed to send task update email: " + e.getMessage());
         }
@@ -295,7 +281,7 @@ public class TaskService {
         return updatedTask;
     }
 
-    public void deleteTask(Long taskId) {
+    public void deleteTask(Long taskId, User actor) {
         Task task = taskRepository.findById(taskId).orElse(null);
         if (task != null) {
             // Detach Complaint before deleting to avoid Foreign Key Constraint violations
@@ -309,27 +295,8 @@ public class TaskService {
                 complaintRepository.save(complaint);
             }
 
-            // Notify Assigned Staff before deletion
-            if (task.getAssignedStaff() != null) {
-                notificationService.createNotification(
-                        task.getAssignedStaff(),
-                        task.getAdmin(),
-                        "Task deleted: " + task.getTitle(),
-                        com.nagar.parishad.backend.enums.NotificationType.STATUS_CHANGED,
-                        null);
-            }
-
-            // Notify Admin/Chief Officer
-            User admin = userRepository.findByRole(Role.ADMIN).stream().findFirst().orElse(null);
-            if (admin != null
-                    && (task.getAssignedStaff() == null || !admin.getId().equals(task.getAssignedStaff().getId()))) {
-                notificationService.createNotification(
-                        admin,
-                        task.getAdmin(),
-                        "Task deleted: " + task.getTitle(),
-                        com.nagar.parishad.backend.enums.NotificationType.STATUS_CHANGED,
-                        null);
-            }
+            // Notify all relevant users before deletion
+            notificationService.sendTaskDeletedNotification(task, actor);
         } else {
             throw new RuntimeException("Task not found");
         }

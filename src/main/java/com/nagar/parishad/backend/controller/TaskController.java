@@ -59,8 +59,8 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/{taskId}/notify")
-    public ResponseEntity<ApiResponse<Void>> notifyTaskCreated(@PathVariable Long taskId) {
-        taskService.sendTaskCreatedNotification(taskId);
+    public ResponseEntity<ApiResponse<Void>> notifyTaskCreated(@PathVariable Long taskId, @AuthenticationPrincipal User user) {
+        taskService.sendTaskCreatedNotification(taskId, user);
         return ResponseEntity.ok(ApiResponse.success("Notification sent successfully", null));
     }
 
@@ -94,10 +94,10 @@ public class TaskController {
 
     @PutMapping("/tasks/{taskId}")
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD')") // Restricted to Admin/Dept Head
-
     public ResponseEntity<ApiResponse<TaskDTO>> updateTask(@PathVariable Long taskId,
-            @Valid @RequestBody TaskRequest request) {
-        Task task = taskService.updateTask(taskId, request);
+            @Valid @RequestBody TaskRequest request,
+            @AuthenticationPrincipal User user) {
+        Task task = taskService.updateTask(taskId, request, user);
         return ResponseEntity.ok(ApiResponse.success("Task updated successfully", convertToDTO(task)));
     }
 
@@ -114,8 +114,8 @@ public class TaskController {
 
     @DeleteMapping("/tasks/{taskId}")
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD')")
-    public ResponseEntity<ApiResponse<Void>> deleteTask(@PathVariable Long taskId) {
-        taskService.deleteTask(taskId);
+    public ResponseEntity<ApiResponse<Void>> deleteTask(@PathVariable Long taskId, @AuthenticationPrincipal User user) {
+        taskService.deleteTask(taskId, user);
         return ResponseEntity.ok(ApiResponse.success("Task deleted successfully", null));
     }
 
