@@ -105,6 +105,11 @@ public class ComplaintService {
         return complaintRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    public List<ComplaintDTO> getComplaintsByAdmin(Long adminId) {
+        return complaintRepository.findByAdminId(adminId).stream().map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<ComplaintDTO> getComplaintsByDepartment(Long departmentId) {
         return complaintRepository.findByDepartmentId(departmentId).stream().map(this::convertToDTO)
                 .collect(Collectors.toList());

@@ -34,6 +34,15 @@ public class DataSeeder implements CommandLineRunner {
         @Autowired
         private PasswordEncoder passwordEncoder;
 
+        @org.springframework.beans.factory.annotation.Value("${twilio.account_sid:}")
+        private String defaultTwilioSid;
+
+        @org.springframework.beans.factory.annotation.Value("${twilio.auth_token:}")
+        private String defaultTwilioToken;
+
+        @org.springframework.beans.factory.annotation.Value("${twilio.phone_number:}")
+        private String defaultTwilioPhone;
+
         @Override
         public void run(String... args) throws Exception {
                 // Enforce Single Admin: daradebhushan15+admin@gmail.com
@@ -94,13 +103,13 @@ public class DataSeeder implements CommandLineRunner {
                                 .orElse(null);
                 if (existingAdminConfig == null) {
                         // check if sandbox is free
-                        String sandboxNum = "whatsapp:+14155238886";
+                        String sandboxNum = (defaultTwilioPhone != null && !defaultTwilioPhone.isEmpty()) ? defaultTwilioPhone : "whatsapp:+14155238886";
                         boolean isSandboxUsed = tenantTwilioConfigRepository.findByPhoneNumber(sandboxNum).isPresent();
                         if (!isSandboxUsed) {
                                 TenantTwilioConfig config = new TenantTwilioConfig();
                                 config.setAdmin(admin);
-                                config.setAccountSid("AC349613979568d34da4845c4a4d28f13d");
-                                config.setAuthToken("ea718eeea53c3c746007655e9f22d3f0");
+                                config.setAccountSid(defaultTwilioSid);
+                                config.setAuthToken(defaultTwilioToken);
                                 config.setPhoneNumber(sandboxNum);
                                 config.setActive(true);
                                 tenantTwilioConfigRepository.save(config);

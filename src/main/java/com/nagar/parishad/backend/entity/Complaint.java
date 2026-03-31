@@ -43,6 +43,13 @@ public class Complaint {
     @Column(name = "sub_complaint_type")
     private String subComplaintType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id")
+    @lombok.ToString.Exclude
+    @lombok.EqualsAndHashCode.Exclude
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private User admin;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 

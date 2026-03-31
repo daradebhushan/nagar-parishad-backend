@@ -73,9 +73,8 @@ public class WhatsappService {
             java.net.URL url = new java.net.URL(mediaUrl);
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
 
-            // Hardcoding Twilio credentials as requested
-            String accountSid = "AC349613979568d34da4845c4a4d28f13d";
-            String authToken = "ea718eeea53c3c746007655e9f22d3f0";
+            String accountSid = (config != null && config.getAccountSid() != null) ? config.getAccountSid() : defaultTwilioSid;
+            String authToken = (config != null && config.getAuthToken() != null) ? config.getAuthToken() : defaultTwilioToken;
 
             String auth = accountSid + ":" + authToken;
             String encodedAuth = java.util.Base64.getEncoder()
@@ -120,6 +119,15 @@ public class WhatsappService {
 
     @Value("${whatsapp.api.url}")
     private String whatsappApiUrl;
+
+    @Value("${twilio.account_sid:}")
+    private String defaultTwilioSid;
+
+    @Value("${twilio.auth_token:}")
+    private String defaultTwilioToken;
+
+    @Value("${twilio.phone_number:}")
+    private String defaultTwilioPhone;
 
     @Autowired
     private ComplaintTypeRepository complaintTypeRepository;
@@ -175,30 +183,6 @@ public class WhatsappService {
         Long adminId = session.getAdmin().getId();
         System.out.println("DEBUG: handleState input=" + input + ", State=" + session.getState());
 
-        if (input != null && input.startsWith("SETUP_SANDBOX_SECRET")) {
-            try {
-                Long adminIdTarget = 116L;
-                com.nagar.parishad.backend.entity.TenantTwilioConfig config = tenantTwilioConfigRepository
-                        .findByAdminId(adminIdTarget)
-                        .orElse(new com.nagar.parishad.backend.entity.TenantTwilioConfig());
-
-                com.nagar.parishad.backend.entity.User adminTarget = userRepository.findById(adminIdTarget)
-                        .orElse(null);
-                if (adminTarget != null) {
-                    config.setAdmin(adminTarget);
-                    config.setAccountSid("AC349613979568d34da4845c4a4d28f13d");
-                    config.setAuthToken("ea718eeea53c3c746007655e9f22d3f0");
-                    config.setPhoneNumber("whatsapp:+14155238886"); // SANDBOX
-                    config.setActive(true);
-                    tenantTwilioConfigRepository.save(config);
-                    System.out.println("SETUP SUCCESS: Config updated to Sandbox.");
-                    sendMessage(session.getMobileNumber(), "SETUP SUCCESS. Config updated to Sandbox.", tenantConfig);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return;
-        }
 
         // Global Reset Command
         if (input != null && (input.equalsIgnoreCase("RESET") || input.equalsIgnoreCase("Hi"))) {
@@ -347,6 +331,7 @@ public class WhatsappService {
                 complaint.setLocation(location);
                 complaint.setPhotoUrl(photo);
                 complaint.setDepartment(dept);
+                complaint.setAdmin(session.getAdmin());
                 complaint.setStatus(ComplaintStatus.PENDING);
                 complaint.setRelatedTask(null);
 
@@ -708,9 +693,14 @@ public class WhatsappService {
                 return;
             }
 
-            String accountSid = "AC349613979568d34da4845c4a4d28f13d";
-            String authToken = "ea718eeea53c3c746007655e9f22d3f0";
-            String fromNumber = "+14155238886";
+            String accountSid = (tenantConfig != null && tenantConfig.getAccountSid() != null) ? tenantConfig.getAccountSid() : defaultTwilioSid;
+            String authToken = (tenantConfig != null && tenantConfig.getAuthToken() != null) ? tenantConfig.getAuthToken() : defaultTwilioToken;
+            String fromNumber = (tenantConfig != null && tenantConfig.getPhoneNumber() != null) ? tenantConfig.getPhoneNumber() : defaultTwilioPhone;
+            if (fromNumber != null && !fromNumber.startsWith("whatsapp:")) {
+                fromNumber = "whatsapp:" + fromNumber;
+            } else if (fromNumber == null) {
+                fromNumber = "whatsapp:+14155238886"; // Ultimate fallback if properties are missing
+            }
 
             Twilio.init(accountSid, authToken);
 
@@ -960,10 +950,17 @@ public class WhatsappService {
             java.util.Map<String, Object> startNode = new java.util.LinkedHashMap<>();
             startNode.put("id", "start");
             startNode.put("type", "MENU");
-            startNode.put("textEn",
-                    "Welcome to Niphad Nagar Panchayat\nPlease select the department for your complaint:");
-            startNode.put("textMr",
-                    "आपले स्वागत आहे निफाड नगर पंचायत मध्ये\nकृपया आपल्या तक्रारीसाठी योग्य विभाग निवडा:");
+            
+            com.nagar.parishad.backend.entity.User tenantAdmin = userRepository.findById(adminId).orElse(null);
+            String orgName = (tenantAdmin != null && tenantAdmin.getOrganizationName() != null) 
+                             ? tenantAdmin.getOrganizationName() 
+                             : "Nagar Panchayat";
+
+            String welcomeEn = getConfig("WELCOME_MSG_EN", adminId, "Welcome to " + orgName + "\nPlease select the department for your complaint:");
+            String welcomeMr = getConfig("WELCOME_MSG_MR", adminId, "आपले स्वागत आहे " + orgName + " मध्ये\nकृपया आपल्या तक्रारीसाठी योग्य विभाग निवडा:");
+            
+            startNode.put("textEn", welcomeEn);
+            startNode.put("textMr", welcomeMr);
             startNode.put("storageKey", "departmentId");
 
             java.util.List<java.util.Map<String, String>> startOptions = new java.util.ArrayList<>();
@@ -971,7 +968,6 @@ public class WhatsappService {
                     .findByAdminId(adminId);
 
             if (depts == null || depts.isEmpty()) {
-                com.nagar.parishad.backend.entity.User tenantAdmin = userRepository.findById(adminId).orElse(null);
                 if (tenantAdmin != null) {
                     try {
                         departmentService.createDefaultDepartments(tenantAdmin);

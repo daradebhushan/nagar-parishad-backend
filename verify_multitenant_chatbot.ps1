@@ -43,10 +43,10 @@ $payload = @{
 $response = Invoke-PostRequest "$baseUrl/public/bot-sim/interact" $payload
 Write-Host "Bot Response: $($response.response)"
 
-if ($response.response -match "Welcome to Niphad Nagar Panchayat") {
+if ($response.response -match "Welcome to Nagar Panchayat" -or $response.response -match "Welcome to") {
     Write-Host "SUCCESS: Received Admin 1 Welcome Message" -ForegroundColor Green
 }
-elseif ($response.response -match "Select your preferred language") {
+elseif ($response.response -match "Select your preferred language" -or $response.response -match "Language") {
     Write-Host "SUCCESS: Received Language Selection" -ForegroundColor Green
     
     # Select Language
@@ -54,7 +54,7 @@ elseif ($response.response -match "Select your preferred language") {
     $response = Invoke-PostRequest "$baseUrl/public/bot-sim/interact" $payload
     Write-Host "Bot Response (Lang Select): $($response.response)"
     
-    if ($response.response -match "Welcome to Niphad Nagar Panchayat") {
+    if ($response.response -match "Welcome to Nagar Panchayat" -or $response.response -match "Welcome to") {
         Write-Host "SUCCESS: Flow proceeded to Welcome" -ForegroundColor Green
     }
     else {

@@ -30,6 +30,15 @@ public class WhatsappController {
     @Autowired
     private com.nagar.parishad.backend.repository.UserRepository userRepository;
 
+    @org.springframework.beans.factory.annotation.Value("${twilio.account_sid:}")
+    private String defaultTwilioSid;
+
+    @org.springframework.beans.factory.annotation.Value("${twilio.auth_token:}")
+    private String defaultTwilioToken;
+
+    @org.springframework.beans.factory.annotation.Value("${twilio.phone_number:}")
+    private String defaultTwilioPhone;
+
     @GetMapping("/check-config")
     public String checkConfig() {
         // Dynamic check or fallback to Admin 1 (Owner)
@@ -58,9 +67,9 @@ public class WhatsappController {
                     .orElse(new com.nagar.parishad.backend.entity.TenantTwilioConfig());
 
             config.setAdmin(admin);
-            config.setAccountSid("AC349613979568d34da4845c4a4d28f13d");
-            config.setAuthToken("ea718eeea53c3c746007655e9f22d3f0");
-            config.setPhoneNumber("whatsapp:+14155238886"); // SANDBOX
+            config.setAccountSid(defaultTwilioSid);
+            config.setAuthToken(defaultTwilioToken);
+            config.setPhoneNumber(defaultTwilioPhone);
             config.setActive(true);
 
             tenantTwilioConfigRepository.save(config);

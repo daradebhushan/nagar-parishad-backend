@@ -44,6 +44,8 @@ public class ComplaintController {
             } else {
                 return ResponseEntity.ok(java.util.Collections.emptyList());
             }
+        } else if (user.getRole() == Role.ADMIN || user.getRole() == Role.OWNER) {
+            return ResponseEntity.ok(complaintService.getComplaintsByAdmin(user.getId()));
         }
 
         return ResponseEntity.ok(complaintService.getAllComplaints());
