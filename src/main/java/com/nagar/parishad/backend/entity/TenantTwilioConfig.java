@@ -21,13 +21,10 @@ public class TenantTwilioConfig {
     @JoinColumn(name = "admin_id", nullable = false, unique = true)
     private User admin;
 
-    @Column(nullable = false)
     private String accountSid;
 
-    @Column(nullable = false)
     private String authToken;
 
-    @Column(nullable = false, unique = true)
     private String phoneNumber; // The "From" number (e.g., whatsapp:+91...)
 
     private boolean active = true;

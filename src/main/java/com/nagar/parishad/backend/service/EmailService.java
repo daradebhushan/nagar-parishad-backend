@@ -28,7 +28,7 @@ public class EmailService {
             org.springframework.mail.javamail.MimeMessageHelper helper = new org.springframework.mail.javamail.MimeMessageHelper(
                     message, true);
 
-            helper.setFrom(fromEmail);
+            helper.setFrom("TownSeva <" + fromEmail + ">");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true); // true indicates HTML content
@@ -63,7 +63,7 @@ public class EmailService {
             org.springframework.mail.javamail.MimeMessageHelper helper = new org.springframework.mail.javamail.MimeMessageHelper(
                     message, true);
 
-            helper.setFrom(fromEmail);
+            helper.setFrom("TownSeva <" + fromEmail + ">");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);
