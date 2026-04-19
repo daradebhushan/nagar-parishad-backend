@@ -82,7 +82,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/api/public/**")).permitAll() // Chatbot Public APIs
                         .requestMatchers(antMatcher("/uploads/**")).permitAll() // Allow image loading without auth
                                                                                 // header
-                        .anyRequest().permitAll());
+                        .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
 

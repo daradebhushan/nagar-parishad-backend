@@ -73,8 +73,11 @@ public class WhatsappService {
             java.net.URL url = new java.net.URL(mediaUrl);
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
 
-            String accountSid = (config != null && config.getAccountSid() != null) ? config.getAccountSid() : defaultTwilioSid;
-            String authToken = (config != null && config.getAuthToken() != null) ? config.getAuthToken() : defaultTwilioToken;
+            String accountSid = (config != null) ? config.getAccountSid() : null;
+            String authToken = (config != null) ? config.getAuthToken() : null;
+
+            if (accountSid != null && accountSid.length() > 34) accountSid = accountSid.substring(0, 34);
+            if (authToken != null && authToken.length() > 32) authToken = authToken.substring(0, 32);
 
             String auth = accountSid + ":" + authToken;
             String encodedAuth = java.util.Base64.getEncoder()
@@ -693,9 +696,13 @@ public class WhatsappService {
                 return;
             }
 
-            String accountSid = (tenantConfig != null && tenantConfig.getAccountSid() != null) ? tenantConfig.getAccountSid() : defaultTwilioSid;
-            String authToken = (tenantConfig != null && tenantConfig.getAuthToken() != null) ? tenantConfig.getAuthToken() : defaultTwilioToken;
-            String fromNumber = (tenantConfig != null && tenantConfig.getPhoneNumber() != null) ? tenantConfig.getPhoneNumber() : defaultTwilioPhone;
+            String accountSid = (tenantConfig != null) ? tenantConfig.getAccountSid() : null;
+            String authToken = (tenantConfig != null) ? tenantConfig.getAuthToken() : null;
+            String fromNumber = (tenantConfig != null) ? tenantConfig.getPhoneNumber() : null;
+            
+            if (accountSid != null && accountSid.length() > 34) accountSid = accountSid.substring(0, 34);
+            if (authToken != null && authToken.length() > 32) authToken = authToken.substring(0, 32);
+            
             if (fromNumber != null && !fromNumber.startsWith("whatsapp:")) {
                 fromNumber = "whatsapp:" + fromNumber;
             } else if (fromNumber == null) {
@@ -706,7 +713,7 @@ public class WhatsappService {
 
             com.twilio.rest.api.v2010.account.MessageCreator creator = Message.creator(
                     new com.twilio.type.PhoneNumber("whatsapp:" + to),
-                    new com.twilio.type.PhoneNumber("whatsapp:" + fromNumber),
+                    new com.twilio.type.PhoneNumber(fromNumber),
                     text);
 
             if (menuNode != null && menuNode.path("options").isArray()) {
