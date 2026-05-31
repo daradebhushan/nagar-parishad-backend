@@ -20,6 +20,8 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
 
     Page<Task> findByDepartmentId(Long departmentId, Pageable pageable);
 
+    List<Task> findByDepartmentId(Long departmentId);
+
     Page<Task> findByAssignedStaffId(Long staffId, Pageable pageable);
 
     long countByStatus(TaskStatus status);

@@ -4,9 +4,9 @@ import com.nagar.parishad.backend.entity.Task;
 import com.nagar.parishad.backend.entity.TaskAttachment;
 import com.nagar.parishad.backend.entity.User;
 import com.nagar.parishad.backend.repository.TaskAttachmentRepository;
-import com.nagar.parishad.backend.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +32,7 @@ public class FileStorageService {
     com.nagar.parishad.backend.repository.TaskCommentRepository commentRepository;
 
     @Autowired
-    TaskRepository taskRepository;
+    TaskService taskService;
 
     public TaskAttachment storeFile(Long taskId, MultipartFile file, User user) {
         return storeAttachment(taskId, null, file, user);
@@ -52,8 +52,8 @@ public class FileStorageService {
     }
 
     private TaskAttachment storeAttachment(Long taskId, Long commentId, MultipartFile file, User user) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+        Task task = taskService.getTaskById(taskId, user);
+        taskService.assertTaskCollaborationAccess(task, user);
 
         com.nagar.parishad.backend.entity.TaskComment comment = null;
         if (commentId != null) {
@@ -99,25 +99,27 @@ public class FileStorageService {
         }
     }
 
-    public List<TaskAttachment> getAttachments(Long taskId) {
+    public List<TaskAttachment> getAttachments(Long taskId, User user) {
+        taskService.getTaskById(taskId, user);
         return attachmentRepository.findByTaskId(taskId);
     }
 
-    public TaskAttachment getAttachment(Long id) {
-        return attachmentRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
+    public TaskAttachment getAttachment(Long id, User user) {
+        TaskAttachment attachment = attachmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("File not found"));
+        taskService.assertTaskAccess(attachment.getTask(), user);
+        return attachment;
     }
 
     public void deleteAttachment(Long id, User user) {
-        TaskAttachment attachment = getAttachment(id);
+        TaskAttachment attachment = getAttachment(id, user);
+        taskService.assertTaskCollaborationAccess(attachment.getTask(), user);
 
-        // Permission check: Allow if user is ADMIN, DEPT_HEAD, or the uploader
-        com.nagar.parishad.backend.enums.Role role = user.getRole();
-        boolean isAuthorized = role == com.nagar.parishad.backend.enums.Role.ADMIN ||
-                role == com.nagar.parishad.backend.enums.Role.DEPARTMENT_HEAD ||
+        boolean isAuthorized = taskService.isTaskManager(user) ||
                 (attachment.getUploadedBy() != null && attachment.getUploadedBy().getId().equals(user.getId()));
 
         if (!isAuthorized) {
-            throw new RuntimeException("Unauthorized to delete this attachment");
+            throw new AccessDeniedException("Unauthorized to delete this attachment");
         }
 
         try {

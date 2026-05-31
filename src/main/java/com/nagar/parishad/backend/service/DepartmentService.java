@@ -65,26 +65,112 @@ public class DepartmentService {
     @Autowired
     com.nagar.parishad.backend.repository.UserRepository userRepository;
 
+    @Autowired
+    com.nagar.parishad.backend.repository.ComplaintRepository complaintRepository;
+
     public void deleteDepartment(Long id) {
-        // Check 1: Users assigned to this department
-        long userCount = userRepository.countByDepartmentId(id);
-        if (userCount > 0) {
-            throw new RuntimeException(
-                    "Cannot delete department. There are " + userCount + " staff members assigned to it.");
-        }
+        deleteDepartment(id, "RESTRICT");
+    }
 
-        // Check 2: Tasks assigned to this department
-        long taskCount = taskRepository.countByDepartmentId(id);
-        if (taskCount > 0) {
-            throw new RuntimeException("Cannot delete department. There are " + taskCount + " tasks linked to it.");
+    @org.springframework.transaction.annotation.Transactional
+    public void deleteDepartment(Long id, String action) {
+        if (action == null) {
+            action = "RESTRICT";
         }
+        action = action.toUpperCase();
 
-        // Safe to delete:
-        // 1. Delete Linked Complaint Types (Cascade logic manually)
+        // 1. Resolve ComplaintType dependencies first to avoid foreign key violations in complaints
         List<com.nagar.parishad.backend.entity.ComplaintType> types = complaintTypeRepository.findByDepartmentId(id);
+        for (com.nagar.parishad.backend.entity.ComplaintType type : types) {
+            List<com.nagar.parishad.backend.entity.Complaint> linkedComplaints = complaintRepository.findByComplaintTypeId(type.getId());
+            for (com.nagar.parishad.backend.entity.Complaint comp : linkedComplaints) {
+                comp.setComplaintType(null);
+                comp.setDepartment(null); // Set both to null to dissociate safely
+                complaintRepository.save(comp);
+            }
+        }
+
+        if ("RESTRICT".equals(action)) {
+            // Check 1: Users assigned to this department
+            long userCount = userRepository.countByDepartmentId(id);
+            if (userCount > 0) {
+                throw new RuntimeException(
+                        "Cannot delete department. There are " + userCount + " staff members assigned to it.");
+            }
+
+            // Check 2: Tasks assigned to this department
+            long taskCount = taskRepository.countByDepartmentId(id);
+            if (taskCount > 0) {
+                throw new RuntimeException("Cannot delete department. There are " + taskCount + " tasks linked to it.");
+            }
+        } else if ("DISSOCIATE".equals(action)) {
+            // Reassign Users to null
+            List<com.nagar.parishad.backend.entity.User> users = userRepository.findByDepartmentId(id);
+            for (com.nagar.parishad.backend.entity.User user : users) {
+                user.setDepartment(null);
+                userRepository.save(user);
+            }
+
+            // Reassign Tasks to null
+            List<com.nagar.parishad.backend.entity.Task> tasks = taskRepository.findByDepartmentId(id);
+            for (com.nagar.parishad.backend.entity.Task task : tasks) {
+                task.setDepartment(null);
+                taskRepository.save(task);
+            }
+
+            // Reassign Complaints to null
+            List<com.nagar.parishad.backend.entity.Complaint> complaints = complaintRepository.findByDepartmentId(id);
+            for (com.nagar.parishad.backend.entity.Complaint complaint : complaints) {
+                complaint.setDepartment(null);
+                complaint.setComplaintType(null);
+                complaintRepository.save(complaint);
+            }
+        } else if ("CASCADE".equals(action)) {
+            // Reassign Complaints linked to this department
+            List<com.nagar.parishad.backend.entity.Complaint> complaints = complaintRepository.findByDepartmentId(id);
+            for (com.nagar.parishad.backend.entity.Complaint complaint : complaints) {
+                complaint.setDepartment(null);
+                complaint.setComplaintType(null);
+                complaintRepository.save(complaint);
+            }
+
+            // Dissolve related task references in complaints before deleting tasks
+            List<com.nagar.parishad.backend.entity.Task> tasks = taskRepository.findByDepartmentId(id);
+            for (com.nagar.parishad.backend.entity.Task task : tasks) {
+                com.nagar.parishad.backend.entity.Complaint comp = complaintRepository.findByRelatedTaskId(task.getId()).orElse(null);
+                if (comp != null) {
+                    comp.setRelatedTask(null);
+                    complaintRepository.save(comp);
+                }
+            }
+
+            // Delete Tasks (cascades comments and attachments)
+            taskRepository.deleteAll(tasks);
+
+            // Delete Users
+            List<com.nagar.parishad.backend.entity.User> users = userRepository.findByDepartmentId(id);
+            for (com.nagar.parishad.backend.entity.User user : users) {
+                // If the user being deleted is a supervisor for other users, reassign subordinates
+                List<com.nagar.parishad.backend.entity.User> subordinates = userRepository.findByAdminId(user.getId());
+                for (com.nagar.parishad.backend.entity.User sub : subordinates) {
+                    sub.setAdmin(user.getAdmin());
+                    userRepository.save(sub);
+                }
+                
+                // Clear supervisor reference from tasks assigned to them to prevent FK constraints
+                List<com.nagar.parishad.backend.entity.Task> assignedTasks = taskRepository.findByAssignedStaffId(user.getId(), org.springframework.data.domain.Pageable.unpaged()).getContent();
+                for (com.nagar.parishad.backend.entity.Task assignedTask : assignedTasks) {
+                    assignedTask.setAssignedStaff(null);
+                    taskRepository.save(assignedTask);
+                }
+            }
+            userRepository.deleteAll(users);
+        }
+
+        // Delete Linked Complaint Types
         complaintTypeRepository.deleteAll(types);
 
-        // 2. Delete Department
+        // Delete Department
         departmentRepository.deleteById(id);
     }
 

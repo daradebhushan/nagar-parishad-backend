@@ -21,6 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     java.util.List<User> findByDepartmentIdAndRole(Long departmentId, com.nagar.parishad.backend.enums.Role role);
 
+    java.util.List<User> findByDepartmentId(Long departmentId);
+
     java.util.List<User> findByRole(com.nagar.parishad.backend.enums.Role role);
 
     java.util.List<User> findByAdminIdAndRole(Long adminId, com.nagar.parishad.backend.enums.Role role);

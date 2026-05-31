@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,6 +53,70 @@ public class TaskService {
 
     @Autowired
     com.nagar.parishad.backend.repository.TaskAttachmentRepository taskAttachmentRepository;
+
+    public boolean isTaskManager(User user) {
+        return user.getRole() == Role.ADMIN || user.getRole() == Role.OWNER;
+    }
+
+    public Task getTaskById(Long taskId, User user) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+        assertTaskAccess(task, user);
+        return task;
+    }
+
+    public void assertTaskAccess(Task task, User user) {
+        Role role = user.getRole();
+        if (role == Role.OWNER) {
+            return;
+        }
+        if (role == Role.ADMIN) {
+            if (task.getAdmin() == null || task.getAdmin().getId().equals(user.getId())) {
+                return;
+            }
+        } else if (role == Role.DEPARTMENT_HEAD) {
+            if (user.getDepartment() != null && task.getDepartment() != null
+                    && user.getDepartment().getId().equals(task.getDepartment().getId())) {
+                return;
+            }
+        } else if (role == Role.STAFF) {
+            if (task.getAssignedStaff() != null && task.getAssignedStaff().getId().equals(user.getId())) {
+                return;
+            }
+        }
+        throw new AccessDeniedException("Access denied to this task");
+    }
+
+    public void assertTaskManagementAccess(Task task, User user) {
+        assertTaskAccess(task, user);
+        if (!isTaskManager(user)) {
+            throw new AccessDeniedException("Only chief officer access can manage tasks");
+        }
+    }
+
+    public void assertTaskStatusUpdateAccess(Task task, User user) {
+        assertTaskAccess(task, user);
+        if (isTaskManager(user)) {
+            return;
+        }
+        if (user.getRole() == Role.STAFF && task.getAssignedStaff() != null
+                && task.getAssignedStaff().getId().equals(user.getId())) {
+            return;
+        }
+        throw new AccessDeniedException("Only assigned staff can update this task");
+    }
+
+    public void assertTaskCollaborationAccess(Task task, User user) {
+        assertTaskAccess(task, user);
+        if (isTaskManager(user)) {
+            return;
+        }
+        if (user.getRole() == Role.STAFF && task.getAssignedStaff() != null
+                && task.getAssignedStaff().getId().equals(user.getId())) {
+            return;
+        }
+        throw new AccessDeniedException("Only assigned staff can update this task");
+    }
 
     public Task createTask(TaskRequest request, User admin) {
         Task task = new Task();
@@ -185,6 +250,7 @@ public class TaskService {
     public Task updateTask(Long taskId, TaskRequest request, User actor) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
+        assertTaskManagementAccess(task, actor);
 
         // Capture Old State
         Task oldTask = new Task();
@@ -258,6 +324,7 @@ public class TaskService {
     public Task updateTaskStatus(Long taskId, TaskStatus status, User user) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
+        assertTaskStatusUpdateAccess(task, user);
 
         // Capture old status
         String oldStatus = task.getStatus().toString();
@@ -284,6 +351,7 @@ public class TaskService {
     public void deleteTask(Long taskId, User actor) {
         Task task = taskRepository.findById(taskId).orElse(null);
         if (task != null) {
+            assertTaskManagementAccess(task, actor);
             // Detach Complaint before deleting to avoid Foreign Key Constraint violations
             if (task.getRelatedComplaint() != null) {
                 Complaint complaint = task.getRelatedComplaint();
@@ -309,10 +377,5 @@ public class TaskService {
         }
 
         taskRepository.deleteById(taskId);
-    }
-
-    public Task getTaskById(Long taskId) {
-        return taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
     }
 }

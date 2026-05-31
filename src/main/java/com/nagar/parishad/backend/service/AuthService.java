@@ -272,6 +272,21 @@ public class AuthService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Error: User not found"));
 
+        boolean isAdminOrOwner = modifier != null && 
+            (modifier.getRole() == Role.ADMIN || modifier.getRole() == Role.OWNER);
+
+        if (!isAdminOrOwner) {
+            // Standard users are only allowed to modify their name, mobile, email, password, and emailNotifications.
+            // Ignore any unauthorized attempts to modify administrative fields.
+            request.setRole(null);
+            request.setActive(null);
+            request.setDepartmentId(null);
+            request.setClearDepartment(null);
+            request.setAdminId(null);
+            request.setOrganizationName(null);
+            request.setOrganizationLogo(null);
+        }
+
         // Capture Old State for Notification
         User oldUser = new User();
         oldUser.setName(user.getName());

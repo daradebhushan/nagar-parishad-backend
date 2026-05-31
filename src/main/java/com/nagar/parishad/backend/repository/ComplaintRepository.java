@@ -18,7 +18,11 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     List<Complaint> findByCitizenMobile(String citizenMobile);
 
+    List<Complaint> findByComplaintTypeId(Long complaintTypeId);
+
     List<Complaint> findByAdminId(Long adminId);
 
     List<Complaint> findByRelatedTask_AssignedStaff_Id(Long staffId);
+
+    Optional<Complaint> findByRelatedTaskId(Long taskId);
 }

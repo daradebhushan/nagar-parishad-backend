@@ -48,10 +48,9 @@ public class TaskController {
     // Create Task (ADMIN, DEPT_HEAD?) - Request says "AUTH /admin/login", implies
     // Admin context mainly.
     // "API Requirements: Create Department... Task Model (Like Jira)..."
-    // Usually Admin or Dept Head creates tasks?
-    // Let's assumie ADMIN and DEPT_HEAD can create tasks.
+    // Only chief-officer/admin scope can create and assign tasks.
     @PostMapping("/tasks/create")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD')")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
     public ResponseEntity<ApiResponse<TaskDTO>> createTask(@Valid @RequestBody TaskRequest request,
             @AuthenticationPrincipal User user) {
         Task task = taskService.createTask(request, user);
@@ -87,13 +86,14 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{taskId}")
-    public ResponseEntity<ApiResponse<TaskDTO>> getTask(@PathVariable Long taskId) {
-        Task task = taskService.getTaskById(taskId);
+    public ResponseEntity<ApiResponse<TaskDTO>> getTask(@PathVariable Long taskId,
+            @AuthenticationPrincipal User user) {
+        Task task = taskService.getTaskById(taskId, user);
         return ResponseEntity.ok(ApiResponse.success("Task fetched successfully", convertToDTO(task)));
     }
 
     @PutMapping("/tasks/{taskId}")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD')") // Restricted to Admin/Dept Head
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
     public ResponseEntity<ApiResponse<TaskDTO>> updateTask(@PathVariable Long taskId,
             @Valid @RequestBody TaskRequest request,
             @AuthenticationPrincipal User user) {
@@ -102,7 +102,7 @@ public class TaskController {
     }
 
     @PatchMapping("/tasks/{taskId}/status")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD', 'STAFF')")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskDTO>> updateTaskStatus(@PathVariable Long taskId,
             @Valid @RequestBody com.nagar.parishad.backend.dto.TaskStatusUpdateRequest request,
             @AuthenticationPrincipal User user) {
@@ -113,7 +113,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/tasks/{taskId}")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD')")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteTask(@PathVariable Long taskId, @AuthenticationPrincipal User user) {
         taskService.deleteTask(taskId, user);
         return ResponseEntity.ok(ApiResponse.success("Task deleted successfully", null));
@@ -121,6 +121,7 @@ public class TaskController {
 
     // Comments
     @PostMapping("/tasks/{taskId}/comments")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskComment>> addComment(@PathVariable Long taskId,
             @Valid @RequestBody CommentRequest request, @AuthenticationPrincipal User user) {
         TaskComment comment = commentService.addComment(taskId, request.getText(), user);
@@ -128,12 +129,14 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{taskId}/comments")
-    public ResponseEntity<ApiResponse<List<TaskComment>>> getComments(@PathVariable Long taskId) {
-        List<TaskComment> comments = commentService.getComments(taskId);
+    public ResponseEntity<ApiResponse<List<TaskComment>>> getComments(@PathVariable Long taskId,
+            @AuthenticationPrincipal User user) {
+        List<TaskComment> comments = commentService.getComments(taskId, user);
         return ResponseEntity.ok(ApiResponse.success("Comments fetched", comments));
     }
 
     @PutMapping("/tasks/{taskId}/comments/{commentId}")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskComment>> updateComment(
             @PathVariable Long taskId,
             @PathVariable Long commentId,
@@ -144,6 +147,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/tasks/{taskId}/comments/{commentId}")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<Void>> deleteComment(
             @PathVariable Long taskId,
             @PathVariable Long commentId,
@@ -154,6 +158,7 @@ public class TaskController {
 
     // Attachments
     @PostMapping("/tasks/{taskId}/attachments")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskAttachment>> uploadAttachment(@PathVariable Long taskId,
             @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) {
         TaskAttachment attachment = fileStorageService.storeFile(taskId, file, user);
@@ -161,6 +166,7 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/{taskId}/attachments/batch")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<List<TaskAttachment>>> uploadAttachments(@PathVariable Long taskId,
             @RequestParam("files") List<MultipartFile> files, @AuthenticationPrincipal User user) {
         List<TaskAttachment> attachments = fileStorageService.storeFiles(taskId, files, user);
@@ -168,6 +174,7 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/{taskId}/comments/{commentId}/attachments")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskAttachment>> uploadCommentAttachment(@PathVariable Long taskId,
             @PathVariable Long commentId,
             @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) {
@@ -176,6 +183,7 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/{taskId}/comments/{commentId}/attachments/batch")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<List<TaskAttachment>>> uploadCommentAttachments(@PathVariable Long taskId,
             @PathVariable Long commentId,
             @RequestParam("files") List<MultipartFile> files, @AuthenticationPrincipal User user) {
@@ -184,14 +192,16 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{taskId}/attachments")
-    public ResponseEntity<ApiResponse<List<TaskAttachment>>> getAttachments(@PathVariable Long taskId) {
-        List<TaskAttachment> attachments = fileStorageService.getAttachments(taskId);
+    public ResponseEntity<ApiResponse<List<TaskAttachment>>> getAttachments(@PathVariable Long taskId,
+            @AuthenticationPrincipal User user) {
+        List<TaskAttachment> attachments = fileStorageService.getAttachments(taskId, user);
         return ResponseEntity.ok(ApiResponse.success("Attachments fetched", attachments));
     }
 
     @GetMapping("/tasks/attachments/{id}/download")
-    public ResponseEntity<Resource> downloadFile(@PathVariable Long id) {
-        TaskAttachment attachment = fileStorageService.getAttachment(id);
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long id,
+            @AuthenticationPrincipal User user) {
+        TaskAttachment attachment = fileStorageService.getAttachment(id, user);
         Path path = Paths.get(attachment.getFilePath());
         Resource resource;
         try {
@@ -206,6 +216,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/tasks/attachments/{id}")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<Void>> deleteAttachment(@PathVariable Long id,
             @AuthenticationPrincipal User user) {
         fileStorageService.deleteAttachment(id, user);

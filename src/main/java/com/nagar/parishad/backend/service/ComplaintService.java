@@ -5,6 +5,7 @@ import com.nagar.parishad.backend.dto.ComplaintSubmissionDTO;
 import com.nagar.parishad.backend.dto.TaskRequest;
 import com.nagar.parishad.backend.entity.*;
 import com.nagar.parishad.backend.enums.ComplaintStatus;
+import com.nagar.parishad.backend.enums.Role;
 import com.nagar.parishad.backend.repository.ComplaintRepository;
 import com.nagar.parishad.backend.repository.ComplaintTypeRepository;
 import com.nagar.parishad.backend.repository.DepartmentRepository;
@@ -19,6 +20,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.net.MalformedURLException;
@@ -115,10 +117,75 @@ public class ComplaintService {
                 .collect(Collectors.toList());
     }
 
+    public List<ComplaintDTO> getComplaintsForUser(User user) {
+        Role role = user.getRole();
+        if (role == Role.OWNER) {
+            return getAllComplaints();
+        }
+        if (role == Role.ADMIN) {
+            return getComplaintsByAdmin(user.getId());
+        }
+        if (role == Role.DEPARTMENT_HEAD) {
+            if (user.getDepartment() == null) {
+                return List.of();
+            }
+            return getComplaintsByDepartment(user.getDepartment().getId());
+        }
+        if (role == Role.STAFF) {
+            return complaintRepository.findByRelatedTask_AssignedStaff_Id(user.getId()).stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+        }
+        return List.of();
+    }
+
     public ComplaintDTO getComplaintById(Long id) {
         Complaint complaint = complaintRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Complaint not found"));
         return convertToDTO(complaint);
+    }
+
+    public ComplaintDTO getComplaintByIdForUser(Long id, User user) {
+        return convertToDTO(getComplaintEntityForUser(id, user));
+    }
+
+    public Complaint getComplaintEntityForUser(Long id, User user) {
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Complaint not found"));
+        assertComplaintAccess(complaint, user);
+        return complaint;
+    }
+
+    public void assertComplaintAccess(Complaint complaint, User user) {
+        Role role = user.getRole();
+        if (role == Role.OWNER) {
+            return;
+        }
+        if (role == Role.ADMIN) {
+            boolean inAdminScope = (complaint.getAdmin() != null && complaint.getAdmin().getId().equals(user.getId()))
+                    || (complaint.getDepartment() != null
+                            && complaint.getDepartment().getAdmin() != null
+                            && complaint.getDepartment().getAdmin().getId().equals(user.getId()))
+                    || (complaint.getRelatedTask() != null
+                            && complaint.getRelatedTask().getAdmin() != null
+                            && complaint.getRelatedTask().getAdmin().getId().equals(user.getId()));
+            if (inAdminScope) {
+                return;
+            }
+        } else if (role == Role.DEPARTMENT_HEAD) {
+            if (user.getDepartment() != null && complaint.getDepartment() != null
+                    && user.getDepartment().getId().equals(complaint.getDepartment().getId())) {
+                return;
+            }
+        } else if (role == Role.STAFF) {
+            if (complaint.getRelatedTask() != null
+                    && complaint.getRelatedTask().getAssignedStaff() != null
+                    && complaint.getRelatedTask().getAssignedStaff().getId().equals(user.getId())) {
+                return;
+            }
+        }
+
+        throw new AccessDeniedException("Access denied to this complaint");
     }
 
     @Transactional
@@ -288,9 +355,10 @@ public class ComplaintService {
         return dto;
     }
 
-    public ResponseEntity<Resource> downloadAttachment(Long attachmentId) {
+    public ResponseEntity<Resource> downloadAttachment(Long attachmentId, User user) {
         ComplaintAttachment attachment = complaintAttachmentRepository.findById(attachmentId)
                 .orElseThrow(() -> new RuntimeException("Attachment not found"));
+        assertComplaintAccess(attachment.getComplaint(), user);
 
         try {
             Path path = Paths.get(attachment.getFilePath());
