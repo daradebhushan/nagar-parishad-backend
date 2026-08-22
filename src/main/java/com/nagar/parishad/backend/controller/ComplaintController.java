@@ -76,4 +76,11 @@ public class ComplaintController {
             @AuthenticationPrincipal User user) {
         return complaintService.downloadAttachment(id, user);
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
+    public ResponseEntity<Void> deleteComplaint(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        complaintService.deleteComplaint(id, user);
+        return ResponseEntity.ok().build();
+    }
 }

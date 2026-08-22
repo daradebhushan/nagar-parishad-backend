@@ -10,6 +10,9 @@ import com.nagar.parishad.backend.entity.TaskComment;
 import com.nagar.parishad.backend.entity.User;
 import com.nagar.parishad.backend.enums.TaskPriority;
 import com.nagar.parishad.backend.enums.TaskStatus;
+import com.nagar.parishad.backend.entity.Department;
+import com.nagar.parishad.backend.repository.UserRepository;
+import com.nagar.parishad.backend.repository.DepartmentRepository;
 import com.nagar.parishad.backend.service.CommentService;
 import com.nagar.parishad.backend.service.FileStorageService;
 import com.nagar.parishad.backend.service.TaskService;
@@ -49,10 +52,13 @@ public class TaskController {
     // Admin context mainly.
     // "API Requirements: Create Department... Task Model (Like Jira)..."
     // Only chief-officer/admin scope can create and assign tasks.
-    @PostMapping("/tasks/create")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
+    @PostMapping({"/tasks/create", "/tasks"})
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'NAGARADHYAKSHA')")
     public ResponseEntity<ApiResponse<TaskDTO>> createTask(@Valid @RequestBody TaskRequest request,
             @AuthenticationPrincipal User user) {
+        if (!taskService.isTaskManager(user)) {
+            throw new org.springframework.security.access.AccessDeniedException("Only chief officer or authorized role can create tasks");
+        }
         Task task = taskService.createTask(request, user);
         return ResponseEntity.ok(ApiResponse.success("Task created successfully", convertToDTO(task)));
     }
@@ -93,7 +99,7 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{taskId}")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'NAGARADHYAKSHA')")
     public ResponseEntity<ApiResponse<TaskDTO>> updateTask(@PathVariable Long taskId,
             @Valid @RequestBody TaskRequest request,
             @AuthenticationPrincipal User user) {
@@ -101,8 +107,8 @@ public class TaskController {
         return ResponseEntity.ok(ApiResponse.success("Task updated successfully", convertToDTO(task)));
     }
 
-    @PatchMapping("/tasks/{taskId}/status")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
+    @RequestMapping(value = "/tasks/{taskId}/status", method = {RequestMethod.PATCH, RequestMethod.PUT})
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'NAGARADHYAKSHA', 'DEPARTMENT_HEAD', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskDTO>> updateTaskStatus(@PathVariable Long taskId,
             @Valid @RequestBody com.nagar.parishad.backend.dto.TaskStatusUpdateRequest request,
             @AuthenticationPrincipal User user) {
@@ -121,7 +127,7 @@ public class TaskController {
 
     // Comments
     @PostMapping("/tasks/{taskId}/comments")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'STAFF')")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'NAGARADHYAKSHA', 'DEPARTMENT_HEAD', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskComment>> addComment(@PathVariable Long taskId,
             @Valid @RequestBody CommentRequest request, @AuthenticationPrincipal User user) {
         TaskComment comment = commentService.addComment(taskId, request.getText(), user);
@@ -223,6 +229,12 @@ public class TaskController {
         return ResponseEntity.ok(ApiResponse.success("Attachment deleted successfully", null));
     }
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
     private TaskDTO convertToDTO(Task entity) {
         TaskDTO dto = new TaskDTO();
         dto.setId(entity.getId());
@@ -235,16 +247,30 @@ public class TaskController {
         dto.setDueDate(entity.getDueDate());
 
         if (entity.getDepartment() != null) {
-            dto.setDepartment(new TaskDTO.IdNameDTO(entity.getDepartment().getId(), entity.getDepartment().getName()));
+            String deptName = "";
+            try {
+                deptName = entity.getDepartment().getName();
+            } catch (Exception e) {
+                deptName = departmentRepository.findById(entity.getDepartment().getId()).map(Department::getName).orElse("");
+            }
+            dto.setDepartment(new TaskDTO.IdNameDTO(entity.getDepartment().getId(), deptName));
         }
 
         if (entity.getAssignedStaff() != null) {
-            dto.setAssignedStaff(new TaskDTO.IdNameDTO(entity.getAssignedStaff().getId(), entity.getAssignedStaff().getName()));
+            String staffName = "";
+            try {
+                staffName = entity.getAssignedStaff().getName();
+            } catch (Exception e) {
+                staffName = userRepository.findById(entity.getAssignedStaff().getId()).map(User::getName).orElse("");
+            }
+            dto.setAssignedStaff(new TaskDTO.IdNameDTO(entity.getAssignedStaff().getId(), staffName));
         }
 
         if (entity.getRelatedComplaint() != null) {
             dto.setRelatedComplaintId(entity.getRelatedComplaint().getId());
-            dto.setRelatedComplaintNo(entity.getRelatedComplaint().getComplaintNo());
+            try {
+                dto.setRelatedComplaintNo(entity.getRelatedComplaint().getComplaintNo());
+            } catch (Exception e) {}
         }
 
         return dto;

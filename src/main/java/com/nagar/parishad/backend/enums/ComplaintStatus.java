@@ -4,5 +4,6 @@ public enum ComplaintStatus {
     PENDING,
     REJECTED,
     ACCEPTED,
-    CONVERTED_TO_TASK
+    CONVERTED_TO_TASK,
+    RESOLVED
 }

@@ -158,7 +158,7 @@ public class ComplaintService {
 
     public void assertComplaintAccess(Complaint complaint, User user) {
         Role role = user.getRole();
-        if (role == Role.OWNER) {
+        if (role == Role.OWNER || role == Role.NAGARADHYAKSHA) {
             return;
         }
         if (role == Role.ADMIN) {
@@ -393,18 +393,25 @@ public class ComplaintService {
 
             // Check if it is a local path (starts with /uploads/)
             if (urlString.startsWith("/uploads/")) {
-                // ... (handling logic is simplified as we just copy to new location)
                 String sourcePathStr = urlString.startsWith("/") ? urlString.substring(1) : urlString;
-                // Caution: sourcePath might be relative to old 'uploads'. PROD won't have this
-                // issue usually.
-                // We just want to copy valid source to new dest.
-                java.nio.file.Path sourcePath = java.nio.file.Paths.get(sourcePathStr);
+                
+                // Strip "uploads/" prefix if present to resolve correctly against rootUploadDir
+                String relativePath = sourcePathStr;
+                if (relativePath.startsWith("uploads/")) {
+                    relativePath = relativePath.substring(8);
+                } else if (relativePath.startsWith("uploads\\")) {
+                    relativePath = relativePath.substring(8);
+                }
+
+                java.nio.file.Path sourcePath = java.nio.file.Paths.get(rootUploadDir).resolve(relativePath);
 
                 filePath = complaintDir.resolve(fileName).toString();
                 // Copy if source exists
                 if (java.nio.file.Files.exists(sourcePath)) {
                     java.nio.file.Files.copy(sourcePath, java.nio.file.Paths.get(filePath),
                             java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                } else {
+                    System.err.println("WARNING: Attachment source file does not exist at resolved path: " + sourcePath);
                 }
             } else {
                 // Remote URL
@@ -454,5 +461,10 @@ public class ComplaintService {
             System.err.println("Failed to download media from URL: " + urlString + " Error: " + e.getMessage());
             // Do not rethrow, just log and fail gracefully so the Complaint is preserved.
         }
+    }
+
+    public void deleteComplaint(Long id, User user) {
+        Complaint complaint = getComplaintEntityForUser(id, user);
+        complaintRepository.delete(complaint);
     }
 }

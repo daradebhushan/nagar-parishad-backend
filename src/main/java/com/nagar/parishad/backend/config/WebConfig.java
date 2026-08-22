@@ -18,13 +18,15 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(
             org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry registry) {
 
-        // Ensure "file:///" prefix and trailing slash
+        // Use "file:" prefix with the absolute path (already starts with /)
+        // e.g. /Users/bhushan/.../uploads/ → file:/Users/bhushan/.../uploads/
         String path = uploadDir;
         if (!path.endsWith("/") && !path.endsWith("\\")) {
             path += "/";
         }
 
-        String resourceLocation = "file:///" + path;
+        // "file:" + "/Users/..." = "file:/Users/..." (correct on macOS/Linux)
+        String resourceLocation = "file:" + path;
 
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations(resourceLocation);

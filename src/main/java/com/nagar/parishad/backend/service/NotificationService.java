@@ -6,10 +6,12 @@ import com.nagar.parishad.backend.enums.NotificationType;
 import com.nagar.parishad.backend.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class NotificationService {
 
     @Autowired
@@ -38,6 +40,12 @@ public class NotificationService {
 
     @Autowired
     private com.nagar.parishad.backend.repository.DepartmentRepository departmentRepository;
+
+    @Autowired
+    private com.nagar.parishad.backend.repository.ComplaintRepository complaintRepository;
+
+    @org.springframework.beans.factory.annotation.Value("${app.file.upload-dir:uploads}")
+    private String uploadDirConfig;
 
     @org.springframework.transaction.annotation.Transactional
     public void createNotification(User recipient, User sender, String message, NotificationType type,
@@ -95,6 +103,20 @@ public class NotificationService {
                                 addFileToAttachments(ta, filesToAttach);
                             }
                         }
+
+                        // Also attach related Complaint Photo & Attachments if converted from a Complaint
+                        com.nagar.parishad.backend.entity.Complaint relatedComplaint = complaintRepository
+                                .findByRelatedTaskId(task.getId()).orElse(null);
+                        if (relatedComplaint != null) {
+                            if (relatedComplaint.getPhotoUrl() != null) {
+                                resolveAndAddFile(relatedComplaint.getPhotoUrl(), filesToAttach);
+                            }
+                            if (relatedComplaint.getAttachments() != null) {
+                                for (com.nagar.parishad.backend.entity.ComplaintAttachment ca : relatedComplaint.getAttachments()) {
+                                    resolveAndAddFile(ca.getFilePath(), filesToAttach);
+                                }
+                            }
+                        }
                     } else {
                         emailBody = emailTemplateService.getNotificationEmail(recipient.getName(), message,
                                 type.toString(), magicToken, "/tasks");
@@ -105,16 +127,8 @@ public class NotificationService {
 
                     if (comment != null) {
                         emailSubject = "New Comment on Task: " + comment.getTask().getTitle();
-                        emailBody = emailTemplateService.getCommentNotificationEmail(comment.getTask(), comment); // Kept
-                                                                                                                  // old
-                                                                                                                  // for
-                                                                                                                  // now
-                                                                                                                  // or
-                                                                                                                  // update
-                                                                                                                  // if
-                                                                                                                  // needed
+                        emailBody = emailTemplateService.getCommentNotificationEmail(comment.getTask(), comment);
 
-                        // Fetch attachments for this comment
                         java.util.List<com.nagar.parishad.backend.entity.TaskAttachment> attachments = taskAttachmentRepository
                                 .findByCommentId(commentId);
                         if (attachments != null) {
@@ -140,10 +154,34 @@ public class NotificationService {
 
     private void addFileToAttachments(com.nagar.parishad.backend.entity.TaskAttachment ta,
             java.util.List<java.io.File> filesToAttach) {
+        if (ta != null && ta.getFilePath() != null) {
+            resolveAndAddFile(ta.getFilePath(), filesToAttach);
+        }
+    }
+
+    private void resolveAndAddFile(String pathStr, java.util.List<java.io.File> filesToAttach) {
         try {
-            java.io.File file = new java.io.File(ta.getFilePath());
-            if (file.exists()) {
-                filesToAttach.add(file);
+            if (pathStr == null || pathStr.trim().isEmpty()) return;
+            java.io.File file = new java.io.File(pathStr);
+            if (file.exists() && file.isFile()) {
+                if (!filesToAttach.contains(file)) filesToAttach.add(file);
+                return;
+            }
+
+            String cleanPath = pathStr.startsWith("/") ? pathStr.substring(1) : pathStr;
+            if (cleanPath.startsWith("uploads/")) {
+                cleanPath = cleanPath.substring("uploads/".length());
+            }
+
+            java.io.File resolvedFile = new java.io.File(uploadDirConfig, cleanPath);
+            if (resolvedFile.exists() && resolvedFile.isFile()) {
+                if (!filesToAttach.contains(resolvedFile)) filesToAttach.add(resolvedFile);
+                return;
+            }
+
+            java.io.File cwdFile = new java.io.File("uploads", cleanPath);
+            if (cwdFile.exists() && cwdFile.isFile()) {
+                if (!filesToAttach.contains(cwdFile)) filesToAttach.add(cwdFile);
             }
         } catch (Exception e) {
             System.err.println("Error resolving file path: " + e.getMessage());
@@ -356,52 +394,32 @@ public class NotificationService {
 
     public void sendStatusUpdateNotification(com.nagar.parishad.backend.entity.Task task, String oldStatus,
             String newStatus, User actor) {
+        if (actor == null || task == null) return;
+        User freshActor = userRepository.findById(actor.getId()).orElse(actor);
         System.out.println("DEBUG: NotificationService - Preparing notifications for Task " + task.getId()
-                + " (Status: " + oldStatus + " -> " + newStatus + ") by " + actor.getName());
+                + " (Status: " + oldStatus + " -> " + newStatus + ") by " + freshActor.getName());
 
         // 1. Notify Assigned Staff (if not actor)
-        if (task.getAssignedStaff() != null && !isSameUser(task.getAssignedStaff(), actor)) {
-            createStatusChangeNotification(task.getAssignedStaff(), actor, task, oldStatus, newStatus);
+        if (task.getAssignedStaff() != null && !isSameUser(task.getAssignedStaff(), freshActor)) {
+            User staff = userRepository.findById(task.getAssignedStaff().getId()).orElse(task.getAssignedStaff());
+            createStatusChangeNotification(staff, freshActor, task, oldStatus, newStatus);
         }
 
         // 2. Notify ALL Department Heads (if not actor)
         if (task.getDepartment() != null) {
             List<User> deptHeads = getDepartmentHeads(task.getDepartment().getId());
             for (User deptHead : deptHeads) {
-                if (deptHead != null && !isSameUser(deptHead, actor)
+                if (deptHead != null && !isSameUser(deptHead, freshActor)
                         && !isSameUser(deptHead, task.getAssignedStaff())) {
-                    createStatusChangeNotification(deptHead, actor, task, oldStatus, newStatus);
+                    createStatusChangeNotification(deptHead, freshActor, task, oldStatus, newStatus);
                 }
             }
         }
 
-        // 3. Notify The Admin (Chief Officer) under whom the employee works
-        User employeeAdmin = actor.getAdmin();
-        if (employeeAdmin != null && !isSameUser(employeeAdmin, actor)) {
-            // Check if this Admin was already notified as Dept Head (if roles overlap)
-            // But usually safe to notify.
-            System.out.println("DEBUG: Sending Status Update to Employee's Admin: " + employeeAdmin.getEmail());
-            createStatusChangeNotification(employeeAdmin, actor, task, oldStatus, newStatus);
-        }
-
-        // Also Notify Task Creator/Owner if different from Employee's Admin
-        if (task.getAdmin() != null && !isSameUser(task.getAdmin(), actor)
-                && (employeeAdmin == null || !isSameUser(task.getAdmin(), employeeAdmin))) {
-            System.out.println("DEBUG: Sending Status Update to Task Admin: " + task.getAdmin().getEmail());
-            createStatusChangeNotification(task.getAdmin(), actor, task, oldStatus, newStatus);
-        }
-
-        // 4. Notify System Owner
-        // ... (Keep existing Owner logic, or broadcast to all Owners if needed. Usually
-        // one Owner)
-        User owner = userRepository.findByRole(com.nagar.parishad.backend.enums.Role.OWNER).stream().findFirst()
-                .orElse(null);
-        if (owner != null && !isSameUser(owner, actor)) {
-            // Check if already notified as Admin (Owner often has Admin role too or is
-            // distinct)
-            // Just send copy for safety if not same user
-            System.out.println("DEBUG: Sending Status Update to Owner: " + owner.getEmail());
-            createStatusChangeNotification(owner, actor, task, oldStatus, newStatus);
+        // 3. Notify The Admin (Chief Officer)
+        if (task.getAdmin() != null && !isSameUser(task.getAdmin(), freshActor)) {
+            User admin = userRepository.findById(task.getAdmin().getId()).orElse(task.getAdmin());
+            createStatusChangeNotification(admin, freshActor, task, oldStatus, newStatus);
         }
     }
 

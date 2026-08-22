@@ -198,4 +198,86 @@ public class OwnerController {
         response.put("message", "Password reset successfully for " + email);
         return ResponseEntity.ok(response);
     }
+
+    @Autowired
+    private com.nagar.parishad.backend.repository.TenantTwilioConfigRepository tenantTwilioConfigRepository;
+
+    @GetMapping("/whatsapp/gateway")
+    public ResponseEntity<Map<String, Object>> getWhatsappGatewayStatus(@RequestParam(required = false, defaultValue = "1") Long adminId) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+            java.net.http.HttpRequest req = java.net.http.HttpRequest.newBuilder()
+                    .uri(java.net.URI.create("http://localhost:9092/api/status?adminId=" + adminId))
+                    .GET()
+                    .build();
+            java.net.http.HttpResponse<String> resp = client.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            Map<String, Object> gatewayResp = mapper.readValue(resp.body(), Map.class);
+            result.putAll(gatewayResp);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("status", "GATEWAY_OFFLINE");
+            result.put("error", e.getMessage());
+        }
+        result.put("adminId", adminId);
+        result.put("qrUrl", "http://localhost:9092/qr?adminId=" + adminId);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/whatsapp/gateway/unlink")
+    public ResponseEntity<Map<String, Object>> unlinkWhatsappGateway(@RequestParam(required = false, defaultValue = "1") Long adminId) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+            java.net.http.HttpRequest req = java.net.http.HttpRequest.newBuilder()
+                    .uri(java.net.URI.create("http://localhost:9092/api/unlink?adminId=" + adminId))
+                    .POST(java.net.http.HttpRequest.BodyPublishers.noBody())
+                    .build();
+            client.send(req, java.net.http.HttpResponse.BodyHandlers.ofString());
+            result.put("success", true);
+            result.put("adminId", adminId);
+            result.put("message", "WhatsApp session unlinked successfully for tenant " + adminId);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("error", e.getMessage());
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/admins/{id}/whatsapp")
+    public ResponseEntity<Map<String, Object>> getAdminWhatsappConfig(@PathVariable Long id) {
+        User admin = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Admin not found"));
+        com.nagar.parishad.backend.entity.TenantTwilioConfig config = tenantTwilioConfigRepository.findByAdminId(admin.getId())
+                .orElse(new com.nagar.parishad.backend.entity.TenantTwilioConfig());
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("adminId", admin.getId());
+        data.put("adminName", admin.getName());
+        data.put("phoneNumber", config.getPhoneNumber());
+        data.put("active", config.isActive());
+        data.put("accountSid", config.getAccountSid());
+        return ResponseEntity.ok(data);
+    }
+
+    @PutMapping("/admins/{id}/whatsapp")
+    public ResponseEntity<Map<String, Object>> updateAdminWhatsappConfig(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
+        User admin = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Admin not found"));
+        com.nagar.parishad.backend.entity.TenantTwilioConfig config = tenantTwilioConfigRepository.findByAdminId(admin.getId())
+                .orElse(new com.nagar.parishad.backend.entity.TenantTwilioConfig());
+        
+        config.setAdmin(admin);
+        if (payload.containsKey("phoneNumber")) {
+            config.setPhoneNumber((String) payload.get("phoneNumber"));
+        }
+        if (payload.containsKey("active")) {
+            config.setActive((Boolean) payload.get("active"));
+        }
+        tenantTwilioConfigRepository.save(config);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("success", true);
+        data.put("message", "WhatsApp configuration updated for " + admin.getName());
+        return ResponseEntity.ok(data);
+    }
 }

@@ -74,9 +74,9 @@ public class DashboardService {
                         stats.setMyAssignedTasks(myAssignedTasks);
                         return stats;
 
-                } else if (user.getRole() == Role.ADMIN) {
-                        // ADMIN (Tenant) Logic
-                        Long adminId = user.getId();
+                } else if (user.getRole() == Role.ADMIN || user.getRole() == Role.NAGARADHYAKSHA) {
+                        // ADMIN & NAGARADHYAKSHA (Tenant Town-Wide) Logic
+                        Long adminId = (user.getAdmin() != null) ? user.getAdmin().getId() : user.getId();
                         totalDepartments = departmentRepository.countByAdminId(adminId);
                         totalUsers = userRepository.countByAdminId(adminId);
                         totalTasks = taskRepository.countByAdminId(adminId);

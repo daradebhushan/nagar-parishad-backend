@@ -21,10 +21,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class TaskService {
 
     @Autowired
@@ -55,7 +58,9 @@ public class TaskService {
     com.nagar.parishad.backend.repository.TaskAttachmentRepository taskAttachmentRepository;
 
     public boolean isTaskManager(User user) {
-        return user.getRole() == Role.ADMIN || user.getRole() == Role.OWNER;
+        if (user == null || user.getRole() == null) return false;
+        return user.getRole() == Role.ADMIN || user.getRole() == Role.OWNER
+                || (user.getRole() == Role.NAGARADHYAKSHA && user.isCanModify());
     }
 
     public Task getTaskById(Long taskId, User user) {
@@ -67,7 +72,7 @@ public class TaskService {
 
     public void assertTaskAccess(Task task, User user) {
         Role role = user.getRole();
-        if (role == Role.OWNER) {
+        if (role == Role.OWNER || role == Role.NAGARADHYAKSHA) {
             return;
         }
         if (role == Role.ADMIN) {
@@ -94,16 +99,26 @@ public class TaskService {
         }
     }
 
-    public void assertTaskStatusUpdateAccess(Task task, User user) {
+    public void assertTaskStatusUpdateAccess(Task task, User user, TaskStatus targetStatus) {
         assertTaskAccess(task, user);
         if (isTaskManager(user)) {
             return;
         }
-        if (user.getRole() == Role.STAFF && task.getAssignedStaff() != null
-                && task.getAssignedStaff().getId().equals(user.getId())) {
-            return;
+        Role role = user.getRole();
+        if (role == Role.DEPARTMENT_HEAD) {
+            if (user.getDepartment() != null && task.getDepartment() != null
+                    && user.getDepartment().getId().equals(task.getDepartment().getId())) {
+                return;
+            }
         }
-        throw new AccessDeniedException("Only assigned staff can update this task");
+        if (role == Role.STAFF && task.getAssignedStaff() != null
+                && task.getAssignedStaff().getId().equals(user.getId())) {
+            if (targetStatus == TaskStatus.IN_PROGRESS || targetStatus == TaskStatus.UNDER_REVIEW || targetStatus == TaskStatus.ON_HOLD) {
+                return;
+            }
+            throw new AccessDeniedException("Staff can only request completion (UNDER_REVIEW) or mark IN_PROGRESS");
+        }
+        throw new AccessDeniedException("Unauthorized to update task status");
     }
 
     public void assertTaskCollaborationAccess(Task task, User user) {
@@ -111,11 +126,21 @@ public class TaskService {
         if (isTaskManager(user)) {
             return;
         }
-        if (user.getRole() == Role.STAFF && task.getAssignedStaff() != null
-                && task.getAssignedStaff().getId().equals(user.getId())) {
+        if (roleMatchesStaffOrHOD(task, user)) {
             return;
         }
-        throw new AccessDeniedException("Only assigned staff can update this task");
+        throw new AccessDeniedException("Only assigned staff, HOD, or Chief Officer can collaborate on this task");
+    }
+
+    private boolean roleMatchesStaffOrHOD(Task task, User user) {
+        if (user.getRole() == Role.STAFF && task.getAssignedStaff() != null && task.getAssignedStaff().getId().equals(user.getId())) {
+            return true;
+        }
+        if (user.getRole() == Role.DEPARTMENT_HEAD && user.getDepartment() != null && task.getDepartment() != null
+                && user.getDepartment().getId().equals(task.getDepartment().getId())) {
+            return true;
+        }
+        return false;
     }
 
     public Task createTask(TaskRequest request, User admin) {
@@ -324,14 +349,21 @@ public class TaskService {
     public Task updateTaskStatus(Long taskId, TaskStatus status, User user) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
-        assertTaskStatusUpdateAccess(task, user);
+        assertTaskStatusUpdateAccess(task, user, status);
 
         // Capture old status
-        String oldStatus = task.getStatus().toString();
+        String oldStatus = task.getStatus() != null ? task.getStatus().toString() : "UNKNOWN";
 
         // Update status
         task.setStatus(status);
         Task updatedTask = taskRepository.save(task);
+
+        // If completed, automatically resolve linked complaint
+        if (status == TaskStatus.COMPLETED && updatedTask.getRelatedComplaint() != null) {
+            Complaint complaint = updatedTask.getRelatedComplaint();
+            complaint.setStatus(ComplaintStatus.RESOLVED);
+            complaintRepository.save(complaint);
+        }
 
         // Record History
         com.nagar.parishad.backend.entity.TaskHistory history = new com.nagar.parishad.backend.entity.TaskHistory();

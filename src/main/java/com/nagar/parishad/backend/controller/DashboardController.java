@@ -21,7 +21,7 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     @GetMapping("/dashboard")
-    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'DEPARTMENT_HEAD', 'STAFF')")
+    @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'NAGARADHYAKSHA', 'DEPARTMENT_HEAD', 'STAFF')")
     public ResponseEntity<ApiResponse<StatsDto>> getDashboardStats(@AuthenticationPrincipal User user) {
         StatsDto stats = dashboardService.getStats(user);
         return ResponseEntity.ok(ApiResponse.success("Dashboard stats fetched", stats));

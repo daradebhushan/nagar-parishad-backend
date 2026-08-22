@@ -255,16 +255,36 @@ public class AuthService {
     }
 
     public void seedOwnerAccount() {
-        if (!userRepository.existsByEmail("owner@govt.in")) {
-            User user = new User();
-            user.setName("System Owner");
-            user.setEmail("owner@govt.in");
-            user.setPassword(encoder.encode("password"));
-            user.setRole(Role.OWNER);
-            user.setMobile("0000000000");
-            user.setActive(true);
-            userRepository.save(user);
-            System.out.println("SEED: Owner account created (owner@govt.in).");
+        // 1. Single Master System Owner Account (Bhushan Darade)
+        String masterEmail = "daradebhushan15+supreme@gmail.com";
+        User masterOwner = userRepository.findByEmail(masterEmail).orElse(null);
+        if (masterOwner == null) {
+            masterOwner = new User();
+            masterOwner.setName("Bhushan Darade (Supreme Owner)");
+            masterOwner.setEmail(masterEmail);
+            masterOwner.setRole(Role.OWNER);
+            masterOwner.setMobile("918237930576");
+            masterOwner.setActive(true);
+            masterOwner.setCanModify(true);
+        }
+        masterOwner.setPassword(encoder.encode("Bbd@1415"));
+        userRepository.save(masterOwner);
+        System.out.println("SEED: Master System Owner verified (" + masterEmail + ").");
+
+        // 2. Nagaradhyaksha Account for Pimpalgaon Baswant
+        String presEmail = "daradebhushan15+president@gmail.com";
+        User president = userRepository.findByEmail(presEmail).orElse(null);
+        if (president == null) {
+            president = new User();
+            president.setName("Nagaradhyaksha (Pimpalgaon Baswant)");
+            president.setEmail(presEmail);
+            president.setRole(Role.NAGARADHYAKSHA);
+            president.setMobile("919876543210");
+            president.setActive(true);
+            president.setCanModify(false); // Default read-only oversight
+            president.setPassword(encoder.encode("Bbd@123"));
+            userRepository.save(president);
+            System.out.println("SEED: Nagaradhyaksha account verified (" + presEmail + ").");
         }
     }
 

@@ -104,8 +104,12 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("User fetched successfully", user));
     }
 
+    @Autowired
+    private com.nagar.parishad.backend.repository.NotificationRepository notificationRepository;
+
     @DeleteMapping("/admin/users/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
+    @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable("id") Long id, @AuthenticationPrincipal User admin) {
         User userToDelete = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -121,6 +125,9 @@ public class AdminController {
                 && !userToDelete.getAdmin().getId().equals(admin.getId())) {
             throw new RuntimeException("Error: You cannot delete a user belonging to another Administrator.");
         }
+
+        // Clean up notifications sent to this user
+        notificationRepository.deleteByRecipient(userToDelete);
 
         // Notify before delete (so we have user data)
         notificationService.sendUserManagementNotification(userToDelete, "DELETED", admin);

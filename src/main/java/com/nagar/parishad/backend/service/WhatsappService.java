@@ -42,6 +42,9 @@ import java.util.Optional;
 @Service
 public class WhatsappService {
 
+    @org.springframework.beans.factory.annotation.Value("${app.file.upload-dir}")
+    private String uploadDirPath;
+
     @Autowired
     private ChatbotSessionRepository sessionRepository;
 
@@ -52,49 +55,78 @@ public class WhatsappService {
     private ComplaintService complaintService;
 
     // Helper to download media
-    // Helper to download media with Auth
-    private String downloadMedia(String mediaUrl, com.nagar.parishad.backend.entity.TenantTwilioConfig config) {
+    private String downloadMedia(String mediaUrl, Long adminId, com.nagar.parishad.backend.entity.TenantTwilioConfig config) {
         try {
             if (mediaUrl == null || mediaUrl.isEmpty())
                 return null;
 
-            // Generate unique filename with UUID to prevent collision during batch
-            // processing
+            // If already a local upload path, return directly
+            if (mediaUrl.startsWith("/uploads/")) {
+                return mediaUrl;
+            }
+
+            // Generate unique filename
             String fileName = "WA_" + System.currentTimeMillis() + "_"
                     + java.util.UUID.randomUUID().toString().substring(0, 8) + ".jpg";
-            java.nio.file.Path uploadDir = java.nio.file.Paths.get("uploads");
+            java.nio.file.Path uploadDir = java.nio.file.Paths.get(uploadDirPath);
             if (!java.nio.file.Files.exists(uploadDir)) {
                 java.nio.file.Files.createDirectories(uploadDir);
             }
 
             java.nio.file.Path filePath = uploadDir.resolve(fileName);
+            
+            String realMediaUrl = mediaUrl;
+            if (mediaUrl.startsWith("meta_media_id:")) {
+                String mediaId = mediaUrl.replace("meta_media_id:", "");
+                String metaToken = getConfig("META_API_TOKEN", adminId, null);
+                if (metaToken == null) return null;
+                
+                java.net.URL urlObj = new java.net.URL("https://graph.facebook.com/v19.0/" + mediaId);
+                java.net.HttpURLConnection connObj = (java.net.HttpURLConnection) urlObj.openConnection();
+                connObj.setRequestProperty("Authorization", "Bearer " + metaToken);
+                
+                try (java.util.Scanner scanner = new java.util.Scanner(connObj.getInputStream(), "UTF-8")) {
+                    String response = scanner.useDelimiter("\\A").next();
+                    com.fasterxml.jackson.databind.JsonNode root = objectMapper.readTree(response);
+                    realMediaUrl = root.path("url").asText("");
+                }
+            }
+                
+            if (realMediaUrl == null || realMediaUrl.isEmpty()) return null;
+                
+            if (realMediaUrl.contains("lookaside.fbsbx.com")) {
+                String metaToken = getConfig("META_API_TOKEN", adminId, null);
+                if (metaToken == null) return null;
 
-            // Download with Basic Auth
-            java.net.URL url = new java.net.URL(mediaUrl);
+                java.net.URL downloadUrl = new java.net.URL(realMediaUrl);
+                java.net.HttpURLConnection downloadConn = (java.net.HttpURLConnection) downloadUrl.openConnection();
+                downloadConn.setRequestProperty("Authorization", "Bearer " + metaToken);
+                downloadConn.setRequestProperty("User-Agent", "curl/7.64.1");
+                
+                try (java.io.InputStream in = downloadConn.getInputStream()) {
+                    java.nio.file.Files.copy(in, filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                }
+                
+                return "/uploads/" + fileName;
+            }
+
+            // Twilio Download with Basic Auth
+            java.net.URL url = new java.net.URL(realMediaUrl);
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
 
             String accountSid = (config != null) ? config.getAccountSid() : null;
             String authToken = (config != null) ? config.getAuthToken() : null;
-
-            if (accountSid != null && accountSid.length() > 34) accountSid = accountSid.substring(0, 34);
-            if (authToken != null && authToken.length() > 32) authToken = authToken.substring(0, 32);
-
-            String auth = accountSid + ":" + authToken;
-            String encodedAuth = java.util.Base64.getEncoder()
-                    .encodeToString(auth.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            conn.setRequestProperty("Authorization", "Basic " + encodedAuth);
-
-            // Handle redirects just in case (HttpURLConnection does it automatically
-            // usually, but Auth might drop)
-            // For now standard connection.
+            if (accountSid != null && authToken != null) {
+                String authString = accountSid + ":" + authToken;
+                String authStringEnc = java.util.Base64.getEncoder().encodeToString(authString.getBytes());
+                conn.setRequestProperty("Authorization", "Basic " + authStringEnc);
+            }
 
             try (java.io.InputStream in = conn.getInputStream()) {
                 java.nio.file.Files.copy(in, filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
             }
 
-            String localUrl = "/uploads/" + fileName;
-            System.err.println("SERVICE: Downloaded Whatsapp Media to: " + localUrl);
-            return localUrl;
+            return "/uploads/" + fileName;
         } catch (Exception e) {
             System.err.println("SERVICE: Failed to download media: " + e.getMessage());
             e.printStackTrace();
@@ -132,6 +164,27 @@ public class WhatsappService {
     @Value("${twilio.phone_number:}")
     private String defaultTwilioPhone;
 
+    @Value("${whatsapp.provider:twilio}")
+    private String whatsappProvider;
+
+    @Value("${whatsapp.wabridge.api.url:https://web.wabridge.com/api/createmessage}")
+    private String wabridgeApiUrl;
+
+    @Value("${whatsapp.wabridge.app_key:538eeb71-eee7-4fde-b5c4-e7c70c57b72b}")
+    private String wabridgeAppKey;
+
+    @Value("${whatsapp.wabridge.api.key:83847d3d23d9e61e51ee098a71f6ad0404e0507d45a04543c4}")
+    private String wabridgeApiKey;
+
+    @Value("${whatsapp.wabridge.device_id:6a854a7c37d2b5bf1307b305}")
+    private String wabridgeDeviceId;
+
+    @Value("${whatsapp.wabridge.phone_number_id:1308601895663795}")
+    private String wabridgePhoneNumberId;
+
+    @Value("${whatsapp.selfhosted.api.url:http://localhost:9092/api/send}")
+    private String selfHostedApiUrl;
+
     @Autowired
     private ComplaintTypeRepository complaintTypeRepository;
 
@@ -140,45 +193,95 @@ public class WhatsappService {
     // ThreadLocal to capture simulation output
     private static final ThreadLocal<StringBuilder> simulationOutput = new ThreadLocal<>();
 
+    private final java.util.concurrent.ConcurrentHashMap<String, Object> sessionLocks = new java.util.concurrent.ConcurrentHashMap<>();
+    private final java.util.concurrent.ConcurrentHashMap<String, com.twilio.http.TwilioRestClient> twilioClientCache = new java.util.concurrent.ConcurrentHashMap<>();
+
+    private com.twilio.http.TwilioRestClient getOrCreateTwilioClient(String accountSid, String authToken) {
+        String cacheKey = (accountSid != null ? accountSid : "") + ":" + (authToken != null ? authToken : "");
+        return twilioClientCache.computeIfAbsent(cacheKey, k -> new com.twilio.http.TwilioRestClient.Builder(accountSid, authToken).build());
+    }
+
+    @org.springframework.scheduling.annotation.Async("whatsappTaskExecutor")
     @Transactional
     public void processMessage(String mobile, String toNumber, String message, int numMedia,
             java.util.List<String> mediaUrls) {
-        System.err.println("SERVICE: DEBUG: Incoming Message from " + mobile + " to " + toNumber + ": " + message);
-
-        // 1. Identify Tenant (Admin) by 'To' number
-        com.nagar.parishad.backend.entity.TenantTwilioConfig tenantConfig = tenantTwilioConfigRepository
-                .findByPhoneNumber(toNumber)
-                .orElse(null);
-
-        if (tenantConfig == null) {
-            System.err.println("SERVICE: ERROR: No tenant config found for incoming number: " + toNumber);
+        if (mobile == null || mobile.trim().isEmpty()) {
             return;
-        } else {
-            System.err.println("SERVICE: Tenant Found. Admin: " + tenantConfig.getAdmin().getEmail());
         }
+        Object lock = sessionLocks.computeIfAbsent(mobile, k -> new Object());
+        synchronized (lock) {
+            try {
+                System.err.println("SERVICE: DEBUG: Incoming Message from " + mobile + " to " + toNumber + ": " + message);
 
-        com.nagar.parishad.backend.entity.User admin = tenantConfig.getAdmin();
+                // 1. Identify Tenant (Admin) by 'To' number with multi-format fallback
+                String lookupNumber = toNumber != null ? toNumber.replace("whatsapp:", "").trim() : "";
+                com.nagar.parishad.backend.entity.TenantTwilioConfig tenantConfig = null;
+                if (!lookupNumber.isEmpty()) {
+                    tenantConfig = tenantTwilioConfigRepository.findByPhoneNumber(lookupNumber).orElse(null);
+                    if (tenantConfig == null) {
+                        if (lookupNumber.startsWith("+")) {
+                            tenantConfig = tenantTwilioConfigRepository.findByPhoneNumber(lookupNumber.substring(1)).orElse(null);
+                        } else {
+                            tenantConfig = tenantTwilioConfigRepository.findByPhoneNumber("+" + lookupNumber).orElse(null);
+                        }
+                    }
+                }
+                if (tenantConfig == null) {
+                    tenantConfig = tenantTwilioConfigRepository.findAll().stream()
+                            .filter(com.nagar.parishad.backend.entity.TenantTwilioConfig::isActive)
+                            .findFirst()
+                            .orElse(null);
+                }
+                if (tenantConfig == null) {
+                    tenantConfig = tenantTwilioConfigRepository.findAll().stream().findFirst().orElse(null);
+                }
 
-        // 2. Load/Create Session for this Citizen + Admin Combo
-        ChatbotSession session = sessionRepository.findByMobileNumberAndAdminId(mobile, admin.getId())
-                .orElseGet(() -> {
-                    ChatbotSession newSession = new ChatbotSession();
-                    newSession.setMobileNumber(mobile);
-                    newSession.setAdmin(admin);
-                    newSession.setState(ChatbotState.LANGUAGE_SELECTION);
-                    return sessionRepository.save(newSession);
-                });
+                com.nagar.parishad.backend.entity.User admin = (tenantConfig != null) ? tenantConfig.getAdmin() : null;
+                if (admin == null) {
+                    admin = userRepository.findAll().stream().findFirst().orElse(null);
+                }
+                if (admin == null) {
+                    System.err.println("SERVICE: ERROR: No admin user found in system.");
+                    return;
+                }
 
-        // 3. Expiry Check (1 hour)
-        if (session.getLastUpdated().isBefore(LocalDateTime.now().minusHours(1))) {
-            System.out.println("DEBUG: Session expired for " + mobile + ". Resetting.");
-            session.setState(ChatbotState.LANGUAGE_SELECTION);
-            session.setTempData(null);
-            session.setLanguage(null);
+                // 2. Load/Create Session for this Citizen + Admin Combo safely
+                final com.nagar.parishad.backend.entity.User finalAdmin = admin;
+                ChatbotSession session = sessionRepository.findByMobileNumberAndAdminId(mobile, finalAdmin.getId()).orElse(null);
+                if (session == null) {
+                    try {
+                        ChatbotSession newSession = new ChatbotSession();
+                        newSession.setMobileNumber(mobile);
+                        newSession.setAdmin(finalAdmin);
+                        newSession.setState(ChatbotState.LANGUAGE_SELECTION);
+                        session = sessionRepository.save(newSession);
+                    } catch (Exception e) {
+                        // In case another thread created it
+                        session = sessionRepository.findByMobileNumberAndAdminId(mobile, finalAdmin.getId()).orElse(null);
+                    }
+                }
+
+                if (session == null) {
+                    System.err.println("SERVICE: ERROR: Failed to obtain session for " + mobile);
+                    return;
+                }
+
+                // 3. Inactivity Auto-Reset (10 minutes)
+                if (session.getLastUpdated() != null && session.getLastUpdated().isBefore(LocalDateTime.now().minusMinutes(10))) {
+                    System.out.println("DEBUG: Inactivity timeout for " + mobile + ". Auto-resetting session to start.");
+                    session.setState(ChatbotState.DYNAMIC_FLOW);
+                    session.setTempData(null);
+                    session.setLanguage("mr");
+                    updateTempData(session, "currentNodeId", "start");
+                }
+
+                handleState(session, message, numMedia, mediaUrls, tenantConfig);
+                sessionRepository.save(session);
+            } catch (Exception e) {
+                System.err.println("SERVICE: CRITICAL ERROR in processMessage: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
-
-        handleState(session, message, numMedia, mediaUrls, tenantConfig);
-        sessionRepository.save(session);
     }
 
     private void handleState(ChatbotSession session, String input, int numMedia, java.util.List<String> mediaUrls,
@@ -187,9 +290,13 @@ public class WhatsappService {
         System.out.println("DEBUG: handleState input=" + input + ", State=" + session.getState());
 
 
-        // Global Reset Command
-        if (input != null && (input.equalsIgnoreCase("RESET") || input.equalsIgnoreCase("Hi"))) {
-            // DIRECT JUMP TO MARATHI FLOW AS PER HARDCODED REQUIREMENT
+        // Global Reset / Greeting Commands
+        String norm = input != null ? input.trim().toLowerCase() : "";
+        if (norm.equals("reset") || norm.equals("hi") || norm.equals("hello") || norm.equals("hey")
+                || norm.equals("menu") || norm.equals("start") || norm.equals("restart")
+                || norm.equals("सुरुवात") || norm.equals("नमस्कार") || norm.equals("नमस्ते")
+                || norm.equals("main menu") || norm.equals("मुख्य मेनू")) {
+            // DIRECT JUMP TO MARATHI MUNICIPAL FLOW
             session.setState(ChatbotState.DYNAMIC_FLOW);
             session.setTempData(null);
             session.setLanguage("mr"); // Force Marathi context
@@ -318,8 +425,7 @@ public class WhatsappService {
                     System.err.println("DEBUG: SETTING SUB COMPLAINT TYPE: " + subIssue);
                     complaint.setSubComplaintType(subIssue);
                 } else {
-                    System.err.println("DEBUG: SUB COMPLAINT TYPE IS NULL or EMPTY. TempData description: "
-                            + tempData.get("description"));
+                    System.err.println("DEBUG: SUB COMPLAINT TYPE IS NULL or EMPTY.");
                 }
 
                 String cleanDescription = descDetail;
@@ -331,7 +437,11 @@ public class WhatsappService {
                 }
 
                 complaint.setDescription(cleanDescription);
-                complaint.setLocation(location);
+                if (location != null && location.matches("^[-+]?[0-9]*\\.?[0-9]+,[-+]?[0-9]*\\.?[0-9]+$")) {
+                    complaint.setLocation(location + " (https://maps.google.com/?q=" + location + ")");
+                } else {
+                    complaint.setLocation(location);
+                }
                 complaint.setPhotoUrl(photo);
                 complaint.setDepartment(dept);
                 complaint.setAdmin(session.getAdmin());
@@ -409,12 +519,18 @@ public class WhatsappService {
                         cleanDescription = subIssue + "\n\n" + cleanDescription;
                     }
                 }
+                
+                complaint.setDescription(cleanDescription);
+                if (subIssue != null && !subIssue.isEmpty()) {
+                    complaint.setSubComplaintType(subIssue);
+                }
 
                 if (finalType != null) {
                     complaint.setComplaintType(finalType);
-                    // Re-save with type
-                    complaintRepository.save(complaint);
                 }
+                
+                // Re-save with type and description
+                savedComplaint = complaintRepository.save(complaint);
 
                 // Attachments
                 String photoListJson = (String) tempData.get("photoList");
@@ -477,9 +593,11 @@ public class WhatsappService {
             String prompt = getLocalizedText(currentNode, session.getLanguage());
             if ("MENU".equals(nodeType)) {
                 prompt += "\n" + formatMenuOptions(currentNode, session.getLanguage());
+                sendMessage(session.getMobileNumber(), prompt, currentNode, session.getLanguage(), tenantConfig);
+            } else {
+                sendMessage(session.getMobileNumber(), prompt, tenantConfig);
             }
-
-            sendMessage(session.getMobileNumber(), prompt, tenantConfig);
+            
             updateTempData(session, "waitingForInput", true);
         } else
 
@@ -487,7 +605,7 @@ public class WhatsappService {
             // Process Input
             String nextNodeId = null;
 
-            if ("MENU".equals(nodeType)) {
+            if ("MENU".equals(nodeType) && !("ask_photo".equals(currentNodeId) && numMedia > 0)) {
                 JsonNode selectedOption = findSelectedOption(currentNode, input);
                 if (selectedOption != null) {
                     nextNodeId = selectedOption.path("nextId").asText();
@@ -505,6 +623,39 @@ public class WhatsappService {
                 String storageKey = currentNode.path("storageKey").asText();
                 String valueToStore = input;
 
+                if ("ask_name".equals(currentNodeId)) {
+                    String trimmedName = (input != null) ? input.trim() : "";
+                    if (trimmedName.matches("^[0-9]+$") || trimmedName.length() < 2) {
+                        String reAsk = "mr".equals(session.getLanguage())
+                                ? "कृपया आपले नाव अक्षरात टाईप करा (उदा. राहुल पाटील):"
+                                : "Please type your full name (e.g., Rahul Patil):";
+                        sendMessage(session.getMobileNumber(), reAsk, tenantConfig);
+                        return; // WAIT FOR VALID NAME
+                    }
+                }
+
+                if ("ask_desc_detail".equals(currentNodeId)) {
+                    String trimmedDetail = (input != null) ? input.trim() : "";
+                    if (trimmedDetail.isEmpty() || (trimmedDetail.matches("^[0-9]+$") && trimmedDetail.length() <= 2)) {
+                        String reAsk = "mr".equals(session.getLanguage())
+                                ? "कृपया समस्येबाबत थोडक्यात माहिती टाईप करा (उदा. गल्ली क्र. २ मध्ये लिकेज आहे):"
+                                : "Please provide details about the issue:";
+                        sendMessage(session.getMobileNumber(), reAsk, tenantConfig);
+                        return; // WAIT FOR VALID DETAIL
+                    }
+                }
+
+                if ("ask_location".equals(currentNodeId)) {
+                    String trimmedLoc = (input != null) ? input.trim() : "";
+                    if (trimmedLoc.isEmpty() || (trimmedLoc.matches("^[0-9]+$") && trimmedLoc.length() <= 2)) {
+                        String reAsk = "mr".equals(session.getLanguage())
+                                ? "कृपया ठिकाणाचा पत्ता टाईप करा किंवा लोकेशन पिन शेअर करा (उदा. मार्केट यार्ड जवळ):"
+                                : "Please share location or address:";
+                        sendMessage(session.getMobileNumber(), reAsk, tenantConfig);
+                        return; // WAIT FOR VALID LOCATION
+                    }
+                }
+
                 if ("ask_photo".equals(currentNodeId)) {
                     java.util.List<String> photoList = new java.util.ArrayList<>();
                     String existing = getTempData(session, "photoList", String.class);
@@ -520,44 +671,28 @@ public class WhatsappService {
                     if (numMedia > 0 && mediaUrls != null && !mediaUrls.isEmpty()) {
                         // DOWNLOAD ALL MEDIA
                         for (String mediaUrl : mediaUrls) {
-                            String localUrl = downloadMedia(mediaUrl, tenantConfig);
-                            if (localUrl != null) {
-                                photoList.add(localUrl);
+                            if (mediaUrl != null && !mediaUrl.isEmpty() && !"null".equalsIgnoreCase(mediaUrl)) {
+                                String localUrl = downloadMedia(mediaUrl, adminId, tenantConfig);
+                                if (localUrl != null) {
+                                    photoList.add(localUrl);
+                                }
                             }
                         }
-
-                        updateTempData(session, "photoList", objectMapper.writeValueAsString(photoList));
-
-                        // Update "photo" with the LAST one for backward compatibility
                         if (!photoList.isEmpty()) {
+                            updateTempData(session, "photoList", objectMapper.writeValueAsString(photoList));
                             updateTempData(session, "photo", photoList.get(photoList.size() - 1));
-                        }
-
-                        String reply = "mr".equals(session.getLanguage())
-                                ? "फोटो मिळाले (" + numMedia
-                                        + "). अधिक फोटो पाठवा किंवा पुढे जाण्यासाठी 'Next' टाईप करा."
-                                : "Photos received (" + numMedia + "). Send another or type 'Next' to proceed.";
-                        sendMessage(session.getMobileNumber(), reply, tenantConfig);
-                        return; // STAY ON SAME NODE
-                    } else if (input != null
-                            && (input.trim().equalsIgnoreCase("Skip") || input.trim().equalsIgnoreCase("Next"))) {
-                        if (photoList.isEmpty() && input.trim().equalsIgnoreCase("Skip")) {
-                            valueToStore = "Skip";
+                            valueToStore = photoList.get(photoList.size() - 1);
                         } else {
-                            valueToStore = "Next";
+                            valueToStore = "Skip";
                         }
                     } else {
-                        String reply = "mr".equals(session.getLanguage()) ? "कृपया फोटो पाठवा किंवा 'Next' टाईप करा."
-                                : "Please send photo or type 'Next'.";
-                        sendMessage(session.getMobileNumber(), reply, tenantConfig);
-                        return;
+                        // No media uploaded -> treat as Skip
+                        valueToStore = "Skip";
                     }
                 }
 
                 if (storageKey != null && !storageKey.isEmpty()) {
-                    if (!"photo".equals(storageKey) || !"Next".equals(valueToStore)) {
-                        updateTempData(session, storageKey, valueToStore);
-                    }
+                    updateTempData(session, storageKey, valueToStore);
                 }
                 nextNodeId = currentNode.path("nextId").asText(null);
             }
@@ -618,36 +753,67 @@ public class WhatsappService {
     }
 
     private JsonNode findSelectedOption(JsonNode node, String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return null;
+        }
         try {
-            System.out.println("DEBUG: findSelectedOption input: " + input);
+            String cleanInput = input.trim();
+
+            // 1. Normalize Devanagari numerals to English digits (१ -> 1, २ -> 2, etc.)
+            cleanInput = cleanInput.replace('०', '0')
+                                   .replace('१', '1')
+                                   .replace('२', '2')
+                                   .replace('३', '3')
+                                   .replace('४', '4')
+                                   .replace('५', '5')
+                                   .replace('६', '6')
+                                   .replace('७', '7')
+                                   .replace('८', '8')
+                                   .replace('९', '9');
+
+            // 2. Strip leading/trailing punctuation like "1.", "#1", "(1)", "option 1"
+            String numericCandidate = cleanInput.replaceAll("(?i)(option|क्रमांक|नंबर|no|#|\\.|\\)|\\(|\\s)+", "").trim();
 
             JsonNode options = node.path("options");
-            System.out.println("DEBUG: Options Array Size: " + (options.isArray() ? options.size() : "Not Array"));
-
-            if (options.isArray()) {
-                // First try numerical index
+            if (options.isArray() && options.size() > 0) {
+                // A. Check numerical index (1-based)
                 try {
-                    int idx = Integer.parseInt(input.trim());
+                    int idx = Integer.parseInt(numericCandidate);
                     if (idx > 0 && idx <= options.size()) {
                         return options.get(idx - 1);
                     }
-                } catch (NumberFormatException e) {
-                    // Try to match interactive payload (id or exact text)
-                    for (JsonNode opt : options) {
-                        String id = opt.path("id").asText();
-                        String lblEn = opt.path("labelEn").asText();
-                        String lblMr = opt.path("labelMr").asText();
-                        String lblHi = opt.path("labelHi").asText();
+                } catch (NumberFormatException ignored) {}
 
-                        if (input.equals(id) || input.equalsIgnoreCase(lblEn)
-                                || input.equalsIgnoreCase(lblMr) || input.equalsIgnoreCase(lblHi)) {
-                            return opt;
-                        }
+                // B. Exact Match on ID, Label En, Label Mr, Label Hi, or Value
+                for (JsonNode opt : options) {
+                    String id = opt.path("id").asText("");
+                    String value = opt.path("value").asText("");
+                    String lblEn = opt.path("labelEn").asText("");
+                    String lblMr = opt.path("labelMr").asText("");
+                    String lblHi = opt.path("labelHi").asText("");
+
+                    if (cleanInput.equalsIgnoreCase(id) || cleanInput.equalsIgnoreCase(value)
+                            || cleanInput.equalsIgnoreCase(lblEn) || cleanInput.equalsIgnoreCase(lblMr) || cleanInput.equalsIgnoreCase(lblHi)) {
+                        return opt;
+                    }
+                }
+
+                // C. Fuzzy / Substring Keyword Matching (e.g. citizen types "water", "light", "कचरा", "पाणी", "स्वच्छता")
+                String lowerInput = cleanInput.toLowerCase();
+                for (JsonNode opt : options) {
+                    String lblEn = opt.path("labelEn").asText("").toLowerCase();
+                    String lblMr = opt.path("labelMr").asText("").toLowerCase();
+                    String value = opt.path("value").asText("").toLowerCase();
+
+                    if ((!lblEn.isEmpty() && (lblEn.contains(lowerInput) || lowerInput.contains(lblEn))) ||
+                        (!lblMr.isEmpty() && (lblMr.contains(lowerInput) || lowerInput.contains(lblMr))) ||
+                        (!value.isEmpty() && (value.contains(lowerInput) || lowerInput.contains(value)))) {
+                        return opt;
                     }
                 }
             }
         } catch (Exception e) {
-            // Ignore
+            System.err.println("Error in findSelectedOption: " + e.getMessage());
         }
         return null;
     }
@@ -696,20 +862,55 @@ public class WhatsappService {
                 return;
             }
 
-            String accountSid = (tenantConfig != null) ? tenantConfig.getAccountSid() : null;
-            String authToken = (tenantConfig != null) ? tenantConfig.getAuthToken() : null;
-            String fromNumber = (tenantConfig != null) ? tenantConfig.getPhoneNumber() : null;
+            Long adminId = (tenantConfig != null && tenantConfig.getAdmin() != null) ? tenantConfig.getAdmin().getId() : 1L;
+
+            if ("meta_official".equalsIgnoreCase(whatsappProvider)) {
+                boolean sent = sendViaOfficialMeta(to, text, menuNode, lang, adminId);
+                if (sent) {
+                    return;
+                }
+                System.err.println("SERVICE: Official Meta dispatch returned false/error. Falling back to Twilio dispatch...");
+            }
+
+            // Check if active provider is Self-Hosted Gateway (100% Free)
+            if ("selfhosted".equalsIgnoreCase(whatsappProvider) || "baileys".equalsIgnoreCase(whatsappProvider)) {
+                boolean sent = sendViaSelfHosted(to, text, adminId);
+                if (sent) {
+                    return;
+                }
+                System.err.println("SERVICE: Self-Hosted dispatch returned false/error. Falling back to WA Bridge / Twilio...");
+            }
+
+            // Check if active provider is WABridge / Meta Gateway with auto-fallback to Twilio
+            if ("wabridge".equalsIgnoreCase(whatsappProvider) || "meta".equalsIgnoreCase(whatsappProvider)) {
+                boolean sent = sendViaWabridge(to, text);
+                if (sent) {
+                    return;
+                }
+                System.err.println("SERVICE: WABridge/Meta dispatch returned false/error. Falling back to Twilio dispatch...");
+            }
+
+            // Twilio Dispatch Engine
+            String accountSid = (tenantConfig != null && tenantConfig.getAccountSid() != null && !tenantConfig.getAccountSid().isEmpty())
+                    ? tenantConfig.getAccountSid()
+                    : defaultTwilioSid;
+            String authToken = (tenantConfig != null && tenantConfig.getAuthToken() != null && !tenantConfig.getAuthToken().isEmpty())
+                    ? tenantConfig.getAuthToken()
+                    : defaultTwilioToken;
+            String fromNumber = (tenantConfig != null && tenantConfig.getPhoneNumber() != null && !tenantConfig.getPhoneNumber().isEmpty())
+                    ? tenantConfig.getPhoneNumber()
+                    : defaultTwilioPhone;
             
             if (accountSid != null && accountSid.length() > 34) accountSid = accountSid.substring(0, 34);
             if (authToken != null && authToken.length() > 32) authToken = authToken.substring(0, 32);
             
             if (fromNumber != null && !fromNumber.startsWith("whatsapp:")) {
                 fromNumber = "whatsapp:" + fromNumber;
-            } else if (fromNumber == null) {
+            } else if (fromNumber == null || fromNumber.isEmpty()) {
                 fromNumber = "whatsapp:+14155238886"; // Ultimate fallback if properties are missing
             }
 
-            Twilio.init(accountSid, authToken);
+            com.twilio.http.TwilioRestClient twilioClient = getOrCreateTwilioClient(accountSid, authToken);
 
             com.twilio.rest.api.v2010.account.MessageCreator creator = Message.creator(
                     new com.twilio.type.PhoneNumber("whatsapp:" + to),
@@ -728,12 +929,183 @@ public class WhatsappService {
                 }
             }
 
-            creator.create();
-            System.err.println("SERVICE: Message Sent Successfully.");
+            creator.create(twilioClient);
+            System.err.println("SERVICE: Message Sent Successfully via Twilio to " + to);
         } catch (Exception e) {
-            System.err.println("SERVICE: TWILIO SEND ERROR: " + e.getMessage());
+            System.err.println("SERVICE: WHATSAPP SEND ERROR to " + to + ": " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+    private boolean sendViaWabridge(String to, String text) {
+        try {
+            String cleanTo = to.replace("whatsapp:", "").replace("+", "").trim();
+            org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
+            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+
+            java.util.Map<String, Object> payload = new java.util.HashMap<>();
+            payload.put("app-key", (wabridgeAppKey != null && !wabridgeAppKey.isEmpty()) ? wabridgeAppKey : "538eeb71-eee7-4fde-b5c4-e7c70c57b72b");
+            payload.put("auth-key", (wabridgeApiKey != null && !wabridgeApiKey.isEmpty()) ? wabridgeApiKey : "83847d3d23d9e61e51ee098a71f6ad0404e0507d45a04543c4");
+            payload.put("device_id", (wabridgeDeviceId != null && !wabridgeDeviceId.isEmpty()) ? wabridgeDeviceId : "6a854a7c37d2b5bf1307b305");
+            payload.put("destination_number", cleanTo);
+            payload.put("message", text);
+
+            String targetUrl = (wabridgeApiUrl != null && !wabridgeApiUrl.isEmpty()) ? wabridgeApiUrl : "https://web.wabridge.com/api/createmessage";
+
+            org.springframework.http.HttpEntity<java.util.Map<String, Object>> requestEntity = new org.springframework.http.HttpEntity<>(payload, headers);
+            org.springframework.http.ResponseEntity<String> response = restTemplate.postForEntity(targetUrl, requestEntity, String.class);
+            System.err.println("SERVICE: WA Bridge Message Sent to " + cleanTo + ", Response: " + response.getStatusCode() + " - " + response.getBody());
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (Exception e) {
+            System.err.println("SERVICE: WA Bridge Send Error to " + to + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean sendViaOfficialMeta(String to, String text, JsonNode menuNode, String lang, Long adminId) {
+        try {
+            String cleanTo = to.replace("whatsapp:", "").replace("+", "").trim();
+            String metaToken = getConfig("META_API_TOKEN", adminId, null);
+            String phoneId = getConfig("META_PHONE_ID", adminId, null);
+
+            if (metaToken == null || phoneId == null) {
+                System.err.println("SERVICE: Missing META_API_TOKEN or META_PHONE_ID for admin " + adminId);
+                return false;
+            }
+
+            org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
+            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(metaToken);
+
+            java.util.Map<String, Object> payload = new java.util.HashMap<>();
+            payload.put("messaging_product", "whatsapp");
+            payload.put("to", cleanTo);
+
+            if (menuNode != null && menuNode.has("options")) {
+                JsonNode options = menuNode.path("options");
+                payload.put("type", "interactive");
+                java.util.Map<String, Object> interactive = new java.util.HashMap<>();
+                
+                java.util.Map<String, Object> body = new java.util.HashMap<>();
+                String originalText = getLocalizedText(menuNode, lang);
+                if (originalText == null || originalText.isEmpty()) {
+                    originalText = text; // fallback
+                }
+                body.put("text", originalText);
+                interactive.put("body", body);
+
+                java.util.Map<String, Object> action = new java.util.HashMap<>();
+
+                if (options.size() <= 3) {
+                    interactive.put("type", "button");
+                    java.util.List<java.util.Map<String, Object>> buttons = new java.util.ArrayList<>();
+                    for (int i = 0; i < options.size(); i++) {
+                        JsonNode opt = options.get(i);
+                        java.util.Map<String, Object> button = new java.util.HashMap<>();
+                        button.put("type", "reply");
+                        java.util.Map<String, Object> reply = new java.util.HashMap<>();
+                        String replyId = opt.path("value").asText("");
+                        if (replyId.isEmpty()) replyId = opt.path("nextId").asText("");
+                        if (replyId.isEmpty()) replyId = String.valueOf(i + 1);
+                        reply.put("id", replyId);
+                        
+                        String buttonTitle = "mr".equals(lang) && opt.has("labelMr") ? opt.get("labelMr").asText()
+                                : "hi".equals(lang) && opt.has("labelHi") ? opt.get("labelHi").asText()
+                                        : opt.path("labelEn").asText();
+                        if (buttonTitle.isEmpty()) buttonTitle = getLocalizedText(opt, lang); // fallback
+                        
+                        if (buttonTitle.length() > 20) {
+                            buttonTitle = buttonTitle.substring(0, 20); // Meta enforces max 20 chars for buttons
+                        }
+                        reply.put("title", buttonTitle);
+                        button.put("reply", reply);
+                        buttons.add(button);
+                    }
+                    action.put("buttons", buttons);
+                    interactive.put("action", action);
+                } else {
+                    interactive.put("type", "list");
+                    action.put("button", "mr".equals(lang) ? "पर्याय निवडा" : "Select Options"); // Max 20 chars
+                    
+                    java.util.List<java.util.Map<String, Object>> sections = new java.util.ArrayList<>();
+                    java.util.Map<String, Object> section = new java.util.HashMap<>();
+                    section.put("title", "Menu");
+                    java.util.List<java.util.Map<String, Object>> rows = new java.util.ArrayList<>();
+                    
+                    for (int i = 0; i < options.size(); i++) {
+                        JsonNode opt = options.get(i);
+                        java.util.Map<String, Object> row = new java.util.HashMap<>();
+                        
+                        String rowId = opt.path("value").asText("");
+                        if (rowId.isEmpty()) rowId = opt.path("nextId").asText("");
+                        if (rowId.isEmpty()) rowId = String.valueOf(i + 1);
+                        row.put("id", rowId);
+                        
+                        String title = "mr".equals(lang) && opt.has("labelMr") ? opt.get("labelMr").asText()
+                                : "hi".equals(lang) && opt.has("labelHi") ? opt.get("labelHi").asText()
+                                        : opt.path("labelEn").asText();
+                        if (title.isEmpty()) title = getLocalizedText(opt, lang); // fallback
+                        
+                        if (title.length() > 24) {
+                            title = title.substring(0, 24); // Meta limit
+                        }
+                        row.put("title", title);
+                        rows.add(row);
+                    }
+                    section.put("rows", rows);
+                    sections.add(section);
+                    action.put("sections", sections);
+                }
+                interactive.put("action", action);
+                payload.put("interactive", interactive);
+            } else {
+                payload.put("type", "text");
+                java.util.Map<String, Object> textObj = new java.util.HashMap<>();
+                textObj.put("body", text);
+                payload.put("text", textObj);
+            }
+
+            String targetUrl = "https://graph.facebook.com/v19.0/" + phoneId + "/messages";
+
+            org.springframework.http.HttpEntity<java.util.Map<String, Object>> requestEntity = new org.springframework.http.HttpEntity<>(payload, headers);
+            org.springframework.http.ResponseEntity<String> response = restTemplate.postForEntity(targetUrl, requestEntity, String.class);
+            System.err.println("SERVICE: Official Meta Message Sent to " + cleanTo + ", Response: " + response.getStatusCode() + " - " + response.getBody());
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (Exception e) {
+            System.err.println("SERVICE: Official Meta Send Error to " + to + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean sendViaSelfHosted(String to, String text, Long adminId) {
+        try {
+            String cleanTo = to.replace("whatsapp:", "").replace("+", "").trim();
+            org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
+            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+
+            java.util.Map<String, Object> payload = new java.util.HashMap<>();
+            payload.put("to", cleanTo);
+            payload.put("message", text);
+            if (adminId != null) {
+                payload.put("adminId", adminId);
+            }
+
+            String targetUrl = (selfHostedApiUrl != null && !selfHostedApiUrl.isEmpty()) ? selfHostedApiUrl : "http://localhost:9092/api/send";
+
+            org.springframework.http.HttpEntity<java.util.Map<String, Object>> requestEntity = new org.springframework.http.HttpEntity<>(payload, headers);
+            org.springframework.http.ResponseEntity<String> response = restTemplate.postForEntity(targetUrl, requestEntity, String.class);
+            System.err.println("SERVICE: Self-Hosted Gateway Message Sent to " + cleanTo + ", Response: " + response.getStatusCode() + " - " + response.getBody());
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (Exception e) {
+            System.err.println("SERVICE: Self-Hosted Send Error to " + to + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+
 
     private String buildInteractivePayload(JsonNode options, String lang) {
         try {
@@ -1077,12 +1449,44 @@ public class WhatsappService {
             // ASK PHOTO
             java.util.Map<String, Object> askPhoto = new java.util.LinkedHashMap<>();
             askPhoto.put("id", "ask_photo");
-            askPhoto.put("type", "TEXT");
-            askPhoto.put("textEn", "Please send a photo (or type 'Skip'):");
-            askPhoto.put("textMr", "कृपया तक्रारीचा फोटो पाठवा (किंवा 'Skip' टाइप करा):");
+            askPhoto.put("type", "MENU");
+            askPhoto.put("textEn", "Please send a photo (or click 'Skip'):");
+            askPhoto.put("textMr", "कृपया तक्रारीचा फोटो पाठवा (किंवा 'Skip' वर क्लिक करा):");
             askPhoto.put("storageKey", "photo");
-            askPhoto.put("nextId", "ask_location");
+            askPhoto.put("nextId", "ask_more_photos");
+            
+            java.util.List<java.util.Map<String, String>> photoOptions = new java.util.ArrayList<>();
+            java.util.Map<String, String> skipOpt = new java.util.LinkedHashMap<>();
+            skipOpt.put("value", "Skip");
+            skipOpt.put("labelEn", "Skip Photo");
+            skipOpt.put("labelMr", "फोटो नको (Skip)");
+            skipOpt.put("nextId", "ask_location");
+            photoOptions.add(skipOpt);
+            askPhoto.put("options", photoOptions);
+            
             flowNodes.add(askPhoto);
+            
+            // ASK MORE PHOTOS
+            java.util.Map<String, Object> askMorePhotos = new java.util.LinkedHashMap<>();
+            askMorePhotos.put("id", "ask_more_photos");
+            askMorePhotos.put("type", "MENU");
+            askMorePhotos.put("textEn", "Do you want to add another photo or proceed?");
+            askMorePhotos.put("textMr", "तुम्हाला आणखी फोटो जोडायचे आहेत की पुढे जायचे आहे?");
+            java.util.List<java.util.Map<String, String>> moreOptions = new java.util.ArrayList<>();
+            java.util.Map<String, String> addMore = new java.util.LinkedHashMap<>();
+            addMore.put("value", "add_more");
+            addMore.put("labelEn", "Add More");
+            addMore.put("labelMr", "आणखी जोडा");
+            addMore.put("nextId", "ask_photo");
+            moreOptions.add(addMore);
+            java.util.Map<String, String> nextOpt = new java.util.LinkedHashMap<>();
+            nextOpt.put("value", "next");
+            nextOpt.put("labelEn", "Next");
+            nextOpt.put("labelMr", "पुढे जा");
+            nextOpt.put("nextId", "ask_location");
+            moreOptions.add(nextOpt);
+            askMorePhotos.put("options", moreOptions);
+            flowNodes.add(askMorePhotos);
 
             // ASK LOCATION
             java.util.Map<String, Object> askLocation = new java.util.LinkedHashMap<>();

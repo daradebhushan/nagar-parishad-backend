@@ -22,10 +22,14 @@ public class TaskComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
+            "assignedStaff", "admin", "relatedComplaint", "attachments" })
     private Task task;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "department",
+            "assignedStaff", "admin", "password" })
     private User user;
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -39,7 +43,7 @@ public class TaskComment {
         timestamp = LocalDateTime.now();
     }
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties("comment")
     private java.util.List<TaskAttachment> attachments;
 

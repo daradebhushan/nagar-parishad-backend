@@ -23,7 +23,7 @@ public class ChatbotSession {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_id", nullable = false)
+    @JoinColumn(name = "admin_id", nullable = true)
     private User admin;
 
     @Column(name = "mobile_number", nullable = false)

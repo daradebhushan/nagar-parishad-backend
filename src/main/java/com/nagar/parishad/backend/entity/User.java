@@ -78,6 +78,9 @@ public class User implements UserDetails {
 
     private String profilePhoto;
 
+    @Column(name = "can_modify", columnDefinition = "boolean default false")
+    private boolean canModify = false;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

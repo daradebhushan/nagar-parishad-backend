@@ -47,7 +47,7 @@ create table tenant_twilio_config (active bit not null, admin_id bigint not null
 
 create table chatbot_config (admin_id bigint not null, id bigint not null auto_increment, conf_key varchar(255) not null, conf_value varchar(255) not null, primary key (id)) engine=InnoDB;
 
-create table chatbot_sessions (admin_id bigint not null, id bigint not null auto_increment, last_updated datetime(6), mobile_number varchar(255) not null, state varchar(100), temp_data TEXT, language varchar(10), primary key (id)) engine=InnoDB;
+create table chatbot_sessions (admin_id bigint, id bigint not null auto_increment, last_updated datetime(6), mobile_number varchar(255) not null, state varchar(100), temp_data TEXT, language varchar(10), primary key (id)) engine=InnoDB;
 
 -- Add Constraints
 alter table chatbot_config add constraint UK_chatbot_config unique (admin_id, conf_key);
