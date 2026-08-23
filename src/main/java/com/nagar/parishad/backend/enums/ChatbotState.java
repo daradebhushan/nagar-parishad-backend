@@ -10,5 +10,6 @@ public enum ChatbotState {
     PHOTO_INPUT,
     LOCATION_INPUT,
     DYNAMIC_FLOW,
+    TRACKING,
     COMPLETED
 }

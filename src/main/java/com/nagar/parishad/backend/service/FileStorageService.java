@@ -146,4 +146,16 @@ public class FileStorageService {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
+
+    public String saveFileBytes(String prefix, String extension, byte[] data) {
+        String fileName = prefix + "_" + UUID.randomUUID().toString() + extension;
+        Path targetLocation = Paths.get(uploadDir).toAbsolutePath().normalize().resolve(fileName);
+        try {
+            Files.createDirectories(targetLocation.getParent());
+            Files.write(targetLocation, data);
+            return "/uploads/" + fileName;
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not store byte array to " + fileName, ex);
+        }
+    }
 }

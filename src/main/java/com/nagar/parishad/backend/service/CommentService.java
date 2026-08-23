@@ -21,7 +21,7 @@ public class CommentService {
     @Autowired
     TaskService taskService;
 
-    public TaskComment addComment(Long taskId, String text, User user) {
+    public TaskComment addComment(Long taskId, String text, User user, boolean hasAttachments) {
         Task task = taskService.getTaskById(taskId, user);
         taskService.assertTaskCollaborationAccess(task, user);
 
@@ -32,10 +32,18 @@ public class CommentService {
 
         TaskComment savedComment = commentRepository.save(comment);
 
-        // Notify All Stakeholders
-        notificationService.sendTaskCommentNotification(savedComment);
+        // Notify stakeholders only if no attachments are pending
+        if (!hasAttachments) {
+            notificationService.sendTaskCommentNotification(savedComment);
+        }
 
         return savedComment;
+    }
+
+    public void sendCommentNotification(Long commentId) {
+        TaskComment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        notificationService.sendTaskCommentNotification(comment);
     }
 
     public List<TaskComment> getComments(Long taskId, User user) {

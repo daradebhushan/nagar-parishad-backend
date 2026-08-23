@@ -59,6 +59,9 @@ public class ComplaintService {
     private TaskService taskService;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private TaskRepository taskRepository; // Needed to update Task entity with back-ref if needed, though OneToOne
                                            // mappedBy usually handles owner.
                                            // But Task is the owner? No, Complaint has `relatedTask` JoinColumn.
@@ -71,14 +74,22 @@ public class ComplaintService {
         Department dept = departmentRepository.findById(dto.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department not found"));
 
-        ComplaintType type = complaintTypeRepository.findById(dto.getComplaintTypeId())
-                .orElseThrow(() -> new RuntimeException("Complaint Type not found"));
+        ComplaintType type = null;
+        if (dto.getComplaintTypeId() != null) {
+            type = complaintTypeRepository.findById(dto.getComplaintTypeId()).orElse(null);
+        }
 
         Complaint complaint = new Complaint();
         complaint.setCitizenName(dto.getName());
         complaint.setCitizenMobile(dto.getMobile());
+        complaint.setCitizenEmail(dto.getEmail());
         complaint.setDepartment(dept);
-        complaint.setComplaintType(type);
+        if (dept.getAdmin() != null) {
+            complaint.setAdmin(dept.getAdmin());
+        }
+        if (type != null) {
+            complaint.setComplaintType(type);
+        }
         complaint.setDescription(dto.getDescription());
         complaint.setPhotoUrl(dto.getPhotoUrl());
         complaint.setLocation(dto.getLocation());
@@ -98,6 +109,15 @@ public class ComplaintService {
         } else if (dto.getPhotoUrl() != null && !dto.getPhotoUrl().isEmpty()) {
             // Fallback for singular photoUrl field
             addAttachmentFromUrl(savedComplaint, dto.getPhotoUrl());
+        }
+
+        // Send Email Confirmation if Email is Provided
+        if (dto.getEmail() != null && !dto.getEmail().trim().isEmpty()) {
+            try {
+                sendComplaintConfirmationEmail(savedComplaint);
+            } catch (Exception e) {
+                System.err.println("Failed to send complaint confirmation email: " + e.getMessage());
+            }
         }
 
         return convertToDTO(savedComplaint);
@@ -201,22 +221,17 @@ public class ComplaintService {
         Complaint saved = complaintRepository.save(complaint);
 
         // Send Notification if Rejected
+        // (REMOVED: To save API costs, we no longer send an outbound message on rejection. 
+        // Citizens can see the rejection reason by querying their status via the TRACK command.)
+        /*
         if (status == ComplaintStatus.REJECTED && reason != null && complaint.getDepartment() != null) {
-            // Find Admin for the department (Owner of the tenant)
-            // Department -> Admin mapping should exist.
-            // Assumption: Department has an Admin field or we use the Admin from the
-            // Context?
-            // "Admin" here refers to the Tenant Admin.
-            // Department entity has admin_id?
-            // Let's check Department entity or use the one from context if available,
-            // but updateStatus context might be web admin.
-            // Safe bet: The Department belongs to an Admin.
             User admin = saved.getDepartment().getAdmin();
             if (admin != null) {
                 String msg = "Your complaint (" + saved.getComplaintNo() + ") has been REJECTED.\nReason: " + reason;
                 whatsappService.sendNotification(saved.getCitizenMobile(), msg, admin.getId());
             }
         }
+        */
 
         return convertToDTO(saved);
     }
@@ -298,12 +313,13 @@ public class ComplaintService {
         }
     }
 
-    private ComplaintDTO convertToDTO(Complaint entity) {
+    public ComplaintDTO convertToDTO(Complaint entity) {
         ComplaintDTO dto = new ComplaintDTO();
         dto.setId(entity.getId());
         dto.setComplaintNo(entity.getComplaintNo());
         dto.setCitizenName(entity.getCitizenName());
         dto.setCitizenMobile(entity.getCitizenMobile());
+        dto.setCitizenEmail(entity.getCitizenEmail());
 
         if (entity.getDepartment() != null) {
             dto.setDepartmentId(entity.getDepartment().getId());
@@ -353,6 +369,92 @@ public class ComplaintService {
         }
 
         return dto;
+    }
+
+    private void sendComplaintConfirmationEmail(Complaint complaint) {
+        if (complaint.getCitizenEmail() == null || complaint.getCitizenEmail().trim().isEmpty()) {
+            return;
+        }
+
+        String orgName = "Nagar Parishad Administration";
+        String publicId = "9f78dda4-9e56-11f1-aa50-f4bfe129274b"; // default fallback
+        if (complaint.getAdmin() != null) {
+            if (complaint.getAdmin().getOrganizationName() != null && !complaint.getAdmin().getOrganizationName().isEmpty()) {
+                orgName = complaint.getAdmin().getOrganizationName();
+            }
+            if (complaint.getAdmin().getPublicId() != null) {
+                publicId = complaint.getAdmin().getPublicId();
+            }
+        }
+
+        String deptName = complaint.getDepartment() != null 
+            ? (complaint.getDepartment().getNameMr() != null ? complaint.getDepartment().getNameMr() + " (" + complaint.getDepartment().getName() + ")" : complaint.getDepartment().getName())
+            : "N/A";
+
+        String trackingUrl = "https://" + (complaint.getAdmin() != null && complaint.getAdmin().getDomain() != null ? complaint.getAdmin().getDomain() : "complaint") + ".townseva.in/track?complaintNo=" + complaint.getComplaintNo() + "&mobile=" + (complaint.getCitizenMobile() != null ? complaint.getCitizenMobile() : "");
+
+        String subject = "तक्रार नोंदणी पावती - " + orgName + " [तक्रार क्र: " + complaint.getComplaintNo() + "]";
+
+        // Build HTML preview for the main photo if it exists
+        String photoPreviewHtml = "";
+
+        if (complaint.getPhotoUrl() != null && !complaint.getPhotoUrl().trim().isEmpty()) {
+            String fullPhotoUrl = "https://api.townseva.in" + (complaint.getPhotoUrl().startsWith("/") ? complaint.getPhotoUrl() : "/" + complaint.getPhotoUrl());
+            photoPreviewHtml = "      <tr>"
+                    + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; font-weight: 600;\">जोडलेला फोटो (Attached Photo)</td>"
+                    + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #ea580c; font-weight: bold;\">"
+                    + "          <a href=\"" + fullPhotoUrl + "\" target=\"_blank\" style=\"color: #ea580c; text-decoration: underline;\">📎 जोडलेला फोटो पहा (View Photo)</a>"
+                    + "        </td>"
+                    + "      </tr>";
+        }
+
+        String body = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8fafc; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);\">"
+                + "  <div style=\"background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); padding: 32px 24px; text-align: center; color: #ffffff;\">"
+                + "    <div style=\"background: rgba(255, 255, 255, 0.2); width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 28px;\">🏛️</div>"
+                + "    <h1 style=\"margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.5px;\">" + orgName + "</h1>"
+                + "    <p style=\"margin: 6px 0 0; font-size: 14px; opacity: 0.9;\">नागरिक तक्रार निवारण प्रणाली (Citizen Grievance Redressal)</p>"
+                + "  </div>"
+                + "  <div style=\"padding: 28px 24px; background-color: #ffffff;\">"
+                + "    <div style=\"background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 16px; margin-bottom: 24px; text-align: center;\">"
+                + "      <p style=\"margin: 0; color: #166534; font-weight: bold; font-size: 16px;\">✅ तक्रार यशस्वीरीत्या नोंदवण्यात आली आहे!</p>"
+                + "      <p style=\"margin: 4px 0 0; color: #15803d; font-size: 13px;\">आपली तक्रार संबंधित विभागाकडे पुढील कार्यवाहीसाठी पाठवण्यात आली आहे.</p>"
+                + "    </div>"
+                + "    <p style=\"font-size: 15px; color: #334155; line-height: 1.6; margin: 0 0 16px;\">नमस्कार <strong>" + (complaint.getCitizenName() != null ? complaint.getCitizenName() : "नागरिक") + "</strong>,</p>"
+                + "    <p style=\"font-size: 14px; color: #475569; line-height: 1.6; margin: 0 0 20px;\">आपल्या तक्रारीचे तपशील खालीलप्रमाणे आहेत. कृपया भविष्यातील संदर्भासाठी व स्थिती तपासण्यासाठी आपला तक्रार क्रमांक जपून ठेवा.</p>"
+                + "    <table style=\"width: 100%; border-collapse: separate; border-spacing: 0; background-color: #f8fafc; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; margin-bottom: 24px;\">"
+                + "      <tr>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; font-weight: 600; width: 40%;\">तक्रार क्रमांक (Complaint No)</td>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 14px; color: #ea580c; font-weight: 800;\">" + complaint.getComplaintNo() + "</td>"
+                + "      </tr>"
+                + "      <tr>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; font-weight: 600;\">संबंधित विभाग (Department)</td>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #1e293b; font-weight: 600;\">" + deptName + "</td>"
+                + "      </tr>"
+                + "      <tr>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; font-weight: 600;\">तक्रारीचा तपशील (Description)</td>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155;\">" + (complaint.getDescription() != null ? complaint.getDescription() : "N/A") + "</td>"
+                + "      </tr>"
+                + "      <tr>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; font-weight: 600;\">ठिकाण / पत्ता (Location)</td>"
+                + "        <td style=\"padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155;\">" + (complaint.getLocation() != null ? complaint.getLocation() : "N/A") + "</td>"
+                + "      </tr>"
+                + photoPreviewHtml
+                + "      <tr>"
+                + "        <td style=\"padding: 12px 16px; font-size: 13px; color: #64748b; font-weight: 600;\">सद्यस्थिती (Current Status)</td>"
+                + "        <td style=\"padding: 12px 16px; font-size: 13px; color: #d97706; font-weight: 700;\">नोंदणीकृत (Pending Assessment)</td>"
+                + "      </tr>"
+                + "    </table>"
+                + "    <div style=\"text-align: center; margin: 28px 0 16px;\">"
+                + "      <a href=\"" + trackingUrl + "\" style=\"display: inline-block; background-color: #ea580c; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: bold; padding: 14px 28px; border-radius: 10px; box-shadow: 0 4px 6px -1px rgba(234, 88, 12, 0.3);\">तक्रारीची स्थिती तपासा (Track Status)</a>"
+                + "    </div>"
+                + "  </div>"
+                + "  <div style=\"background-color: #f1f5f9; padding: 20px 24px; text-align: center; border-top: 1px solid #e2e8f0;\">"
+                + "    <p style=\"margin: 0; font-size: 12px; color: #64748b;\">हे एक स्वयंचलित ईमेल आहे. कृपया या ईमेलला थेट उत्तर देऊ नका.</p>"
+                + "    <p style=\"margin: 4px 0 0; font-size: 12px; color: #94a3b8; font-weight: 600;\">© " + orgName + " • Loknagar Citizen Services</p>"
+                + "  </div>"
+                + "</div>";
+
+        emailService.sendEmail(complaint.getCitizenEmail(), subject, body);
     }
 
     public ResponseEntity<Resource> downloadAttachment(Long attachmentId, User user) {

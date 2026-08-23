@@ -28,6 +28,9 @@ public class Complaint {
     @Column(name = "citizen_mobile")
     private String citizenMobile;
 
+    @Column(name = "citizen_email")
+    private String citizenEmail;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     @lombok.ToString.Exclude

@@ -12,11 +12,15 @@ import java.util.Optional;
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     Optional<Complaint> findByComplaintNo(String complaintNo);
 
+    Optional<Complaint> findByComplaintNoAndCitizenMobile(String complaintNo, String citizenMobile);
+
     List<Complaint> findByStatus(ComplaintStatus status);
 
     List<Complaint> findByDepartmentId(Long departmentId);
 
     List<Complaint> findByCitizenMobile(String citizenMobile);
+
+    List<Complaint> findByCitizenMobileAndAdminIdOrderByCreatedAtDesc(String citizenMobile, Long adminId);
 
     List<Complaint> findByComplaintTypeId(Long complaintTypeId);
 

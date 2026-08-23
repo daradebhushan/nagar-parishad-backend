@@ -48,7 +48,7 @@ public class User implements UserDetails {
     private Role role;
 
     @Column(name = "organization_name")
-    private String organizationName = "Maharashtra Nagar Panchayat";
+    private String organizationName = "Loknagar Administration";
 
     @Column(name = "organization_logo", columnDefinition = "TEXT")
     private String organizationLogo;
@@ -84,9 +84,18 @@ public class User implements UserDetails {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "public_id", unique = true, updatable = false)
+    private String publicId;
+
+    @Column(unique = true)
+    private String domain;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        if (publicId == null) {
+            publicId = java.util.UUID.randomUUID().toString();
+        }
     }
 
     // UserDetails Methods
@@ -254,5 +263,13 @@ public class User implements UserDetails {
 
     public void setOrganizationLogo(String organizationLogo) {
         this.organizationLogo = organizationLogo;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
     }
 }

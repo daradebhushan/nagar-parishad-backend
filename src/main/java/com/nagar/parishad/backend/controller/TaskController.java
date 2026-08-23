@@ -130,7 +130,7 @@ public class TaskController {
     @PreAuthorize("hasAnyRole('OWNER', 'ADMIN', 'NAGARADHYAKSHA', 'DEPARTMENT_HEAD', 'STAFF')")
     public ResponseEntity<ApiResponse<TaskComment>> addComment(@PathVariable Long taskId,
             @Valid @RequestBody CommentRequest request, @AuthenticationPrincipal User user) {
-        TaskComment comment = commentService.addComment(taskId, request.getText(), user);
+        TaskComment comment = commentService.addComment(taskId, request.getText(), user, request.getHasAttachments());
         return ResponseEntity.ok(ApiResponse.success("Comment added", comment));
     }
 
@@ -185,6 +185,7 @@ public class TaskController {
             @PathVariable Long commentId,
             @RequestParam("file") MultipartFile file, @AuthenticationPrincipal User user) {
         TaskAttachment attachment = fileStorageService.storeCommentAttachment(taskId, commentId, file, user);
+        commentService.sendCommentNotification(commentId);
         return ResponseEntity.ok(ApiResponse.success("Comment file uploaded", attachment));
     }
 
@@ -194,6 +195,7 @@ public class TaskController {
             @PathVariable Long commentId,
             @RequestParam("files") List<MultipartFile> files, @AuthenticationPrincipal User user) {
         List<TaskAttachment> attachments = fileStorageService.storeCommentFiles(taskId, commentId, files, user);
+        commentService.sendCommentNotification(commentId);
         return ResponseEntity.ok(ApiResponse.success("Comment files uploaded", attachments));
     }
 

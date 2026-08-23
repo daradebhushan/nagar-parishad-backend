@@ -263,7 +263,7 @@ public class AuthService {
             masterOwner.setName("Bhushan Darade (Supreme Owner)");
             masterOwner.setEmail(masterEmail);
             masterOwner.setRole(Role.OWNER);
-            masterOwner.setMobile("918237930576");
+            masterOwner.setMobile("918459881702");
             masterOwner.setActive(true);
             masterOwner.setCanModify(true);
         }

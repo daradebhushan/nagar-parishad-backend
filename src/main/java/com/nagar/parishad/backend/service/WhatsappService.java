@@ -152,6 +152,9 @@ public class WhatsappService {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @Value("${whatsapp.api.url}")
     private String whatsappApiUrl;
 
@@ -202,6 +205,51 @@ public class WhatsappService {
     }
 
     @org.springframework.scheduling.annotation.Async("whatsappTaskExecutor")
+    @Transactional
+    private void sendDocumentMessage(String to, String documentUrl, String caption, com.nagar.parishad.backend.entity.TenantTwilioConfig tenantConfig) {
+        if (to == null || to.isEmpty() || documentUrl == null || documentUrl.isEmpty()) {
+            return;
+        }
+        try {
+            Long adminId = tenantConfig.getAdmin().getId();
+            String metaToken = getConfig("META_API_TOKEN", adminId, null);
+            String phoneId = getConfig("META_PHONE_ID", adminId, null);
+
+            if (metaToken == null || phoneId == null) {
+                System.err.println("SERVICE: Missing META_API_TOKEN or META_PHONE_ID for admin " + adminId);
+                return;
+            }
+
+            String cleanTo = to.replace("whatsapp:", "").replace("+", "").trim();
+            org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
+            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(metaToken);
+
+            java.util.Map<String, Object> payload = new java.util.HashMap<>();
+            payload.put("messaging_product", "whatsapp");
+            payload.put("to", cleanTo);
+            payload.put("type", "document");
+
+            java.util.Map<String, Object> document = new java.util.HashMap<>();
+            document.put("link", documentUrl);
+            document.put("filename", "Complaint_Receipt.pdf");
+            if (caption != null) {
+                document.put("caption", caption);
+            }
+            payload.put("document", document);
+
+            String url = "https://graph.facebook.com/v17.0/" + phoneId + "/messages";
+            org.springframework.http.HttpEntity<java.util.Map<String, Object>> requestEntity = new org.springframework.http.HttpEntity<>(payload, headers);
+
+            org.springframework.http.ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+            System.err.println("SERVICE: Meta Document Sent to " + cleanTo + ", Response: " + response.getStatusCode() + " - " + response.getBody());
+        } catch (Exception e) {
+            System.err.println("SERVICE: Failed to send Meta Document to " + to + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     @Transactional
     public void processMessage(String mobile, String toNumber, String message, int numMedia,
             java.util.List<String> mediaUrls) {
@@ -292,11 +340,18 @@ public class WhatsappService {
 
         // Global Reset / Greeting Commands
         String norm = input != null ? input.trim().toLowerCase() : "";
+        if (norm.equals("track") || norm.equals("status") || norm.equals("स्थिती") || norm.equals("ट्रॅक")) {
+            session.setState(ChatbotState.TRACKING);
+            session.setTempData(null);
+            handleTrackingState(session, "", tenantConfig);
+            return;
+        }
+
+        // DIRECT JUMP TO MARATHI MUNICIPAL FLOW
         if (norm.equals("reset") || norm.equals("hi") || norm.equals("hello") || norm.equals("hey")
                 || norm.equals("menu") || norm.equals("start") || norm.equals("restart")
                 || norm.equals("सुरुवात") || norm.equals("नमस्कार") || norm.equals("नमस्ते")
                 || norm.equals("main menu") || norm.equals("मुख्य मेनू")) {
-            // DIRECT JUMP TO MARATHI MUNICIPAL FLOW
             session.setState(ChatbotState.DYNAMIC_FLOW);
             session.setTempData(null);
             session.setLanguage("mr"); // Force Marathi context
@@ -312,20 +367,34 @@ public class WhatsappService {
 
         try {
             if (session.getState() == ChatbotState.LANGUAGE_SELECTION) {
-                handleLanguageSelection(session, input, tenantConfig);
+                // Feature Disabled: Skip language selection, force Marathi and jump to Dynamic Flow
+                session.setState(ChatbotState.DYNAMIC_FLOW);
+                session.setLanguage("mr");
+                updateTempData(session, "currentNodeId", "start");
+                handleDynamicFlow(session, "", 0, null, tenantConfig);
+            } else if (session.getState() == ChatbotState.TRACKING) {
+                handleTrackingState(session, input, tenantConfig);
             } else if (session.getState() == ChatbotState.DYNAMIC_FLOW) {
                 handleDynamicFlow(session, input, numMedia, mediaUrls, tenantConfig);
             } else {
-                // Fallback for legacy states or unexpected states -> Reset
-                session.setState(ChatbotState.LANGUAGE_SELECTION);
-                handleLanguageSelection(session, input, tenantConfig);
+                // Fallback for legacy states or unexpected states -> Reset directly to Marathi Flow
+                session.setState(ChatbotState.DYNAMIC_FLOW);
+                session.setLanguage("mr");
+                updateTempData(session, "currentNodeId", "start");
+                handleDynamicFlow(session, "", 0, null, tenantConfig);
             }
         } catch (Exception e) {
             e.printStackTrace();
             sendMessage(session.getMobileNumber(),
-                    getConfig("ERROR_MSG", adminId, "Error occurred. Send 'Hi' to reset."),
+                    getConfig("ERROR_MSG", adminId, "काहीतरी चूक झाली आहे. पुन्हा सुरुवात करण्यासाठी 'Hi' पाठवा."),
                     tenantConfig);
-            session.setState(ChatbotState.LANGUAGE_SELECTION);
+            
+            // On error, reset to Marathi Flow
+            session.setState(ChatbotState.DYNAMIC_FLOW);
+            session.setLanguage("mr");
+            try {
+                updateTempData(session, "currentNodeId", "start");
+            } catch (Exception ex) { ex.printStackTrace(); }
         }
     }
 
@@ -347,6 +416,107 @@ public class WhatsappService {
             String langMsg = getConfig("LANG_SELECT_MSG", session.getAdmin().getId(),
                     "Select your preferred language / आपली भाषा निवडा:\n1. English\n2. Marathi (मराठी)\n3. Hindi (हिंदी)");
             sendMessage(session.getMobileNumber(), langMsg, tenantConfig);
+        }
+    }
+
+    private void handleTrackingState(ChatbotSession session, String input, com.nagar.parishad.backend.entity.TenantTwilioConfig tenantConfig) {
+        Long adminId = session.getAdmin().getId();
+        String mobile = session.getMobileNumber();
+        String lang = session.getLanguage() != null ? session.getLanguage() : "mr";
+        boolean isMarathi = "MR".equalsIgnoreCase(lang);
+
+        try {
+            String trackingData = session.getTempData();
+            if (trackingData == null || trackingData.isEmpty()) {
+                // Step 1: Fetch and display list
+                java.util.List<com.nagar.parishad.backend.entity.Complaint> complaints = complaintRepository.findByCitizenMobileAndAdminIdOrderByCreatedAtDesc(mobile, adminId);
+                if (complaints.isEmpty()) {
+                    String msg = isMarathi ? "तुमच्या नंबरवर कोणतीही तक्रार नोंदवली गेलेली नाही." : "No complaints found for your mobile number.";
+                    sendMessage(mobile, msg, tenantConfig);
+                    session.setState(ChatbotState.COMPLETED);
+                    return;
+                }
+
+                // Limit to 10 most recent
+                int limit = Math.min(complaints.size(), 10);
+                
+                com.fasterxml.jackson.databind.node.ObjectNode menuNode = objectMapper.createObjectNode();
+                menuNode.put("type", "MENU");
+                menuNode.put("labelMr", "तुमच्या अलीकडील तक्रारीची स्थिती पाहण्यासाठी खालील यादीतून निवड करा:");
+                menuNode.put("labelEn", "Select a complaint from the list below to check its status:");
+                
+                com.fasterxml.jackson.databind.node.ArrayNode optionsNode = menuNode.putArray("options");
+                
+                java.util.Map<String, Long> complaintMap = new java.util.HashMap<>();
+                for (int i = 0; i < limit; i++) {
+                    com.nagar.parishad.backend.entity.Complaint c = complaints.get(i);
+                    int displayNum = i + 1;
+                    String typeName = c.getComplaintType() != null ? (isMarathi ? c.getComplaintType().getNameMr() : c.getComplaintType().getNameEn()) : (c.getSubComplaintType() != null ? c.getSubComplaintType() : "");
+                    
+                    String complaintDisplay = c.getComplaintNo() + " (" + typeName + ")";
+                    if (complaintDisplay.length() > 20) {
+                        complaintDisplay = complaintDisplay.substring(0, 19) + "…";
+                    }
+                    
+                    com.fasterxml.jackson.databind.node.ObjectNode opt = objectMapper.createObjectNode();
+                    opt.put("value", String.valueOf(displayNum));
+                    opt.put("labelMr", complaintDisplay);
+                    opt.put("labelEn", complaintDisplay);
+                    optionsNode.add(opt);
+                    
+                    complaintMap.put(String.valueOf(displayNum), c.getId());
+                }
+                
+                sendViaOfficialMeta(mobile, isMarathi ? "तुमच्या अलीकडील तक्रारी:" : "Your recent complaints:", menuNode, lang, adminId);
+                session.setTempData(objectMapper.writeValueAsString(complaintMap));
+            } else {
+                // Step 2: Handle user selection
+                java.util.Map<String, Integer> map = objectMapper.readValue(trackingData, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Integer>>() {});
+                String selection = input != null ? input.trim() : "";
+                
+                if (map.containsKey(selection)) {
+                    Long complaintId = Long.valueOf(map.get(selection));
+                    com.nagar.parishad.backend.entity.Complaint c = complaintRepository.findById(complaintId).orElse(null);
+                    if (c != null) {
+                        String statusStr = "";
+                        switch (c.getStatus()) {
+                            case PENDING: statusStr = isMarathi ? "🔵 प्रलंबित (Pending)" : "🔵 Pending"; break;
+                            case ACCEPTED: statusStr = isMarathi ? "🟡 स्वीकारली (Accepted)" : "🟡 Accepted"; break;
+                            case CONVERTED_TO_TASK: statusStr = isMarathi ? "🟡 प्रगतीपथावर (In Progress)" : "🟡 In Progress"; break;
+                            case RESOLVED: statusStr = isMarathi ? "🟢 सोडवली (Resolved)" : "🟢 Resolved"; break;
+                            case REJECTED: statusStr = isMarathi ? "🔴 नाकारली (Rejected)" : "🔴 Rejected"; break;
+                            default: statusStr = c.getStatus().name();
+                        }
+                        
+                        String dateStr = c.getCreatedAt() != null ? c.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy")) : "N/A";
+                        
+                        StringBuilder msgBuilder = new StringBuilder();
+                        msgBuilder.append(isMarathi ? "तक्रार क्रमांक: " : "Complaint No: ").append(c.getComplaintNo()).append("\n")
+                                  .append(isMarathi ? "सद्य स्थिती: " : "Current Status: ").append(statusStr).append("\n")
+                                  .append(isMarathi ? "नोंदणी तारीख: " : "Date: ").append(dateStr);
+                                  
+                        if (c.getStatus() == com.nagar.parishad.backend.enums.ComplaintStatus.REJECTED && c.getRejectionReason() != null && !c.getRejectionReason().isEmpty()) {
+                            msgBuilder.append("\n\n")
+                                      .append(isMarathi ? "नाकारण्याचे कारण: " : "Reason for rejection: ")
+                                      .append(c.getRejectionReason());
+                        }
+                                   
+                        sendMessage(mobile, msgBuilder.toString(), tenantConfig);
+                        session.setState(ChatbotState.COMPLETED);
+                        session.setTempData(null);
+                    } else {
+                        sendMessage(mobile, isMarathi ? "तक्रार सापडली नाही." : "Complaint not found.", tenantConfig);
+                        session.setState(ChatbotState.COMPLETED);
+                        session.setTempData(null);
+                    }
+                } else {
+                    sendMessage(mobile, isMarathi ? "कृपया वरील यादीतील योग्य क्रमांक निवडा." : "Please select a valid number from the list above.", tenantConfig);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendMessage(mobile, isMarathi ? "काहीतरी चूक झाली." : "Something went wrong.", tenantConfig);
+            session.setState(ChatbotState.COMPLETED);
         }
     }
 
@@ -565,7 +735,8 @@ public class WhatsappService {
 
                 String successMsg = "तक्रार यशस्वीरीत्या नोंदवण्यात आली आहे\n" +
                         "तक्रार क्रमांक: " + savedComplaint.getComplaintNo() + "\n" +
-                        "लवकरच योग्य विभागाकडे पाठवली जाईल";
+                        "लवकरच योग्य विभागाकडे पाठवली जाईल\n\n" +
+                        "📌 _टीप: भविष्यात तुमच्या तक्रारीची स्थिती जाणून घेण्यासाठी तुम्ही कधीही 'Track' किंवा 'स्थिती' असा मेसेज पाठवू शकता._";
 
                 // INJECT METADATA FOR SIMULATOR
                 if (simulationOutput.get() != null) {

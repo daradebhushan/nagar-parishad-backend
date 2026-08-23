@@ -10,6 +10,7 @@ public class ComplaintDTO {
     private String complaintNo;
     private String citizenName;
     private String citizenMobile;
+    private String citizenEmail;
     private Long departmentId;
     private String departmentName;
     private Long complaintTypeId;

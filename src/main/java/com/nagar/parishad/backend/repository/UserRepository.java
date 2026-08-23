@@ -15,6 +15,10 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     Optional<User> findByResetPasswordToken(String resetPasswordToken);
 
+    Optional<User> findByPublicId(String publicId);
+
+    Optional<User> findByDomain(String domain);
+
     boolean existsByEmail(String email);
 
     Page<User> findByAdmin_Id(Long adminId, Pageable pageable);
