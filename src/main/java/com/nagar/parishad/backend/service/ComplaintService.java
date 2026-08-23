@@ -410,7 +410,6 @@ public class ComplaintService {
 
         String body = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f8fafc; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);\">"
                 + "  <div style=\"background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); padding: 32px 24px; text-align: center; color: #ffffff;\">"
-                + "    <div style=\"background: rgba(255, 255, 255, 0.2); width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 28px;\">🏛️</div>"
                 + "    <h1 style=\"margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.5px;\">" + orgName + "</h1>"
                 + "    <p style=\"margin: 6px 0 0; font-size: 14px; opacity: 0.9;\">नागरिक तक्रार निवारण प्रणाली (Citizen Grievance Redressal)</p>"
                 + "  </div>"
