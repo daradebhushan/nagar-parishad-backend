@@ -27,6 +27,9 @@ public class NotificationService {
     private com.nagar.parishad.backend.util.JwtUtils jwtUtils;
 
     @Autowired
+    private FirebasePushService firebasePushService;
+
+    @Autowired
     private com.nagar.parishad.backend.repository.TaskRepository taskRepository;
 
     @Autowired
@@ -62,7 +65,13 @@ public class NotificationService {
     @org.springframework.transaction.annotation.Transactional
     public void createNotification(User recipient, User sender, String message, NotificationType type,
             Long relatedTaskId, Long commentId, boolean sendEmail) {
-        if (recipient.getId().equals(sender.getId())) {
+        createNotification(recipient, sender, message, type, relatedTaskId, commentId, sendEmail, null);
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public void createNotification(User recipient, User sender, String message, NotificationType type,
+            Long relatedTaskId, Long commentId, boolean sendEmail, String route) {
+        if (sender != null && recipient.getId().equals(sender.getId())) {
             return; // Don't notify self
         }
 
@@ -74,6 +83,20 @@ public class NotificationService {
         notification.setRelatedTaskId(relatedTaskId);
 
         notificationRepository.save(notification);
+
+        // Determine Route for Push Payload
+        String finalRoute = route;
+        if (finalRoute == null && relatedTaskId != null) {
+            finalRoute = "/tasks/" + relatedTaskId;
+        }
+        
+        java.util.Map<String, String> pushData = new java.util.HashMap<>();
+        if (finalRoute != null) {
+            pushData.put("route", finalRoute);
+        }
+
+        // Send Native Push Notification
+        firebasePushService.sendPushNotification(recipient, "Townseva Notice", message, pushData);
 
         // Send Email Notification only if requested and allowed by user preference
         if (sendEmail && recipient.isEmailNotifications()) {

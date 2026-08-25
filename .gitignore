@@ -38,6 +38,11 @@ test*.log
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
+
+# Secrets & Credentials
+*firebase-adminsdk*.json
+*service-account*.json
+
 ehthumbs_vista.db
 
 # macOS

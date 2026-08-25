@@ -18,6 +18,10 @@ public class DepartmentService {
     DepartmentRepository departmentRepository;
 
     public Department createDepartment(DepartmentRequest request, User admin) {
+        if (departmentRepository.existsByNameIgnoreCaseAndAdminId(request.getName(), admin.getId())) {
+            throw new RuntimeException("A department with this name already exists.");
+        }
+        
         Department department = new Department();
         department.setName(request.getName());
         department.setNameMr(request.getNameMr());

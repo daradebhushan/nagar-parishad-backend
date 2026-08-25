@@ -758,6 +758,14 @@ public class WhatsappService {
                 session.setState(ChatbotState.COMPLETED);
                 session.setTempData(null);
                 sessionRepository.save(session);
+                
+                // Notify Admins
+                try {
+                    complaintService.notifyAdminsForNewComplaint(savedComplaint);
+                } catch (Exception e) {
+                    System.err.println("Failed to send admin notifications for WhatsApp complaint: " + e.getMessage());
+                }
+                
                 return;
             }
 

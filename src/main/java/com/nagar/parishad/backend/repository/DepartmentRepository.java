@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
     Page<Department> findByAdminId(Long adminId, Pageable pageable);
+    
+    boolean existsByNameIgnoreCaseAndAdminId(String name, Long adminId);
 
     List<Department> findByAdminId(Long adminId);
 

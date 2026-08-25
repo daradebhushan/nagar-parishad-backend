@@ -136,6 +136,17 @@ public class User implements UserDetails {
         return active;
     }
 
+    @Column(name = "fcm_token")
+    private String fcmToken;
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
     // Manual Getters and Setters
     public Long getId() {
         return id;

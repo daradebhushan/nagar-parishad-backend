@@ -62,6 +62,10 @@ public class ComplaintService {
     private EmailService emailService;
 
     @Autowired
+    @org.springframework.context.annotation.Lazy
+    private NotificationService notificationService;
+
+    @Autowired
     private TaskRepository taskRepository; // Needed to update Task entity with back-ref if needed, though OneToOne
                                            // mappedBy usually handles owner.
                                            // But Task is the owner? No, Complaint has `relatedTask` JoinColumn.
@@ -120,7 +124,24 @@ public class ComplaintService {
             }
         }
 
+        // Notify Admins
+        try {
+            notifyAdminsForNewComplaint(savedComplaint);
+        } catch (Exception e) {
+            System.err.println("Failed to send admin notifications: " + e.getMessage());
+        }
+
         return convertToDTO(savedComplaint);
+    }
+
+    public void notifyAdminsForNewComplaint(Complaint complaint) {
+        if (notificationService == null) return;
+        List<User> admins = userRepository.findByRole(Role.ADMIN);
+        for (User admin : admins) {
+            String msg = "New complaint received: " + complaint.getComplaintNo() + " from " + complaint.getCitizenName();
+            String route = "/complaints/" + complaint.getId();
+            notificationService.createNotification(admin, null, msg, com.nagar.parishad.backend.enums.NotificationType.STATUS_CHANGED, null, null, false, route);
+        }
     }
 
     public List<ComplaintDTO> getAllComplaints() {

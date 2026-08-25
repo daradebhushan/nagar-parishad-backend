@@ -67,4 +67,18 @@ public class UserController {
 
         return ResponseEntity.ok(ApiResponse.success("Profile photo uploaded successfully", fileName));
     }
+
+    @PostMapping("/register-push-token")
+    public ResponseEntity<ApiResponse<String>> registerPushToken(
+            @RequestBody java.util.Map<String, String> request,
+            @AuthenticationPrincipal User user) {
+        String token = request.get("token");
+        if (token != null && !token.trim().isEmpty()) {
+            User currentUser = userRepository.findById(user.getId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            currentUser.setFcmToken(token);
+            userRepository.save(currentUser);
+        }
+        return ResponseEntity.ok(ApiResponse.success("Push token registered successfully", null));
+    }
 }
